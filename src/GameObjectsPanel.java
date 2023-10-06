@@ -34,6 +34,7 @@ public class GameObjectsPanel extends JPanel {
     static JTextField txtFill = new JTextField();
     java.util.List<Shape> gameObjects;
     static Shape selectedShape;
+    static int currentSelectedObjectIndex = 0;
 
     public GameObjectsPanel(){
         initialise();
@@ -96,7 +97,7 @@ public class GameObjectsPanel extends JPanel {
         txtColor = new JTextField();
         txtFill = new JTextField();
 
-        //txtX1Pos.addActionListener(s -> changeX1Pos(Integer.parseInt(txtName.getText())));
+        //txtX1Pos.addActionListener(s -> changeX1Pos());
 
         objectAttributesPanel.add(lblName);
         objectAttributesPanel.add(txtName);
@@ -117,6 +118,7 @@ public class GameObjectsPanel extends JPanel {
     public void changeX1Pos(int value){
         //selectedShape.setX1(value);
         Helper.createdGameObjects.get(value).setX1(value);
+        System.out.println("txtbox event triggered");
     }
 
     public static void updateObjectsAttributesPanel(int index){
@@ -151,8 +153,12 @@ public class GameObjectsPanel extends JPanel {
                     //when Jlist item is clicked 2 events are triggered, one for mouseclick on and one for mouseclick off
                     // this will register only one mouse click
                     if(e.getClickCount() >= 1){
-                        System.out.println(jListOfGameObjectNames.getSelectedIndex());
-                        updateObjectsAttributesPanel(jListOfGameObjectNames.getSelectedIndex());
+
+                        currentSelectedObjectIndex = jListOfGameObjectNames.getSelectedIndex();
+
+                        System.out.println(currentSelectedObjectIndex);
+                        updateObjectsAttributesPanel(currentSelectedObjectIndex);
+                        System.out.println();
                     }
                 }
             });
