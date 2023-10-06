@@ -2,8 +2,11 @@ import java.awt.*;
 
 public class Circle extends Shape{
 
+    public static int id = 1;
+
     public Circle(int x1, int y1, int x2, int y2, Color color, float lineThickness, boolean fill) {
-        super(x1, y1, x2, y2, color, lineThickness, fill);
+        super(x1, y1, x2, y2, color, lineThickness, fill, "circle_" + id);
+        id++;
     }
 
     @Override
