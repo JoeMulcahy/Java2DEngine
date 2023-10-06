@@ -1,6 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 
+// Eventually this will be a separate window which will display various stats and program states using StatsPanel
+//
+
 public class StatsWindow {
     private JFrame frameStats;
 

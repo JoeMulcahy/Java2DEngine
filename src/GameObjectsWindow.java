@@ -2,6 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+// Ignore this for the moment
+// Eventually will be a separate window
+
 public class GameObjectsWindow {
     private JFrame frameGameObjects;
     private JPanel objectsPanel;

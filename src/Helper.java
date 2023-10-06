@@ -14,6 +14,9 @@ public class Helper {
     protected static int statsPanelHeight = 512;
     protected static int editorControlPanelWidth = 256;
     protected static int editorControlPanelHeight = 512;
+
+    protected static int gameObjectsPanelWidth = 512;
+    protected static int gameObjectsPanelHeight = 512;
     protected static int colorPanelWidth = 124;
     protected static int colorPanelHeight = 48;
     protected static Color currentColor = Color.white;
