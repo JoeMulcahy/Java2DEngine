@@ -57,6 +57,7 @@ public class MainWindow{
 
         frame.add(new EditorPanel());
         frame.add(new EditorWindow());
+        frame.add(new GameObjectsPanel());
 
 
         frame.pack();

@@ -8,7 +8,7 @@ public class Launcher {
             public void run() {
                MainWindow main = new MainWindow();
                //StatsWindow side = new StatsWindow();
-               GameObjectsWindow objects = new GameObjectsWindow();
+               //GameObjectsWindow objects = new GameObjectsWindow();
 
             }
         });

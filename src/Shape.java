@@ -28,6 +28,14 @@ public abstract class Shape {
 
     public abstract void draw(Graphics g);
 
+    public static void setObjectID(int id){
+        objectID = id;
+    }
+
+    public int getObjectID(){
+        return objectID;
+    }
+
     public String getName() {
         return name;
     }

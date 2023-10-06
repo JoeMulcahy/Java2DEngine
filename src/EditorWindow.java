@@ -203,12 +203,15 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
         }
 
         Helper.createdGameObjects = objects;
+        GameObjectsPanel.updateGameObjectJList();
     }
 
     public static void clearScreen(){
         objects.clear();
         System.out.println(objects.size());
         Helper.numberOfObjectsDrawn = 0;
+        GameObjectsPanel.updateGameObjectJList();
+        Shape.setObjectID(0);
     }
 
     public EditorWindow getEditorWindow(){
@@ -270,5 +273,8 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
     public void mouseMoved(MouseEvent e) {
         mouseX1 = e.getX();
         mouseY1 = e.getY();
+
+        Helper.mouseX1 = mouseX1;
+        Helper.mouseY1 = mouseY1;
     }
 }

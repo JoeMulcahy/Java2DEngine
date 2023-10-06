@@ -27,6 +27,3 @@ bin/
 
 ### Mac OS ###
 .DS_Store
-
-##ignore all txt files##
-*.txt
