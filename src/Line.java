@@ -1,8 +1,12 @@
 import java.awt.*;
 
 public class Line extends Shape{
+
+    public static int id = 1;
+
     public Line(int x1, int y1, int x2, int y2, Color color, float lineThickness) {
-        super(x1, y1, x2, y2, color, lineThickness, false);
+        super(x1, y1, x2, y2, color, lineThickness, false, "line_" + id);
+        id++;
     }
 
     @Override

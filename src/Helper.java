@@ -4,7 +4,7 @@ public class Helper {
     protected static int countFrames = 0;
     protected static int secondsRun = 0;
 
-    protected static int mainWindowWidth = 1200;
+    protected static int mainWindowWidth = 1500;
     protected static int mainWindowHeight= 800;
     protected static int editorPanelWidth = 512;
     protected static int editorPanelHeight = 512;

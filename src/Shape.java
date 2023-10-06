@@ -10,10 +10,9 @@ public abstract class Shape {
     protected Color color;
     protected float lineThickness;
     protected boolean fill;
-    public static int objectID = 0;
-    public String name;
+    private String name;
 
-    public Shape(int x1, int y1, int x2, int y2, Color color, float lineThickness, boolean fill) {
+    public Shape(int x1, int y1, int x2, int y2, Color color, float lineThickness, boolean fill, String name) {
         this.x1 = x1;
         this.y1 = y1;
         this.x2 = x2;
@@ -21,20 +20,11 @@ public abstract class Shape {
         this.color = color;
         this.lineThickness = lineThickness;
         this.fill = fill;
-        objectID++;
-        this.name = "Object_" + objectID;
+        this.name = name;
 
     }
 
     public abstract void draw(Graphics g);
-
-    public static void setObjectID(int id){
-        objectID = id;
-    }
-
-    public int getObjectID(){
-        return objectID;
-    }
 
     public String getName() {
         return name;

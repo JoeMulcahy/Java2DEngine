@@ -203,15 +203,25 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
         }
 
         Helper.createdGameObjects = objects;
+        GameObjectsPanel.jListOfGameObjectNames.setSelectedIndex(objects.size());
         GameObjectsPanel.updateGameObjectJList();
     }
 
-    public static void clearScreen(){
+    public static void clearScreen() {
         objects.clear();
         System.out.println(objects.size());
         Helper.numberOfObjectsDrawn = 0;
+
+        // These are static methods in GameObjectsPanel class
+        // Spaghetti like! I know
         GameObjectsPanel.updateGameObjectJList();
-        Shape.setObjectID(0);
+        GameObjectsPanel.updateAttributeValues(null);
+
+        Circle.id = 1;
+        Rectangle.id = 1;
+        Line.id = 1;
+        Polygon.id = 1;
+
     }
 
     public EditorWindow getEditorWindow(){

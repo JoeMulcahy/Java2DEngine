@@ -10,14 +10,17 @@ public class Polygon extends Shape{
     private int[] yCoords;
     private int verWidth;
     private int numberOfPoints;
+    public static int id = 1;
 
     public Polygon(int x1, int y1, int x2, int y2, int verWidth, int numberOfPoints, Color color, float lineThickness, boolean fill) {
-        super(x1, y1, x2, y2, color, lineThickness, fill);
+        super(x1, y1, x2, y2, color, lineThickness, fill, "poly_" + id);
         this.verWidth = verWidth;
         this.numberOfPoints = numberOfPoints;
         this.xCoords = new int[numberOfPoints];
         this.yCoords = new int[numberOfPoints];
         setCoorinatesArrays();
+
+        id++;
 
     }
 
