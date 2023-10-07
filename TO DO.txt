@@ -1,0 +1,35 @@
+The is a list of features to add to the engine. It will also include ideas
+
+As of 7/10/23
+
+// Make the GUI more attractive - this may required the use GridBagLayout manager instead of FLow and Grid
+
+// Make the GameObjectsAttributes panel easier to use
+- Use JSpinner and dropdown menus instead of JTextBoxes
+
+// Add Collision to the objects
+- if collision -> destroy, add to score or some other action
+
+// Add selectable keyboard/joypad movement to GameObjects
+
+// Add motion to the GameObjects
+- x,y,dx,dy,speed,acceleration
+- animation frames -> luxury feature
+
+// Ability to merge objects together
+
+// Highlight GameObjects upon selection from Attributes panel
+
+// Highlight GameObjects upon selection from EditorWindow
+
+// Save function
+
+// Load Function
+
+// Undo/redo function
+
+/////////////////// Tweaks to existing code ///////////////////////////////
+** if fillMode the draw the selector box as a fillRect with a low Alpha value
+** fix line selection -- need to finish
+** code repetition in EditorWindow. repetition of code in createShape and drawSelector when in snap mode
+** circle drawing bug when drawing left or up

@@ -22,7 +22,7 @@ public class GameObjectsWindow {
 
         //scrollableTextArea = new JScrollPane(textArea);
         String[] things = {"Monday", "Tuesday", "Wednesday", "Thursday"};
-        java.util.List<Shape> objects = Helper.createdGameObjects;
+        java.util.List<GameObject> objects = Helper.createdGameObjects;
         ArrayList<String> objectNames = new ArrayList<>();
 
         if(objects != null){

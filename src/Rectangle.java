@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class Rectangle extends Shape{
+public class Rectangle extends GameObject {
 
     public static int id = 1;
 

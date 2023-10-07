@@ -18,7 +18,7 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
     private int mouseY2;
     private boolean isMouseClick;
 
-    private static java.util.List<Shape> objects;
+    private static java.util.List<GameObject> objects;
 
     public EditorWindow(){
         this.setPreferredSize(new Dimension(width, height));
@@ -63,11 +63,15 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
 
     public void drawObjects(Graphics2D g2){
 
-        objects.forEach(s -> s.draw(g2));
+        //objects.forEach(s -> s.draw(g2));
+
+        for(int i = 0; i < UndoRedoStack.getStackCounter(); i++){
+            //System.out.println("Debug: stack count for draw" +  UndoRedoStack.getStackCounter());
+            objects.get(i).draw(g2);
+        }
 
         if(isMouseClick){
             drawSelectorBox(g2);
-
         }
         if(Helper.snapMode && Helper.showGrid){
             snapMode(g2);
@@ -75,8 +79,7 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
     }
 
     private Graphics2D drawSelectorBox(Graphics2D g2){
-            //To DO:
-            // if fillMode the draw the selector box as a fillRect with a low Alpha value
+
             int x1, y1, x2, y2;
 
             if(Helper.snapMode){
@@ -163,7 +166,7 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
 
     }
 
-    private void createShape(){
+    private void createGameObject(){
         Helper.numberOfObjectsDrawn++;
 
         //Yes! this is repetitive code
@@ -189,6 +192,10 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
             y2 = mouseY2;
         }
 
+        if(Helper.instructionCounter != UndoRedoStack.getStackCounter()){
+            updateGameObjectsList();
+        }
+
         if(Helper.currentShape == Helper.ShapeSelector.RECT){
             objects.add(new Rectangle(x1, y1, x2, y2, Helper.currentColor, Helper.lineThickness, Helper.fillShape));
         }
@@ -202,9 +209,26 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
             objects.add(new Polygon(x1, y1, x2, y2, 100, 3, Helper.currentColor, Helper.lineThickness, Helper.fillShape));
         }
 
-        Helper.createdGameObjects = objects;
-        GameObjectsPanel.jListOfGameObjectNames.setSelectedIndex(objects.size());
+
+        GameObjectsPanel.jListOfGameObjectNames.setSelectedIndex(UndoRedoStack.getStackCounter());
         GameObjectsPanel.updateGameObjectJList();
+        Helper.createdGameObjects = objects;
+
+
+        UndoRedoStack.addToStack(objects.get(objects.size() - 1));
+        Helper.instructionCounter++;
+
+
+    }
+
+    public void updateGameObjectsList(){
+        System.out.println("num of object before remove" + objects.size());
+        for(int i = objects.size() - 1; i >= UndoRedoStack.getStackCounter(); i--){
+            System.out.println("removing object");
+            objects.remove(i);
+        }
+        Helper.createdGameObjects = objects;
+        System.out.println("num of object after remove" + objects.size());
     }
 
     public static void clearScreen() {
@@ -217,23 +241,19 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
         GameObjectsPanel.updateGameObjectJList();
         GameObjectsPanel.updateAttributeValues(null);
 
+        // initialised ids back to 1
         Circle.id = 1;
         Rectangle.id = 1;
         Line.id = 1;
         Polygon.id = 1;
 
+        Helper.instructionCounter = 0;
+        UndoRedoStack.clearStack();
+
     }
 
     public EditorWindow getEditorWindow(){
         return this;
-    }
-
-    public static java.util.ArrayList<Shape> getGameObjects(){
-        return (ArrayList<Shape>) objects;
-    }
-
-    public static void getGameObjectsByName(){
-        objects.forEach(s -> System.out.println(s));
     }
 
     @Override
@@ -243,24 +263,18 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
 
     @Override
     public void mousePressed(MouseEvent e) {
-
         isMouseClick = false;
         mouseX2 = e.getX();
         mouseY2 = e.getY();
         isMouseClick = true;
-
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
-
         mouseX2 = e.getX();
         mouseY2 = e.getY();
-        createShape();
-
+        createGameObject();
         isMouseClick = false;
-
     }
 
     @Override
@@ -284,6 +298,7 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
         mouseX1 = e.getX();
         mouseY1 = e.getY();
 
+        // for StatsPanel class
         Helper.mouseX1 = mouseX1;
         Helper.mouseY1 = mouseY1;
     }

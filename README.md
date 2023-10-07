@@ -8,3 +8,12 @@ The end goal of this project is to create a 2d game designer program that can cr
 
 As of 06/10/2023
 I have created basic shapes that can be drawn on a JPanel component. I've also implemented a grid so that shapes can snapped into position.
+
+06/10/2023
+Create a GameObjectsPanel. An objects can be selected from a JList and its attributes display of a side panel.
+These attributes can be changed in the side panel, these changes are reflected in the Editor windows.
+Its not visually appealing at the moment. Editing of the object attributes are done through JTextBoxes for the moment
+and eventually so if these will be changed ie dropdown menu [true, false] for changing objects fill attribute etc
+This module still need a lot of work in terms of usability
+
+7/10/23

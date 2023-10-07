@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class Polygon extends Shape{
+public class Polygon extends GameObject {
 
     //TO DO
     // This is not implemented properly

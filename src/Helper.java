@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.Stack;
 
 public class Helper {
     protected static int countFrames = 0;
@@ -38,12 +39,11 @@ public class Helper {
     protected static int gridRowsAndColumns = 10;
     protected static int gridDimension = 50;
     protected static boolean snapMode = false;
-    protected static java.util.List<Shape> createdGameObjects;
+    protected static java.util.List<GameObject> createdGameObjects;
+    protected static int instructionCounter = 0;
 
+    protected static Stack undoRedoStack;
 
-    public static void clearEditorWindow(){
-
-    }
 
     public static int getSecondsRun(){
 

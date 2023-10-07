@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class Line extends Shape{
+public class Line extends GameObject {
 
     public static int id = 1;
 

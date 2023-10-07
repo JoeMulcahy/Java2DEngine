@@ -41,6 +41,8 @@ public class StatsPanel extends JPanel {
         g2.drawString("Line thickness: " + Helper.lineThickness, 20, 230);
         g2.drawString("Fill: " + (Helper.fillShape ? "on" : "off"), 20, 250);
         g2.drawString("Snap Mode" + (Helper.snapMode ? "On" : "Off"), 20, 270);
+        g2.drawString("Instruction counter: " + Helper.instructionCounter, 20, 290);
+        g2.drawString("Stack counter: " + UndoRedoStack.getStackCounter(), 20, 310);
         repaint();
     }
 }

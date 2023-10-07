@@ -10,6 +10,8 @@ public class EditorPanel extends JPanel {
     private JButton btnPoly;
     private JButton btnClear;
     private JButton btnFillShape;
+    private JButton btnUndo;
+    private JButton btnRedo;
     private ColorPalette palette;
     private JComboBox cbLineThickness;
 
@@ -18,7 +20,7 @@ public class EditorPanel extends JPanel {
     }
 
     private void initialise(){
-        this.setLayout(new GridLayout(4,2));
+        this.setLayout(new GridLayout(5,2));
         this.setPreferredSize(new Dimension(width, height));
         this.setBackground(Color.gray);
         this.setFocusable(true);
@@ -30,6 +32,8 @@ public class EditorPanel extends JPanel {
         btnPoly = new JButton("Poly");
         btnClear = new JButton("Clear");
         btnFillShape = new JButton("Fill");
+        btnUndo = new JButton("Undo");
+        btnRedo = new JButton("Redo");
 
 
         cbLineThickness = populateComboBox();
@@ -44,6 +48,8 @@ public class EditorPanel extends JPanel {
         this.add(palette);
         this.add(cbLineThickness);
         this.add(btnFillShape);
+        this.add(btnUndo);
+        this.add(btnRedo);
 
         btnRectangle.addActionListener(s -> changeShape("rect"));
         btnCircle.addActionListener(s -> changeShape("circle"));
@@ -52,6 +58,16 @@ public class EditorPanel extends JPanel {
         btnClear.addActionListener(s -> clearEditorWindow());
         cbLineThickness.addItemListener(s -> selectLineThickness(cbLineThickness.getSelectedItem().toString()));
         btnFillShape.addActionListener(s -> toggleFillShape());
+        btnUndo.addActionListener(s -> undoRedoEditorWindow("undo"));
+        btnRedo.addActionListener(s -> undoRedoEditorWindow("redo"));
+
+    }
+
+    private void undoRedoEditorWindow(String action){
+        switch(action){
+            case "undo" -> UndoRedoStack.undo();
+            default -> UndoRedoStack.redo();
+        }
 
     }
 

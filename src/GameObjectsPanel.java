@@ -41,8 +41,8 @@ public class GameObjectsPanel extends JPanel {
     static JTextField txtY2Pos = new JTextField();
     static JTextField txtColor = new JTextField();
     static JTextField txtFill = new JTextField();
-    java.util.List<Shape> gameObjects;
-    static Shape selectedShape;
+    java.util.List<GameObject> gameObjects;
+    static GameObject selectedShape;
     static int currentSelectedObjectIndex = 0;
 
     public GameObjectsPanel(){
@@ -185,35 +185,28 @@ public class GameObjectsPanel extends JPanel {
 
     }
 
-    public void changeX1Pos(String value){
-        //selectedShape.setX1(value);
-        selectedShape.setX1(Integer.valueOf(value));
-        System.out.println("txtbox event triggered");
-    }
-
     public static void updateObjectsAttributesPanel(int index){
 
-        //index is received from from the jList panel
+        //index is received from the jList panel
         // from a mouse click that selects the index of the JList
         // this corresponds to the position of the shape object
         // in the objects arraylist (by reference)
         if(Helper.createdGameObjects != null && jListOfGameObjectNames.getModel().getSize() > 0){
             selectedShape = Helper.createdGameObjects.get(index);
             updateAttributeValues(selectedShape);
-
         }
     }
 
-    static void updateAttributeValues(Shape shape){
-        if(shape != null){
+    static void updateAttributeValues(GameObject gameObject){
+        if(gameObject != null){
             objectAttributesPanel.setVisible(true);
-            txtName.setText(shape.getName());
-            txtX1Pos.setText(String.valueOf(shape.getX1()));
-            txtY1Pos.setText(String.valueOf(shape.getY1()));
-            txtX2Pos.setText(String.valueOf(shape.getX2()));
-            txtY2Pos.setText(String.valueOf(shape.getY2()));
-            txtColor.setText(String.valueOf(shape.getColor()));
-            txtFill.setText(String.valueOf(shape.isFill()));
+            txtName.setText(gameObject.getName());
+            txtX1Pos.setText(String.valueOf(gameObject.getX1()));
+            txtY1Pos.setText(String.valueOf(gameObject.getY1()));
+            txtX2Pos.setText(String.valueOf(gameObject.getX2()));
+            txtY2Pos.setText(String.valueOf(gameObject.getY2()));
+            txtColor.setText(String.valueOf(gameObject.getColor()));
+            txtFill.setText(String.valueOf(gameObject.isFill()));
 
         }else {
             objectAttributesPanel.setVisible(false);

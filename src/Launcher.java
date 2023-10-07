@@ -7,8 +7,10 @@ public class Launcher {
             @Override
             public void run() {
                MainWindow main = new MainWindow();
-               //StatsWindow side = new StatsWindow();
+               StatsWindow side = new StatsWindow();
                //GameObjectsWindow objects = new GameObjectsWindow();
+
+                UndoRedoStack undoRedoStack = new UndoRedoStack();
 
             }
         });

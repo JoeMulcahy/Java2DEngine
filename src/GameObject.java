@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public abstract class Shape {
+public abstract class GameObject {
 
 
     protected int x1;
@@ -12,7 +12,7 @@ public abstract class Shape {
     protected boolean fill;
     private String name;
 
-    public Shape(int x1, int y1, int x2, int y2, Color color, float lineThickness, boolean fill, String name) {
+    public GameObject(int x1, int y1, int x2, int y2, Color color, float lineThickness, boolean fill, String name) {
         this.x1 = x1;
         this.y1 = y1;
         this.x2 = x2;
@@ -92,7 +92,7 @@ public abstract class Shape {
 
     @Override
     public String toString() {
-        return "Shape{" +
+        return "GameObject{" +
                 "x1=" + x1 +
                 ", y1=" + y1 +
                 ", x2=" + x2 +
@@ -100,6 +100,7 @@ public abstract class Shape {
                 ", color=" + color +
                 ", lineThickness=" + lineThickness +
                 ", fill=" + fill +
+                ", name='" + name + '\'' +
                 '}';
     }
 }
