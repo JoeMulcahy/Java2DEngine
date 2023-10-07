@@ -178,7 +178,7 @@ public class GameObjectsPanel extends JPanel {
         }else if(o.equals(btnFillAccept)){
             selectedShape.setFill(Objects.equals(value, "true") ? true : false);
         }
-        Helper.createdGameObjects.set(jListOfGameObjectNames.getSelectedIndex(), selectedShape);
+
         updateGameObjectJList();
 
        // updateAttributeValues(selectedShape);
