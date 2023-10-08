@@ -9,8 +9,8 @@ public class GameObjectsPanel extends JPanel {
     private int width = Helper.gameObjectsPanelWidth;
     private int height = Helper.gameObjectsPanelHeight;
 
-    private JPanel objectsPanel;
-    private static JPanel objectAttributesPanel;
+    private JPanel gameObjectsListPanel;
+    private static JPanel gameObjectAttributesPanel;
 
     static JList<String> jListOfGameObjectNames;
     private static DefaultListModel<String> jListModelObjectNames;
@@ -25,6 +25,7 @@ public class GameObjectsPanel extends JPanel {
     JLabel lblY2Pos;
     JLabel lblColor;
     JLabel lblFill;
+    JLabel lblRotation;
 
     JButton btnNameAccept;
     JButton btnX1PosAccept;
@@ -33,6 +34,7 @@ public class GameObjectsPanel extends JPanel {
     JButton btnY2PosAccept;
     JButton btnColorAccept;
     JButton btnFillAccept;
+    JButton btnRotationAccept;
 
     static JTextField txtName = new JTextField();
     static JTextField txtX1Pos = new JTextField();
@@ -41,31 +43,33 @@ public class GameObjectsPanel extends JPanel {
     static JTextField txtY2Pos = new JTextField();
     static JTextField txtColor = new JTextField();
     static JTextField txtFill = new JTextField();
+    static JTextField txtRotation = new JTextField();
     java.util.List<GameObject> gameObjects;
     static GameObject selectedShape;
     static int currentSelectedObjectIndex = 0;
 
     public GameObjectsPanel(){
+        //Constructor
         initialise();
     }
 
     public void initialise(){
         this.setPreferredSize(new Dimension(width, height));
-        this.setLayout(new GridLayout(1,3));
+        this.setLayout(new GridLayout(1,2));
         this.setBackground(Color.LIGHT_GRAY);
         this.setFocusable(true);
         this.setVisible(true);
 
-        objectsPanel = new JPanel();
-        objectsPanel.setPreferredSize(new Dimension(width / 2, height));
-        objectsPanel.setBackground(Color.gray);
-        objectsPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        gameObjectsListPanel = new JPanel();
+        gameObjectsListPanel.setPreferredSize(new Dimension(width / 2, height));
+        gameObjectsListPanel.setBackground(Color.gray);
+        gameObjectsListPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 
-        objectAttributesPanel = new JPanel();
-        objectAttributesPanel.setLayout(new GridLayout(7, 2));
-        objectAttributesPanel.setPreferredSize(new Dimension(width / 2, height));
-        objectAttributesPanel.setBackground(Color.gray);
-        objectAttributesPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        gameObjectAttributesPanel = new JPanel();
+        gameObjectAttributesPanel.setLayout(new GridLayout(8, 3));
+        gameObjectAttributesPanel.setPreferredSize(new Dimension(width / 2, height));
+        gameObjectAttributesPanel.setBackground(Color.gray);
+        gameObjectAttributesPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 
         initialiseObjectAttributesPanel();
 
@@ -82,10 +86,10 @@ public class GameObjectsPanel extends JPanel {
 
         updateGameObjectJList();
 
-        objectsPanel.add(scrollPaneForJList);
+        gameObjectsListPanel.add(scrollPaneForJList);
 
-        this.add(objectsPanel);
-        this.add(objectAttributesPanel);
+        this.add(gameObjectsListPanel);
+        this.add(gameObjectAttributesPanel);
 
     }
 
@@ -97,6 +101,7 @@ public class GameObjectsPanel extends JPanel {
         lblY2Pos= new JLabel("y2 pos: ");
         lblColor = new JLabel("color: ");
         lblFill = new JLabel("fill: ");
+        lblRotation = new JLabel("rotation: ");
 
         txtName = new JTextField();
         txtX1Pos = new JTextField();
@@ -105,6 +110,7 @@ public class GameObjectsPanel extends JPanel {
         txtY2Pos = new JTextField();
         txtColor = new JTextField();
         txtFill = new JTextField();
+        txtRotation = new JTextField();
 
         btnNameAccept = new JButton("\u2714");
         btnX1PosAccept = new JButton("\u2714");
@@ -113,36 +119,39 @@ public class GameObjectsPanel extends JPanel {
         btnY2PosAccept = new JButton("\u2714");
         btnColorAccept = new JButton("\u2714");
         btnFillAccept = new JButton("\u2714");
+        btnRotationAccept = new JButton("\u2714");
 
-        //txtX1Pos.addActionListener(s -> changeX1Pos());
+        gameObjectAttributesPanel.add(lblName);
+        gameObjectAttributesPanel.add(txtName);
+        gameObjectAttributesPanel.add(btnNameAccept);
 
-        objectAttributesPanel.add(lblName);
-        objectAttributesPanel.add(txtName);
-        objectAttributesPanel.add(btnNameAccept);
+        gameObjectAttributesPanel.add(lblX1Pos);
+        gameObjectAttributesPanel.add(txtX1Pos);
+        gameObjectAttributesPanel.add(btnX1PosAccept);
 
-        objectAttributesPanel.add(lblX1Pos);
-        objectAttributesPanel.add(txtX1Pos);
-        objectAttributesPanel.add(btnX1PosAccept);
+        gameObjectAttributesPanel.add(lblY1Pos);
+        gameObjectAttributesPanel.add(txtY1Pos);
+        gameObjectAttributesPanel.add(btnY1PosAccept);
 
-        objectAttributesPanel.add(lblY1Pos);
-        objectAttributesPanel.add(txtY1Pos);
-        objectAttributesPanel.add(btnY1PosAccept);
+        gameObjectAttributesPanel.add(lblX2Pos);
+        gameObjectAttributesPanel.add(txtX2Pos);
+        gameObjectAttributesPanel.add(btnX2PosAccept);
 
-        objectAttributesPanel.add(lblX2Pos);
-        objectAttributesPanel.add(txtX2Pos);
-        objectAttributesPanel.add(btnX2PosAccept);
+        gameObjectAttributesPanel.add(lblY2Pos);
+        gameObjectAttributesPanel.add(txtY2Pos);
+        gameObjectAttributesPanel.add(btnY2PosAccept);
 
-        objectAttributesPanel.add(lblY2Pos);
-        objectAttributesPanel.add(txtY2Pos);
-        objectAttributesPanel.add(btnY2PosAccept);
+        gameObjectAttributesPanel.add(lblColor);
+        gameObjectAttributesPanel.add(txtColor);
+        gameObjectAttributesPanel.add(btnColorAccept);
 
-        objectAttributesPanel.add(lblColor);
-        objectAttributesPanel.add(txtColor);
-        objectAttributesPanel.add(btnColorAccept);
+        gameObjectAttributesPanel.add(lblFill);
+        gameObjectAttributesPanel.add(txtFill);
+        gameObjectAttributesPanel.add(btnFillAccept);
 
-        objectAttributesPanel.add(lblFill);
-        objectAttributesPanel.add(txtFill);
-        objectAttributesPanel.add(btnFillAccept);
+        gameObjectAttributesPanel.add(lblRotation);
+        gameObjectAttributesPanel.add(txtRotation);
+        gameObjectAttributesPanel.add(btnRotationAccept);
 
         btnNameAccept.addActionListener(s -> updateObjectFromJTextfield(s.getSource(), txtName.getText()));
         btnX1PosAccept.addActionListener(s -> updateObjectFromJTextfield(s.getSource(), txtX1Pos.getText()));
@@ -151,6 +160,7 @@ public class GameObjectsPanel extends JPanel {
         btnY2PosAccept.addActionListener(s -> updateObjectFromJTextfield(s.getSource(), txtY2Pos.getText()));
         btnColorAccept.addActionListener(s -> updateObjectFromJTextfield(s.getSource(), txtColor.getText()));
         btnFillAccept.addActionListener(s -> updateObjectFromJTextfield(s.getSource(), txtFill.getText()));
+        btnRotationAccept.addActionListener(s -> updateObjectFromJTextfield(s.getSource(), txtRotation.getText()));
 
         // sending a null value will make all the objects
         // in the container unselectable;
@@ -177,6 +187,8 @@ public class GameObjectsPanel extends JPanel {
             selectedShape.setColor(Color.GREEN);
         }else if(o.equals(btnFillAccept)){
             selectedShape.setFill(Objects.equals(value, "true") ? true : false);
+        }else if (o.equals(btnRotationAccept)) {
+            selectedShape.setRotationAngle(Double.valueOf(value));
         }
 
         updateGameObjectJList();
@@ -199,7 +211,7 @@ public class GameObjectsPanel extends JPanel {
 
     static void updateAttributeValues(GameObject gameObject){
         if(gameObject != null){
-            objectAttributesPanel.setVisible(true);
+            gameObjectAttributesPanel.setVisible(true);
             txtName.setText(gameObject.getName());
             txtX1Pos.setText(String.valueOf(gameObject.getX1()));
             txtY1Pos.setText(String.valueOf(gameObject.getY1()));
@@ -207,9 +219,10 @@ public class GameObjectsPanel extends JPanel {
             txtY2Pos.setText(String.valueOf(gameObject.getY2()));
             txtColor.setText(String.valueOf(gameObject.getColor()));
             txtFill.setText(String.valueOf(gameObject.isFill()));
+            txtRotation.setText(String.valueOf(gameObject.getRotationAngle()));
 
         }else {
-            objectAttributesPanel.setVisible(false);
+            gameObjectAttributesPanel.setVisible(false);
             txtName.setText("");
             txtX1Pos.setText("");
             txtY1Pos.setText("");
@@ -217,13 +230,23 @@ public class GameObjectsPanel extends JPanel {
             txtY2Pos.setText("");
             txtColor.setText("");
             txtFill.setText("");
+            txtRotation.setText("");
         }
     }
 
     public static void updateGameObjectJList(){
         if(Helper.createdGameObjects != null){
             jListModelObjectNames.clear();
-            Helper.createdGameObjects.forEach(s -> jListModelObjectNames.addElement(s.getName()));
+
+            if(Helper.createdGameObjects.size() > 0){
+                System.out.println("stack countrt: " + UndoRedoStack.getStackCounter());
+                for(int i = 0; i < UndoRedoStack.getStackCounter(); i++){
+                    String element = Helper.createdGameObjects.get(i).getName();
+                    jListModelObjectNames.addElement(element);
+                    System.out.println(element);
+                }
+            }
+
             jListOfGameObjectNames.getModel();
 
             jListOfGameObjectNames.addMouseListener(new MouseAdapter() {

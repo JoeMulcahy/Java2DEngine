@@ -16,7 +16,6 @@ public class UndoRedoStack {
 
         }else{
             stackCounter++;
-
         }
 
         stack.push(o);
@@ -57,6 +56,8 @@ public class UndoRedoStack {
             stackCounter--;
         }
         System.out.println("stack index: " + stackCounter);
+
+        GameObjectsPanel.updateGameObjectJList();
     }
 
     public static void redo(){
@@ -64,6 +65,8 @@ public class UndoRedoStack {
             stackCounter++;
         }
         System.out.println("stack index: " + stackCounter);
+
+        GameObjectsPanel.updateGameObjectJList();
     }
 
     public static void clearStack(){

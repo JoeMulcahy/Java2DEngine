@@ -29,6 +29,7 @@ public class Helper {
 
     protected enum ShapeSelector{ RECT, CIRCLE, LINE, POLY};
     protected static ShapeSelector currentShape;
+    protected static int currentShapeRotation = 0;
 
     protected static float lineThickness = 1;
     protected static boolean fillShape = false;

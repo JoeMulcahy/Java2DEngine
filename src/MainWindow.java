@@ -80,16 +80,19 @@ public class MainWindow{
         JMenuItem gridSize8x8 = new JMenuItem("8 x 8");
         JMenuItem gridSize16x16 = new JMenuItem("16 x 16");
         JMenuItem gridSize32x32 = new JMenuItem("32 x 32");
+        JMenuItem gridSize64x64 = new JMenuItem("64 x 64");
         menuGrid.add(toggleGrid);
         menuGrid.add(gridSize4x4);
         menuGrid.add(gridSize8x8);
         menuGrid.add(gridSize16x16);
         menuGrid.add(gridSize32x32);
+        menuGrid.add(gridSize64x64);
         toggleGrid.addActionListener(s -> toggleGridAndSetGridSize(-1));
         gridSize4x4.addActionListener(s -> toggleGridAndSetGridSize(4));
         gridSize8x8.addActionListener(s -> toggleGridAndSetGridSize(8));
         gridSize16x16.addActionListener(s -> toggleGridAndSetGridSize(16));
         gridSize32x32.addActionListener(s -> toggleGridAndSetGridSize(32));
+        gridSize64x64.addActionListener(s -> toggleGridAndSetGridSize(64));
 
         optionsMenu.add(menuGrid);
     }

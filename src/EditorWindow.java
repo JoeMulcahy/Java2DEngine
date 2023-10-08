@@ -193,42 +193,36 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
         }
 
         if(Helper.instructionCounter != UndoRedoStack.getStackCounter()){
-            updateGameObjectsList();
+            updateGameObjectsArrayList();
         }
 
         if(Helper.currentShape == Helper.ShapeSelector.RECT){
-            objects.add(new Rectangle(x1, y1, x2, y2, Helper.currentColor, Helper.lineThickness, Helper.fillShape));
+            objects.add(new RectangleObject(x1, y1, x2, y2, 0,Helper.currentColor, Helper.lineThickness, Helper.fillShape));
         }
         if(Helper.currentShape == Helper.ShapeSelector.CIRCLE){
-            objects.add(new Circle(x1, y1, x2, y2, Helper.currentColor, Helper.lineThickness, Helper.fillShape));
+            objects.add(new CircleObject(x1, y1, x2, y2, 0, Helper.currentColor, Helper.lineThickness, Helper.fillShape));
         }
         if(Helper.currentShape == Helper.ShapeSelector.LINE){
-            objects.add(new Line(x1, y1, x2, y2, Helper.currentColor, Helper.lineThickness));
+            objects.add(new LineObject(x1, y1, x2, y2, 0, Helper.currentColor, Helper.lineThickness));
         }
         if(Helper.currentShape == Helper.ShapeSelector.POLY){
-            objects.add(new Polygon(x1, y1, x2, y2, 100, 3, Helper.currentColor, Helper.lineThickness, Helper.fillShape));
+            objects.add(new PolygonObject(x1, y1, x2, y2, 0,100, 3, Helper.currentColor, Helper.lineThickness, Helper.fillShape));
         }
 
-
-        GameObjectsPanel.jListOfGameObjectNames.setSelectedIndex(UndoRedoStack.getStackCounter());
-        GameObjectsPanel.updateGameObjectJList();
         Helper.createdGameObjects = objects;
-
-
         UndoRedoStack.addToStack(objects.get(objects.size() - 1));
         Helper.instructionCounter++;
-
-
+        GameObjectsPanel.updateGameObjectJList();
+        GameObjectsPanel.jListOfGameObjectNames.setSelectedIndex(UndoRedoStack.getStackCounter() -1);
     }
 
-    public void updateGameObjectsList(){
-        System.out.println("num of object before remove" + objects.size());
+    public void updateGameObjectsArrayList(){
         for(int i = objects.size() - 1; i >= UndoRedoStack.getStackCounter(); i--){
-            System.out.println("removing object");
             objects.remove(i);
         }
         Helper.createdGameObjects = objects;
-        System.out.println("num of object after remove" + objects.size());
+        GameObjectsPanel.updateGameObjectJList();
+
     }
 
     public static void clearScreen() {
@@ -242,10 +236,10 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
         GameObjectsPanel.updateAttributeValues(null);
 
         // initialised ids back to 1
-        Circle.id = 1;
-        Rectangle.id = 1;
-        Line.id = 1;
-        Polygon.id = 1;
+        CircleObject.id = 1;
+        RectangleObject.id = 1;
+        LineObject.id = 1;
+        PolygonObject.id = 1;
 
         Helper.instructionCounter = 0;
         UndoRedoStack.clearStack();
