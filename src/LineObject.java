@@ -39,4 +39,22 @@ public class LineObject extends GameObject {
 
         g2.draw(transformedShape);
     }
+
+    @Override
+    public String toString() {
+        String description =  "\t{\n" +
+                "\t\t\"type\" : \"" + "line" + "\"" +
+                "\n\t\t\"name\" : \"" + this.getName() + "\"" +
+                "\n\t\t\"x1\" : \"" + x1 + "\"" +
+                "\n\t\t\"y1\" : \"" + y1 + "\"" +
+                "\n\t\t\"x2\" : \"" + x2 + "\"" +
+                "\n\t\t\"y2\" : \"" + y2 + "\"" +
+                "\n\t\t\"rotationAngle\" : \"" + rotationAngle + "\"" +
+                "\n\t\t\"color\" : \"" + color + "\"" +
+                "\n\t\t\"lineThickness\" : \"" + lineThickness + "\"" +
+                "\n\t\t\"fill\" : \"" + fill + "\"" +
+                "\n\t}";
+
+        return description;
+    }
 }

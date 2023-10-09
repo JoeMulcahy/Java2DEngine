@@ -107,6 +107,7 @@ public abstract class GameObject {
                 ", y1=" + y1 +
                 ", x2=" + x2 +
                 ", y2=" + y2 +
+                ", rotationAngle=" + rotationAngle +
                 ", color=" + color +
                 ", lineThickness=" + lineThickness +
                 ", fill=" + fill +

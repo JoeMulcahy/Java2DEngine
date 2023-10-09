@@ -2,10 +2,6 @@ import java.awt.*;
 
 public class Grid {
 
-    private static boolean scaleWithScreen = false;
-    private static int gridDimension = Helper.gridDimension;
-   // private static int gridCount = Helper.gridRowsAndColumns;
-    private boolean isOn = Helper.showGrid;
     private static Stroke gridWidth = new BasicStroke(1);
 
     static Graphics draw(Graphics g) {

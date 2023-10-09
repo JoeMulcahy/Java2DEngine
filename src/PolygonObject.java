@@ -76,4 +76,22 @@ public class PolygonObject extends GameObject {
     public void setNumberOfPoints(int numberOfPoints) {
         this.numberOfPoints = numberOfPoints;
     }
+
+    @Override
+    public String toString() {
+        String description = "{\n" +
+                "\t\"type\" : \"" + "poly" + "\"" +
+                "\n\t\"name\" : \"" + this.getName() + "\"" +
+                "\n\t\"x1\" : \"" + x1 + "\"" +
+                "\n\t\"y1\" : \"" + y1 + "\"" +
+                "\n\t\"x2\" : \"" + x2 + "\"" +
+                "\n\t\"y2\" : \"" + y2 + "\"" +
+                "\n\t\"rotationAngle\" : \"" + rotationAngle + "\"" +
+                "\n\t\"color\" : \"" + color + "\"" +
+                "\n\t\"lineThickness\" : \"" + lineThickness + "\"" +
+                "\n\t\"fill\" : \"" + fill + "\"" +
+                "\n},";
+
+        return description;
+    }
 }

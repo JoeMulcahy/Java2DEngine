@@ -10,7 +10,7 @@ As of 06/10/2023
 I have created basic shapes that can be drawn on a JPanel component. I've also implemented a grid so that shapes can snapped into position.
 
 06/10/2023
-Create a GameObjectsPanel. A GameObject can be selected from a JList and its attributes display on a side panel.
+Create a GameObjectAttributesPanel. A GameObject can be selected from a JList and its attributes display on a side panel.
 These attributes can be changed in the side panel, these changes are reflected in the Editor window.
 Its not visually appealing. Editing of the object attributes are done through JTextBoxes for the moment. Eventually these will be changed to dropdown menu [true, false], spinners for changing ogame objects attributes
 This module still need a lot of work in terms of usability

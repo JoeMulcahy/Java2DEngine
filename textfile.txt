@@ -1,0 +1,21 @@
+1. Java - Rugby World Cup
+	enter match results - update pool tables
+	generate stats
+	Comparators to sort stats using lambda expressions
+	find a way of loading and storing data
+	Find a way to easily read data
+	
+2. Web Development - Quiz Game
+	Multiple players
+	different topics
+	database to store questions
+	front end using html and javascript
+	back end using django
+	
+3. Web development - Picture Guessing game
+	Different Modes
+		Select one tile at a time
+		Timed
+		
+4. Web development = To Do application
+	

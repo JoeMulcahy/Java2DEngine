@@ -4,7 +4,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
 
-public class GameObjectsPanel extends JPanel {
+public class GameObjectAttributesPanel extends JPanel {
 
     private int width = Helper.gameObjectsPanelWidth;
     private int height = Helper.gameObjectsPanelHeight;
@@ -48,7 +48,7 @@ public class GameObjectsPanel extends JPanel {
     static GameObject selectedShape;
     static int currentSelectedObjectIndex = 0;
 
-    public GameObjectsPanel(){
+    public GameObjectAttributesPanel(){
         //Constructor
         initialise();
     }
@@ -239,7 +239,7 @@ public class GameObjectsPanel extends JPanel {
             jListModelObjectNames.clear();
 
             if(Helper.createdGameObjects.size() > 0){
-                System.out.println("stack countrt: " + UndoRedoStack.getStackCounter());
+                System.out.println("stack counter: " + UndoRedoStack.getStackCounter());
                 for(int i = 0; i < UndoRedoStack.getStackCounter(); i++){
                     String element = Helper.createdGameObjects.get(i).getName();
                     jListModelObjectNames.addElement(element);

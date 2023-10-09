@@ -1,7 +1,8 @@
 import java.awt.*;
-import java.util.Stack;
 
 public class Helper {
+
+    protected static String projectName = "New game 1";
     protected static int countFrames = 0;
     protected static int secondsRun = 0;
 
@@ -38,13 +39,9 @@ public class Helper {
 
     protected static boolean showGrid = false;
     protected static int gridRowsAndColumns = 10;
-    protected static int gridDimension = 50;
     protected static boolean snapMode = false;
     protected static java.util.List<GameObject> createdGameObjects;
     protected static int instructionCounter = 0;
-
-    protected static Stack undoRedoStack;
-
 
     public static int getSecondsRun(){
 
@@ -64,36 +61,45 @@ public class Helper {
         return mouseX1;
     }
 
-    public static void setMouseX1(int mouseX1) {
-        Helper.mouseX1 = mouseX1;
-    }
-
     public static int getMouseY1() {
         return mouseY1;
-    }
-
-    public static void setMouseY1(int mouseY1) {
-        Helper.mouseY1 = mouseY1;
     }
 
     public static int getMouseX2() {
         return mouseX2;
     }
 
-    public static void setMouseX2(int mouseX2) {
-        Helper.mouseX2 = mouseX2;
-    }
-
     public static int getMouseY2() {
         return mouseY2;
     }
 
-    public static void setMouseY2(int mouseY2) {
-        Helper.mouseY2 = mouseY2;
+
+    public static String getSettings() {
+        String description = "{\n" +
+                "\t\t\"projectName\" : \"" + projectName + "\"" +
+                "\n\t\t\"mainWindowWidth\" : \"" + mainWindowWidth + "\"" +
+                "\n\t\t\"mainWindowHeight\" : \"" + mainWindowHeight + "\"" +
+                "\n\t\t\"editorPanelWidth\" : \"" + editorPanelWidth + "\"" +
+                "\n\t\t\"editorPanelHeight\" : \"" + editorPanelHeight + "\"" +
+                "\n\t\t\"editorBackgroundColor\" : \"" + editorBackgroundColor + "\"" +
+                "\n\t\t\"statsPanelWidth\" : \"" + statsPanelWidth + "\"" +
+                "\n\t\t\"statsPanelHeight\" : \"" + statsPanelHeight + "\"" +
+                "\n\t\t\"editorControlPanelWidth\" : \"" + editorControlPanelWidth + "\"" +
+                "\n\t\t\"editorControlPanelHeight\" : \"" + editorControlPanelHeight + "\"" +
+                "\n\t\t\"gameObjectsPanelWidth\" : \"" + gameObjectsPanelWidth + "\"" +
+                "\n\t\t\"gameObjectsPanelHeight\" : \"" + gameObjectsPanelHeight + "\"" +
+                "\n\t\t\"colorPanelWidth\" : \"" + colorPanelWidth + "\"" +
+                "\n\t\t\"colorPanelHeight\" : \"" + colorPanelHeight + "\"" +
+                "\n\t\t\"currentColor\" : \"" + currentColor + "\"" +
+                "\n\t\t\"currentShape\" : \"" + currentShape + "\"" +
+                "\n\t\t\"lineThickness\" : \"" + lineThickness + "\"" +
+                "\n\t\t\"fillShape\" : \"" + fillShape + "\"" +
+                "\n\t\t\"showGrid\" : \"" + showGrid + "\"" +
+                "\n\t\t\"gridRowsAndColumns\" : \"" + gridRowsAndColumns + "\"" +
+                "\n\t\t\"snapMode\" : \"" + snapMode + "\"" +
+                "\n\t}],\n";
+
+        return description;
     }
 
-    @Override
-    public String toString() {
-        return "Helper{}";
-    }
 }

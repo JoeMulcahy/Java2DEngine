@@ -63,10 +63,7 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
 
     public void drawObjects(Graphics2D g2){
 
-        //objects.forEach(s -> s.draw(g2));
-
         for(int i = 0; i < UndoRedoStack.getStackCounter(); i++){
-            //System.out.println("Debug: stack count for draw" +  UndoRedoStack.getStackCounter());
             objects.get(i).draw(g2);
         }
 
@@ -166,21 +163,33 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
 
     }
 
+    public static void loadGameObjects(String objType, int x1, int y1, int x2, int y2,
+                                       double rotationAngle, Color color, float lineThickness, boolean fillShape){
+
+        switch(objType){
+            case "rect" -> objects.add(new RectangleObject(x1, y1, x2, y2, 0,Helper.currentColor, Helper.lineThickness, Helper.fillShape));
+            case "circle" -> objects.add(new CircleObject(x1, y1, x2, y2, 0, Helper.currentColor, Helper.lineThickness, Helper.fillShape));
+            case "line" -> objects.add(new LineObject(x1, y1, x2, y2, 0, Helper.currentColor, Helper.lineThickness));
+        }
+        Helper.createdGameObjects = objects;
+    }
+
     private void createGameObject(){
         Helper.numberOfObjectsDrawn++;
 
         //Yes! this is repetitive code
         //See snapMode()
         //Need to just get this working first
-        int gridBoxSizeX = Helper.editorPanelWidth / Helper.gridRowsAndColumns;
-        int gridBoxSizeY = Helper.editorPanelHeight / Helper.gridRowsAndColumns;
-        int snapX1 = gridBoxSizeX * (mouseX1 / gridBoxSizeX);
-        int snapY1 = gridBoxSizeY * (mouseY1 / gridBoxSizeY);
-        int snapX2 = gridBoxSizeX * (mouseX2 / gridBoxSizeX) + gridBoxSizeX;
-        int snapY2 = gridBoxSizeY * (mouseY2 / gridBoxSizeY) + gridBoxSizeY;
-
         int x1, y1, x2, y2;
+
         if(Helper.snapMode){
+            int gridBoxSizeX = Helper.editorPanelWidth / Helper.gridRowsAndColumns;
+            int gridBoxSizeY = Helper.editorPanelHeight / Helper.gridRowsAndColumns;
+            int snapX1 = gridBoxSizeX * (mouseX1 / gridBoxSizeX);
+            int snapY1 = gridBoxSizeY * (mouseY1 / gridBoxSizeY);
+            int snapX2 = gridBoxSizeX * (mouseX2 / gridBoxSizeX) + gridBoxSizeX;
+            int snapY2 = gridBoxSizeY * (mouseY2 / gridBoxSizeY) + gridBoxSizeY;
+
             x1 = snapX1;
             x2 = snapX2;
             y1 = snapY1;
@@ -205,15 +214,15 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
         if(Helper.currentShape == Helper.ShapeSelector.LINE){
             objects.add(new LineObject(x1, y1, x2, y2, 0, Helper.currentColor, Helper.lineThickness));
         }
-        if(Helper.currentShape == Helper.ShapeSelector.POLY){
-            objects.add(new PolygonObject(x1, y1, x2, y2, 0,100, 3, Helper.currentColor, Helper.lineThickness, Helper.fillShape));
-        }
+//        if(Helper.currentShape == Helper.ShapeSelector.POLY){
+//            objects.add(new PolygonObject(x1, y1, x2, y2, 0,100, 3, Helper.currentColor, Helper.lineThickness, Helper.fillShape));
+//        }
 
         Helper.createdGameObjects = objects;
         UndoRedoStack.addToStack(objects.get(objects.size() - 1));
         Helper.instructionCounter++;
-        GameObjectsPanel.updateGameObjectJList();
-        GameObjectsPanel.jListOfGameObjectNames.setSelectedIndex(UndoRedoStack.getStackCounter() -1);
+        GameObjectAttributesPanel.updateGameObjectJList();
+        GameObjectAttributesPanel.jListOfGameObjectNames.setSelectedIndex(UndoRedoStack.getStackCounter() -1);
     }
 
     public void updateGameObjectsArrayList(){
@@ -221,19 +230,18 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
             objects.remove(i);
         }
         Helper.createdGameObjects = objects;
-        GameObjectsPanel.updateGameObjectJList();
+        GameObjectAttributesPanel.updateGameObjectJList();
 
     }
 
     public static void clearScreen() {
         objects.clear();
-        System.out.println(objects.size());
         Helper.numberOfObjectsDrawn = 0;
 
         // These are static methods in GameObjectsPanel class
         // Spaghetti like! I know
-        GameObjectsPanel.updateGameObjectJList();
-        GameObjectsPanel.updateAttributeValues(null);
+        GameObjectAttributesPanel.updateGameObjectJList();
+        GameObjectAttributesPanel.updateAttributeValues(null);
 
         // initialised ids back to 1
         CircleObject.id = 1;

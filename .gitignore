@@ -27,3 +27,23 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+## ignore test save files
+save0.txt
+save1.txt
+save2.txt
+save3.txt
+save4.txt
+save5.txt
+save6.txt
+save7.txt
+save8.txt
+save9.txt
+New game 10.txt
+New game 11.txt
+New game 12.txt
+New game 13.txt
+New game 14.txt
+New game 15.txt
+New game 16.txt
+New game 17.txt
