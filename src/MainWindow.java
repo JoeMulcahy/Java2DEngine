@@ -6,8 +6,9 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class MainWindow{
+    private MainWindow main;
     private int fileCounter = 0;
-    private JFrame frame;
+    protected JFrame frame;
     private int window_width = Helper.mainWindowWidth;
     private int window_height = Helper.mainWindowHeight;
     private JMenuBar menuBar;
@@ -89,11 +90,7 @@ public class MainWindow{
 
     public void newProject(){
         // ask to save current project
-        if(Helper.createdGameObjects.size() > 0){
-            save();
-        }else{
-
-        }
+        new NewProjectDialogBox();
     }
 
     public void open(){
@@ -118,8 +115,21 @@ public class MainWindow{
 
     public void loadProject(File file){
 
+        boolean settingsHaveLoaded = false;
+        //variables used to create the objects
+        String type = null, name = null;
+        int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
+        float lineThickness = 0;
+        double rotationAngle = 0.0;
+        Color c = Color.BLACK;
+        boolean fill = false;
+        // tempColor is the color extracted from a string in the save file
+        // eg. "color" : "java.awt.Color[r=112,g=146,b=190]"
+        Color tempColor = Color.black;
+
+        int objectsCounter = 0;
+
         File f = file;
-        //File f = new File("textfile.txt");
         String line = "";
         try{
             Scanner sc = new Scanner(f);
@@ -128,27 +138,33 @@ public class MainWindow{
                 line = sc.nextLine();
 
                 if(line.contains("GAME_ENGINE_FILE")){
+
                     while (sc.hasNextLine()){
                         line = sc.nextLine();
+
                         if(line.contains("\"settings\"")){
-                            Color tempColor = Color.black;
+                            editorWindow = null;
+
                             while(sc.hasNextLine()){
                                 line = sc.nextLine();
 
                                 if(line.contains(":")){
+
                                     line = line.replaceAll("\"", "");
                                     line = line.replaceAll(" ", "");
                                     line = line.trim();
-                                    //System.out.println(line);
                                     String[] values = line.split(":");
+
                                     if(values[1].contains("java.awt.Color")){
-
+                                        //extracts the rgb values from the string
                                         String color = values[1];
-
+                                        //"color" : "java.awt.Color[r=112,g=146,b=190]"
                                         String temp = color.substring(color.indexOf('[') + 1, color.lastIndexOf(']'));
+                                        // --> r=112,g=146,b=190
                                         temp = temp.replace("r=", "");
                                         temp = temp.replace("g=", "");
                                         temp = temp.replace("b=", "");
+                                        // --> 112,146,190
                                         String[] rgb = temp.split(",");
 
                                         tempColor = new Color(Integer.valueOf(rgb[0]),
@@ -157,87 +173,55 @@ public class MainWindow{
 
                                     }
 
-                                    switch(values[0]){
-                                        case "projectName" -> Helper.projectName = values[1];
-                                        case "mainWindowWidth" -> Helper.mainWindowWidth = Integer.parseInt(values[1]);
-                                        case "mainWindowHeight" -> Helper.mainWindowHeight = Integer.parseInt(values[1]);
-                                        case "editorPanelWidth" -> Helper.editorPanelWidth = Integer.parseInt(values[1]);
-                                        case "editorPanelHeight" -> Helper.editorPanelHeight = Integer.parseInt(values[1]);
-                                        case "editorBackgroundColor" -> Helper.editorBackgroundColor = tempColor;
-                                        case "statsPanelWidth" -> Helper.statsPanelWidth = Integer.parseInt(values[1]);
-                                        case "statsPanelHeight" -> Helper.statsPanelHeight = Integer.parseInt(values[1]);
-                                        case "editorControlPanelWidth" -> Helper.editorControlPanelWidth = Integer.parseInt(values[1]);
-                                        case "editorControlPanelHeight" -> Helper.editorControlPanelHeight = Integer.parseInt(values[1]);
-                                        case "gameObjectsPanelWidth" -> Helper.gameObjectsPanelWidth = Integer.parseInt(values[1]);
-                                        case "gameObjectsPanelHeight" -> Helper.gameObjectsPanelHeight = Integer.parseInt(values[1]);
-                                        case "colorPanelWidth" -> Helper.colorPanelWidth = Integer.parseInt(values[1]);
-                                        case "colorPanelHeight" -> Helper.colorPanelHeight = Integer.parseInt(values[1]);
-                                        case "currentColor" -> Helper.currentColor = tempColor;
-                                        case "currentShape" -> Helper.currentShape = Helper.ShapeSelector.RECT;
-                                        case "lineThickness" -> Helper.lineThickness = Float.parseFloat(values[1]);
-                                        case "fillShape" -> Helper.fillShape = Boolean.parseBoolean(values[1]);
-                                        case "showGrid" -> Helper.showGrid = Boolean.parseBoolean(values[1]);
-                                        case "gridRowsAndColumns" -> Helper.gridRowsAndColumns = Integer.parseInt(values[1]);
-                                        case "snapMode" -> Helper.snapMode = Boolean.parseBoolean(values[1]);
-                                        default -> System.out.println("error!!");
+                                    if(!settingsHaveLoaded){
+                                        switch(values[0]){
+                                            case "projectName" -> Helper.projectName = values[1];
+                                            case "mainWindowWidth" -> Helper.mainWindowWidth = Integer.parseInt(values[1]);
+                                            case "mainWindowHeight" -> Helper.mainWindowHeight = Integer.parseInt(values[1]);
+                                            case "editorPanelWidth" -> Helper.editorPanelWidth = Integer.parseInt(values[1]);
+                                            case "editorPanelHeight" -> Helper.editorPanelHeight = Integer.parseInt(values[1]);
+                                            case "editorBackgroundColor" -> Helper.editorBackgroundColor = tempColor;
+                                            case "statsPanelWidth" -> Helper.statsPanelWidth = Integer.parseInt(values[1]);
+                                            case "statsPanelHeight" -> Helper.statsPanelHeight = Integer.parseInt(values[1]);
+                                            case "editorControlPanelWidth" -> Helper.editorControlPanelWidth = Integer.parseInt(values[1]);
+                                            case "editorControlPanelHeight" -> Helper.editorControlPanelHeight = Integer.parseInt(values[1]);
+                                            case "gameObjectsPanelWidth" -> Helper.gameObjectsPanelWidth = Integer.parseInt(values[1]);
+                                            case "gameObjectsPanelHeight" -> Helper.gameObjectsPanelHeight = Integer.parseInt(values[1]);
+                                            case "colorPanelWidth" -> Helper.colorPanelWidth = Integer.parseInt(values[1]);
+                                            case "colorPanelHeight" -> Helper.colorPanelHeight = Integer.parseInt(values[1]);
+                                            case "currentColor" -> Helper.currentColor = tempColor;
+                                            case "currentShape" -> Helper.currentShape = Helper.ShapeSelector.RECT;
+                                            case "lineThickness" -> Helper.lineThickness = Float.parseFloat(values[1]);
+                                            case "fillShape" -> Helper.fillShape = Boolean.parseBoolean(values[1]);
+                                            case "showGrid" -> Helper.showGrid = Boolean.parseBoolean(values[1]);
+                                            case "gridRowsAndColumns" -> Helper.gridRowsAndColumns = Integer.parseInt(values[1]);
+                                            case "snapMode" -> {
+                                                Helper.snapMode = Boolean.parseBoolean(values[1]);
+                                                settingsHaveLoaded = true;
+                                            }
+                                        }
+                                    }else if(settingsHaveLoaded){
+                                        switch(values[0]){
+                                            case "type" -> type = values[1];
+                                            case "name" -> name = values[1];
+                                            case "x1" -> x1 = Integer.parseInt(values[1]);
+                                            case "y1" -> y1 = Integer.parseInt(values[1]);
+                                            case "x2" -> x2 = Integer.parseInt(values[1]);
+                                            case "y2" -> y2 = Integer.parseInt(values[1]);
+                                            case "color" -> c = tempColor;
+                                            case "rotationAngle" -> rotationAngle = Double.parseDouble(values[1]);
+                                            case "lineThickness" -> lineThickness = Float.parseFloat(values[1]);
+                                            case "fill" -> {
+                                                fill = Boolean.parseBoolean(values[1]);
+                                                EditorWindow.loadGameObjects(type, x1, y1, x2, y2, rotationAngle, c, lineThickness, fill);
+                                            }
+
+                                            default -> System.out.println("error!!");
+                                        }
+
                                     }
+                                        //System.out.println(values[0] + " " + values[1]);
                                 }
-                            }
-
-                        }else if(line.contains("\"gameObjects\"")){
-                            editorWindow = null;
-                            String type = null, name = null;
-                            int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
-                            float lineThickness = 0;
-                            double rotationAngle = 0.0;
-                            Color c = Color.BLACK;
-                            boolean fill = false;
-
-                            Color tempColor = Color.black;
-                            while(sc.hasNextLine()) {
-                                line = sc.nextLine();
-
-                                if (line.contains(":")) {
-                                    line = line.replaceAll("\"", "");
-                                    line = line.replaceAll(" ", "");
-                                    line = line.trim();
-                                    //System.out.println(line);
-                                    String[] values = line.split(":");
-
-                                    System.out.println("Objects: " + values[0] + " " + values[1]);
-
-                                    if (values[1].contains("java.awt.Color")) {
-                                        String color = values[1];
-                                        String temp = color.substring(color.indexOf('['), color.lastIndexOf(']'));
-                                        temp = temp.replace("r=", "");
-                                        temp = temp.replace("g=", "");
-                                        temp = temp.replace("b=", "");
-                                        String[] rgb = temp.split(",");
-
-                                        tempColor = new Color(Integer.valueOf(rgb[0]),
-                                                Integer.valueOf(rgb[1]),
-                                                Integer.valueOf(rgb[2]));
-                                    }
-
-                                    switch (values[0]) {
-                                        case "type" -> type = values[1];
-                                        case "name" -> name = values[1];
-                                        case "x1" -> x1 = Integer.parseInt(values[1]);
-                                        case "y1" -> y1 = Integer.parseInt(values[1]);
-                                        case "x2" -> x2 = Integer.parseInt(values[1]);
-                                        case "y2" -> y2 = Integer.parseInt(values[1]);
-                                        case "color" -> c = tempColor;
-                                        case "rotationAngle" -> rotationAngle = Double.parseDouble(values[1]);
-                                        case "lineThickness" -> lineThickness = Float.parseFloat(values[1]);
-                                        case "fill" -> fill = Boolean.parseBoolean(values[1]);
-                                        default -> System.out.println("error!!");
-                                    }
-                                }
-
-                                //Need a break
-                                // it doesn't when the next objects is!!!!
-
-                                EditorWindow.loadGameObjects(type, x1, y1, x2, y2, rotationAngle, c, lineThickness, fill);
                             }
                         }
                     }
@@ -253,6 +237,7 @@ public class MainWindow{
 
     public boolean save(){
         String filename = Helper.projectName + fileCounter + ".txt";
+
         try{
             File newFile = new File(filename);
             if(!newFile.exists()){
@@ -301,8 +286,6 @@ public class MainWindow{
         }
 
     }
-
-
 
     private void initialiseOptionsMenu(){
         JMenu menuGrid = new JMenu("Grid");
@@ -354,5 +337,9 @@ public class MainWindow{
         }
         Helper.gridRowsAndColumns = size;
 
+    }
+
+    public MainWindow getMainWindow(){
+        return this;
     }
 }

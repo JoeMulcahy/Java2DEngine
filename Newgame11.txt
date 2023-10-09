@@ -1,0 +1,41 @@
+GAME_ENGINE_FILE
+{
+	"settings" : [
+	{
+		"projectName" : "Newgame1"
+		"mainWindowWidth" : "1500"
+		"mainWindowHeight" : "800"
+		"editorPanelWidth" : "512"
+		"editorPanelHeight" : "512"
+		"editorBackgroundColor" : "java.awt.Color[r=0,g=0,b=0]"
+		"statsPanelWidth" : "256"
+		"statsPanelHeight" : "512"
+		"editorControlPanelWidth" : "256"
+		"editorControlPanelHeight" : "512"
+		"gameObjectsPanelWidth" : "512"
+		"gameObjectsPanelHeight" : "512"
+		"colorPanelWidth" : "124"
+		"colorPanelHeight" : "48"
+		"currentColor" : "java.awt.Color[r=136,g=0,b=21]"
+		"currentShape" : "RECT"
+		"lineThickness" : "4.0"
+		"fillShape" : "false"
+		"showGrid" : "true"
+		"gridRowsAndColumns" : "16"
+		"snapMode" : "true"
+	}],
+
+	"gameObjects" : [
+	{
+		"type" : "rect"
+		"name" : "rect_1"
+		"x1" : "128"
+		"y1" : "160"
+		"x2" : "320"
+		"y2" : "352"
+		"rotationAngle" : "45.0"
+		"color" : "java.awt.Color[r=136,g=0,b=21]"
+		"lineThickness" : "4.0"
+		"fill" : "false"
+	}]
+}

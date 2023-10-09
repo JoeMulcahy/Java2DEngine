@@ -6,7 +6,6 @@ import java.awt.*;
 
 public class StatsWindow {
     private JFrame frameStats;
-
     private int window_width = Helper.statsPanelWidth;
     private int window_height = Helper.statsPanelHeight;
 

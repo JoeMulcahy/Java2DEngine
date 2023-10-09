@@ -6,6 +6,7 @@ public class ColorPalette extends JPanel {
     private int width = Helper.colorPanelWidth;
     private int height = Helper.colorPanelHeight;
     private JButton[] colorButton;
+    private Color selectedColor;
 
     public ColorPalette(){
         this.setLayout(new GridLayout(2,10));
@@ -62,9 +63,9 @@ public class ColorPalette extends JPanel {
         return this;
     }
 
-    public void selectColor(Color t){
+    public Color selectColor(Color t){
         Helper.currentColor = t;
+        return t;
     }
-
 
 }

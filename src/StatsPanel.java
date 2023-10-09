@@ -5,7 +5,6 @@ public class StatsPanel extends JPanel {
 
     Thread thread;
     private int FPS;
-
     private int width = Helper.statsPanelWidth;
     private int height = Helper.statsPanelHeight;
 

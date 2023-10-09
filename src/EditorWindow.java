@@ -167,11 +167,15 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
                                        double rotationAngle, Color color, float lineThickness, boolean fillShape){
 
         switch(objType){
-            case "rect" -> objects.add(new RectangleObject(x1, y1, x2, y2, 0,Helper.currentColor, Helper.lineThickness, Helper.fillShape));
-            case "circle" -> objects.add(new CircleObject(x1, y1, x2, y2, 0, Helper.currentColor, Helper.lineThickness, Helper.fillShape));
-            case "line" -> objects.add(new LineObject(x1, y1, x2, y2, 0, Helper.currentColor, Helper.lineThickness));
+            case "rect" -> objects.add(new RectangleObject(x1, y1, x2, y2, rotationAngle, color, lineThickness, fillShape));
+            case "circle" -> objects.add(new CircleObject(x1, y1, x2, y2, rotationAngle, color, lineThickness, fillShape));
+            case "line" -> objects.add(new LineObject(x1, y1, x2, y2, rotationAngle, color, lineThickness));
         }
         Helper.createdGameObjects = objects;
+        UndoRedoStack.addToStack(objects.get(objects.size() - 1));
+        Helper.instructionCounter++;
+        GameObjectAttributesPanel.updateGameObjectJList();
+        GameObjectAttributesPanel.jListOfGameObjectNames.setSelectedIndex(UndoRedoStack.getStackCounter() -1);
     }
 
     private void createGameObject(){
