@@ -4,12 +4,14 @@ public class UndoRedoStack {
 
     private static int stackCounter = 0;
     private static Stack<GameObject> stack;
+    public static UndoRedoStack Instance;
 
     public UndoRedoStack(){
+        Instance = this;
         stack = new Stack<>();
     }
 
-    public static void addToStack(GameObject o){
+    public void addToStack(GameObject o){
         if(stackCounter < Helper.instructionCounter){
             updateStackStack();
             stackCounter++;
@@ -22,11 +24,11 @@ public class UndoRedoStack {
         peakStack();
     }
 
-    public static Stack<GameObject> updateStackStack(){
+    public Stack<GameObject> updateStackStack(){
         if(stack.size() > 0){
             for(int i = stack.size(); i > stackCounter; i--){
                 stack.pop();
-                System.out.println("POPPING");
+               //System.out.println("POPPING");
                 Helper.instructionCounter = stackCounter;
             }
         }
@@ -36,18 +38,18 @@ public class UndoRedoStack {
         return stack;
     }
 
-    public static GameObject peakStack(){
-        System.out.println("Stack last object " + stack.peek().toString());
+    public GameObject peakStack(){
+        //System.out.println("Stack last object " + stack.peek().toString());
         return stack.peek();
     }
 
-    public static int isInStack(GameObject o){
+    public int isInStack(GameObject o){
         //returns index
         // -1 for not found;
         return stack.search(o);
     }
 
-    public static int getStackCounter(){
+    public int getStackCounter(){
         return stackCounter;
     }
 
@@ -55,21 +57,21 @@ public class UndoRedoStack {
         if(stackCounter > 0){
             stackCounter--;
         }
-        System.out.println("stack index: " + stackCounter);
+        //System.out.println("stack index: " + stackCounter);
 
-        GameObjectAttributesPanel.updateGameObjectJList();
+        GameObjectAttributesPanel.Instance.updateGameObjectJList();
     }
 
-    public static void redo(){
+    public void redo(){
         if(stackCounter < stack.size()){
             stackCounter++;
         }
-        System.out.println("stack index: " + stackCounter);
+        //System.out.println("stack index: " + stackCounter);
 
-        GameObjectAttributesPanel.updateGameObjectJList();
+        GameObjectAttributesPanel.Instance.updateGameObjectJList();
     }
 
-    public static void clearStack(){
+    public void clearStack(){
         stack.clear();
         stackCounter = 0;
     }

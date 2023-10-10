@@ -1,8 +1,8 @@
 import java.awt.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public abstract class GameObject {
-
-
     protected int x1;
     protected int y1;
     protected int x2;
@@ -12,6 +12,9 @@ public abstract class GameObject {
     protected float lineThickness;
     protected boolean fill;
     private String name;
+    private int r, g, b;
+    private int counter = 0;
+
 
     public GameObject(int x1, int y1, int x2, int y2, double rotationAngle, Color color, float lineThickness, boolean fill, String name) {
         this.x1 = x1;
@@ -24,9 +27,48 @@ public abstract class GameObject {
         this.fill = fill;
         this.name = name;
 
+        r = 0;
+        g = 0;
+        b = 0;
+        colorChangeTimer();
     }
 
-    public abstract void draw(Graphics g);
+    public abstract void draw(Graphics2D g2);
+
+    private void colorChangeTimer(){
+
+        Timer timer = new Timer();
+
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+
+                r = counter % 255;
+                g = 0;
+                b = 0;
+
+                counter += 50;
+            };
+        };
+        timer.scheduleAtFixedRate(task,200,100);
+    }
+
+    public Graphics2D drawHighlighted(boolean isSelected, Graphics2D g2){
+
+        int width = Math.abs(x2 - x1);
+        int height = Math.abs(y2 - y1);
+
+        int offsetx1 = x1 - 5;
+        int offsety1 = y1 - 5;
+        int offsetwidth = width + 10;
+        int offsetHeight = height + 10;
+
+        g2.setColor(new Color(r, g, b, 200));
+
+        g2.drawRect((x2 > x1 ? offsetx1 : offsetx1 - offsetwidth), (y2 > y1 ? offsety1 : offsetHeight), offsetwidth, offsetHeight);
+
+        return g2;
+    }
 
     public String getName() {
         return name;

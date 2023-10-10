@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class MainWindow{
-    private MainWindow main;
+    public static MainWindow Instance;
     private int fileCounter = 0;
     protected JFrame frame;
     private int window_width = Helper.mainWindowWidth;
@@ -25,17 +25,24 @@ public class MainWindow{
     private JMenuItem viewMenuItemOption3;
     private EditorWindow editorWindow;
 
-    private boolean newSave = true;
+    private boolean newSave;
 
 
 
     public MainWindow(){
         initialise();
+        Instance = this;
+    }
+
+    public void closeWindow(){
+        frame.setVisible(false);
+        frame.dispose();
     }
 
     private void initialise(){
         Dimension fullscreen = Toolkit.getDefaultToolkit().getScreenSize();
         editorWindow = new EditorWindow();
+        newSave = false;
 
         //TO DO reorganise the menu items
         //Have top level menu items initialed here
@@ -70,7 +77,6 @@ public class MainWindow{
         frame.add(editorWindow);
         frame.add(new GameObjectAttributesPanel());
 
-
         frame.pack();
     }
 
@@ -94,7 +100,7 @@ public class MainWindow{
     }
 
     public void open(){
-        EditorWindow.clearScreen();
+        EditorWindow.Instance.clearScreen();
 
         final JFileChooser fc = new JFileChooser();
         File file = new File(".");
@@ -116,7 +122,7 @@ public class MainWindow{
     public void loadProject(File file){
 
         boolean settingsHaveLoaded = false;
-        //variables used to create the objects
+        //variables used to create the objects on load
         String type = null, name = null;
         int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
         float lineThickness = 0;
@@ -137,11 +143,13 @@ public class MainWindow{
             while (sc.hasNextLine()){
                 line = sc.nextLine();
 
+                //All save files must have this header
                 if(line.contains("GAME_ENGINE_FILE")){
 
                     while (sc.hasNextLine()){
                         line = sc.nextLine();
 
+                        //first load the project settings
                         if(line.contains("\"settings\"")){
                             editorWindow = null;
 
@@ -213,7 +221,7 @@ public class MainWindow{
                                             case "lineThickness" -> lineThickness = Float.parseFloat(values[1]);
                                             case "fill" -> {
                                                 fill = Boolean.parseBoolean(values[1]);
-                                                EditorWindow.loadGameObjects(type, x1, y1, x2, y2, rotationAngle, c, lineThickness, fill);
+                                                EditorWindow.Instance.loadGameObjects(type, x1, y1, x2, y2, rotationAngle, c, lineThickness, fill);
                                             }
 
                                             default -> System.out.println("error!!");
@@ -289,6 +297,7 @@ public class MainWindow{
 
     private void initialiseOptionsMenu(){
         JMenu menuGrid = new JMenu("Grid");
+        JMenuItem menuToggleShapeAtCursor = new JMenuItem("Shape Cursor");
         JMenuItem toggleGrid = new JMenuItem("On/Off");
         JMenuItem gridSize4x4 = new JMenuItem("4 x 4");
         JMenuItem gridSize8x8 = new JMenuItem("8 x 8");
@@ -301,28 +310,52 @@ public class MainWindow{
         menuGrid.add(gridSize16x16);
         menuGrid.add(gridSize32x32);
         menuGrid.add(gridSize64x64);
+        menuGrid.add(menuToggleShapeAtCursor);
         toggleGrid.addActionListener(s -> toggleGridAndSetGridSize(-1));
         gridSize4x4.addActionListener(s -> toggleGridAndSetGridSize(4));
         gridSize8x8.addActionListener(s -> toggleGridAndSetGridSize(8));
         gridSize16x16.addActionListener(s -> toggleGridAndSetGridSize(16));
         gridSize32x32.addActionListener(s -> toggleGridAndSetGridSize(32));
         gridSize64x64.addActionListener(s -> toggleGridAndSetGridSize(64));
+        menuToggleShapeAtCursor.addActionListener(s -> toggleCursorShape());
 
         optionsMenu.add(menuGrid);
+
     }
 
     private void initialiseViewMenu(){
         viewMenu = new JMenu("View");
 
-        viewMenuItemOption1 = new JMenuItem("option 1");
-        viewMenuItemOption2 = new JMenuItem("option 2");
+        viewMenuItemOption1 = new JMenuItem("draw graphics");
+        viewMenuItemOption2 = new JMenuItem("Toggle highlighter");
         viewMenuItemOption3 = new JMenuItem("option 3");
+
+        viewMenuItemOption1.addActionListener(s -> toggleGraphics());
+        viewMenuItemOption2.addActionListener(s -> toggleHighLighter());
 
         viewMenu.add(viewMenuItemOption1);
         viewMenu.add(viewMenuItemOption2);
         viewMenu.add(viewMenuItemOption3);
 
     }
+
+    private void toggleGraphics(){
+        if(Helper.toggleGraphicsOn){
+            Helper.toggleGraphicsOn = false;
+        }else{
+            Helper.toggleGraphicsOn = true;
+        }
+    }
+
+    private void toggleHighLighter(){
+        if(!Helper.highlighterOn){
+            Helper.highlighterOn = true;
+        }else{
+            Helper.highlighterOn = false;
+        }
+        System.out.println(Helper.highlighterOn);
+    }
+
     private void printTest(String message){
         System.out.println(message + " pressed");
     }
@@ -337,6 +370,14 @@ public class MainWindow{
         }
         Helper.gridRowsAndColumns = size;
 
+    }
+
+    public void toggleCursorShape(){
+        if(Helper.drawShapeAtCursor){
+            Helper.drawShapeAtCursor = false;
+        }else{
+            Helper.drawShapeAtCursor = true;
+        }
     }
 
     public MainWindow getMainWindow(){

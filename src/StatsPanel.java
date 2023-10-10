@@ -7,11 +7,13 @@ public class StatsPanel extends JPanel {
     private int FPS;
     private int width = Helper.statsPanelWidth;
     private int height = Helper.statsPanelHeight;
+    public static StatsPanel Instance;
 
     public StatsPanel(){
         initialise();
     }
     public void initialise(){
+        Instance = this;
         FPS = 1;
 
         this.setPreferredSize(new Dimension(width, height));
@@ -41,7 +43,9 @@ public class StatsPanel extends JPanel {
         g2.drawString("Fill: " + (Helper.fillShape ? "on" : "off"), 20, 250);
         g2.drawString("Snap Mode" + (Helper.snapMode ? "On" : "Off"), 20, 270);
         g2.drawString("Instruction counter: " + Helper.instructionCounter, 20, 290);
-        g2.drawString("Stack counter: " + UndoRedoStack.getStackCounter(), 20, 310);
+        g2.drawString("Stack counter: " + UndoRedoStack.Instance.getStackCounter(), 20, 310);
+        g2.drawString("Canvas W: " + Helper.editorPanelWidth, 20, 330);
+        g2.drawString("Canvas H: " + Helper.editorPanelHeight, 20, 350);
         repaint();
     }
 }

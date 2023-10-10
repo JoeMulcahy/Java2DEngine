@@ -29,19 +29,24 @@ public class Helper {
     protected static int mouseY2;
 
     protected enum ShapeSelector{ RECT, CIRCLE, LINE, POLY};
+
     protected static ShapeSelector currentShape;
-    protected static int currentShapeRotation = 0;
 
     protected static float lineThickness = 1;
     protected static boolean fillShape = false;
 
     protected static int numberOfObjectsDrawn = 0;
 
-    protected static boolean showGrid = false;
+    protected static boolean showGrid = true;
     protected static int gridRowsAndColumns = 10;
-    protected static boolean snapMode = false;
+    protected static int gridWidthHeight = Helper.editorPanelWidth / Helper.gridRowsAndColumns;
+    protected static boolean snapMode = true;
+    protected static boolean drawShapeAtCursor = true;
     protected static java.util.List<GameObject> createdGameObjects;
+    protected static GameObject currentlySelectedGameObject;
     protected static int instructionCounter = 0;
+    protected static boolean highlighterOn = true;
+    protected static boolean toggleGraphicsOn = true;
 
     public static int getSecondsRun(){
 

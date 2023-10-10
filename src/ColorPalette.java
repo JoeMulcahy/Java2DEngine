@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class ColorPalette extends JPanel {
 
@@ -7,6 +8,8 @@ public class ColorPalette extends JPanel {
     private int height = Helper.colorPanelHeight;
     private JButton[] colorButton;
     private Color selectedColor;
+    public static ColorPalette Instance;
+    public static ActionListener actionListener;
 
     public ColorPalette(){
         this.setLayout(new GridLayout(2,10));
@@ -15,6 +18,8 @@ public class ColorPalette extends JPanel {
         this.setFocusable(true);
         this.setVisible(true);
         colorButton = new JButton[20];
+
+        Instance = this;
 
         draw();
 
@@ -53,7 +58,7 @@ public class ColorPalette extends JPanel {
             Color c = new Color(r, g, b);
             JButton cb = new JButton();
             cb.setBackground(c);
-            cb.addActionListener(s -> selectColor(cb.getBackground()));
+            cb.addActionListener(s -> setSelectedColor(cb.getBackground()));
             //colorButton[i] = cb;
             this.add(cb);
         }
@@ -63,9 +68,17 @@ public class ColorPalette extends JPanel {
         return this;
     }
 
-    public Color selectColor(Color t){
-        Helper.currentColor = t;
-        return t;
+    public void setSelectedColor(Color c){
+        selectedColor = c;
+        Helper.currentColor = c;
     }
+
+    public Color getSelectedColor(){
+        return selectedColor;
+    }
+
+
+
+
 
 }

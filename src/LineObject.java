@@ -19,8 +19,7 @@ public class LineObject extends GameObject {
     }
 
     @Override
-    public void draw(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g;
+    public void draw(Graphics2D g2) {
         g2.setColor(color);
         g2.setStroke(new BasicStroke(lineThickness));
 

@@ -17,20 +17,14 @@ public class CircleObject extends GameObject {
     }
 
     @Override
-    public void draw(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g;
+    public void draw(Graphics2D g2) {
         g2.setStroke(new BasicStroke(this.lineThickness));
         g2.setColor(color);
 
-        if(x2 > x1 && y2 > y1) {
-            circle.setFrame(x1, y1, x2 - x1, y2 - y1);
-        }else if(x2 < x1 &&  y2 > y1){
-            circle.setFrame(x2, y1, x1 - x2, y2 - y1);
-        } else if (x2 > x1 && y2 < y1) {
-            circle.setFrame(x1, y2, x2 - x1, y1 - y2);
-        }else if(x2 < x1 && y2 < y1){
-            circle.setFrame(x2, y2, x1 - x2, y1 - y2);
-        }
+        int width = Math.abs(x2 - x1);
+        int height = Math.abs(y2 - y1);
+
+        circle.setFrame((x2 > x1 ? x1 : x1 - width), (y2 > y1 ? y1 : y1 - height), width, height);
 
         transformedShape = circle;
 

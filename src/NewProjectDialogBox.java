@@ -11,6 +11,7 @@ public class NewProjectDialogBox {
     private JLabel lblCanvasHeight;
     private JLabel lblCanvasColor;
     private Color canvasColor;
+    public static NewProjectDialogBox Instance;
 
     private JButton btnOK;
     private JButton btnCancel;
@@ -21,6 +22,7 @@ public class NewProjectDialogBox {
     private ColorPalette cpCanvasColor;
 
     public NewProjectDialogBox(){
+        Instance = this;
         initialise();
     }
 
@@ -74,8 +76,12 @@ public class NewProjectDialogBox {
     }
 
     private void initiateProject(String name, String width, String height, Color c){
+        System.out.println(name + " " +
+                width + " " +
+                height + " " +
+                c + "\n");
 
-
+        MainWindow.Instance.closeWindow();
 
         new MainWindow();
 
@@ -83,6 +89,12 @@ public class NewProjectDialogBox {
         Helper.editorPanelWidth = Integer.parseInt(width);
         Helper.editorPanelHeight= Integer.parseInt(height);
         Helper.editorBackgroundColor = c;
+
+        System.out.println(Helper.projectName + " " +
+                Helper.editorPanelWidth  + " " +
+                Helper.editorPanelHeight + " " +
+                Helper.editorBackgroundColor + "\n");
+
         frame.setVisible(false);
         frame.dispose();
 

@@ -15,13 +15,13 @@ public class GameObjectsWindow {
     private int window_width = Helper.statsPanelWidth;
     private int window_height = Helper.statsPanelHeight;
 
+    public static GameObjectsWindow Instance;
+
     public GameObjectsWindow(){
         objectsPanel = new JPanel();
+        Instance = this;
         initialiseFrame();
 
-
-        //scrollableTextArea = new JScrollPane(textArea);
-        String[] things = {"Monday", "Tuesday", "Wednesday", "Thursday"};
         java.util.List<GameObject> objects = Helper.createdGameObjects;
         ArrayList<String> objectNames = new ArrayList<>();
 
@@ -33,21 +33,11 @@ public class GameObjectsWindow {
             objectsPanel.add(jListOfObjects);
         }
 
-
-
-
         objectsPanel.add(jListOfObjects);
-//        scrollableTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-//        scrollableTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        //EditorWindow.getGameObjects();
-
-
         frameGameObjects.getContentPane().add(objectsPanel);
         frameGameObjects.pack();
 
     }
-
-
 
     private void initialiseFrame(){
         Dimension fullscreen = Toolkit.getDefaultToolkit().getScreenSize();

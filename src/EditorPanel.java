@@ -14,8 +14,10 @@ public class EditorPanel extends JPanel {
     private JButton btnRedo;
     private ColorPalette palette;
     private JComboBox cbLineThickness;
+    public static EditorPanel Instance;
 
     public EditorPanel(){
+        Instance = this;
         initialise();
     }
 
@@ -57,16 +59,21 @@ public class EditorPanel extends JPanel {
         btnPoly.addActionListener(s -> changeShape("poly"));
         btnClear.addActionListener(s -> clearEditorWindow());
         cbLineThickness.addItemListener(s -> selectLineThickness(cbLineThickness.getSelectedItem().toString()));
+
         btnFillShape.addActionListener(s -> toggleFillShape());
         btnUndo.addActionListener(s -> undoRedoEditorWindow("undo"));
         btnRedo.addActionListener(s -> undoRedoEditorWindow("redo"));
 
     }
 
+    public void changeColor(){
+        Helper.currentColor = palette.getSelectedColor();
+    }
+
     private void undoRedoEditorWindow(String action){
         switch(action){
             case "undo" -> UndoRedoStack.undo();
-            default -> UndoRedoStack.redo();
+            default -> UndoRedoStack.Instance.redo();
         }
 
     }
@@ -85,7 +92,7 @@ public class EditorPanel extends JPanel {
     }
 
     private void clearEditorWindow(){
-        EditorWindow.clearScreen();
+        EditorWindow.Instance.clearScreen();
     }
 
     private void toggleFillShape(){
