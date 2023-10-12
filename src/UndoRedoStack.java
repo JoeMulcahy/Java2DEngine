@@ -12,7 +12,7 @@ public class UndoRedoStack {
     }
 
     public void addToStack(GameObject o){
-        if(stackCounter < Helper.instructionCounter){
+        if(stackCounter < GameManager.instructionCounter){
             updateStackStack();
             stackCounter++;
 
@@ -29,7 +29,7 @@ public class UndoRedoStack {
             for(int i = stack.size(); i > stackCounter; i--){
                 stack.pop();
                //System.out.println("POPPING");
-                Helper.instructionCounter = stackCounter;
+                GameManager.instructionCounter = stackCounter;
             }
         }
         else{

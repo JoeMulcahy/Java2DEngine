@@ -121,13 +121,13 @@ public abstract class GameObject {
 
         int x1c = x1 + width / 2;
 
-        int gridNumberX = x1c / Helper.gridWidthHeight;
-        int XPosInGrid = x1c % Helper.gridWidthHeight;
+        int gridNumberX = x1c / GameManager.gridWidthHeight;
+        int XPosInGrid = x1c % GameManager.gridWidthHeight;
 
-        if(XPosInGrid <= Helper.gridWidthHeight / 2){
-            x1 = gridNumberX * Helper.gridWidthHeight;
+        if(XPosInGrid <= GameManager.gridWidthHeight / 2){
+            x1 = gridNumberX * GameManager.gridWidthHeight;
         }else{
-            x1 = ((gridNumberX + 1) * Helper.gridWidthHeight) - width;
+            x1 = ((gridNumberX + 1) * GameManager.gridWidthHeight) - width;
         }
     }
 
@@ -136,13 +136,13 @@ public abstract class GameObject {
 
         int y1c = y1 + height / 2;
 
-        int gridNumberY = y1c / Helper.gridWidthHeight;
-        int YPosInGrid = y1c % Helper.gridWidthHeight;
+        int gridNumberY = y1c / GameManager.gridWidthHeight;
+        int YPosInGrid = y1c % GameManager.gridWidthHeight;
 
-        if(YPosInGrid <= Helper.gridWidthHeight / 2){
-            y1 = gridNumberY * Helper.gridWidthHeight;
+        if(YPosInGrid <= GameManager.gridWidthHeight / 2){
+            y1 = gridNumberY * GameManager.gridWidthHeight;
         }else{
-            y1 = ((gridNumberY + 1) * Helper.gridWidthHeight) - height;
+            y1 = ((gridNumberY + 1) * GameManager.gridWidthHeight) - height;
         }
     }
 
@@ -154,27 +154,27 @@ public abstract class GameObject {
         if(x1 > 0){
             int width = x2 - x1;
             int x1c = x1 + width / 2;
-            int gridNumberX = x1c / Helper.gridWidthHeight;
+            int gridNumberX = x1c / GameManager.gridWidthHeight;
 
-            if(x1 % Helper.gridWidthHeight == 0){
-                x1 = x1 - Helper.gridWidthHeight;
+            if(x1 % GameManager.gridWidthHeight == 0){
+                x1 = x1 - GameManager.gridWidthHeight;
             }else{
 
-                x1 = (gridNumberX - 1) * Helper.gridWidthHeight;
+                x1 = (gridNumberX - 1) * GameManager.gridWidthHeight;
             }
         }
     }
 
     public void moveRight(){
-        if(x1 < Helper.editorPanelWidth){
+        if(x1 < Settings.editorPanelWidth){
             int width = x2 - x1;
             int x1c = x1 + width / 2;
-            int gridNumberX = x1c / Helper.gridWidthHeight;
+            int gridNumberX = x1c / GameManager.gridWidthHeight;
 
-            if(x1 % Helper.gridWidthHeight + width == 0){
-                x1 = (gridNumberX  + 1) * Helper.gridWidthHeight - width;
+            if(x1 % GameManager.gridWidthHeight + width == 0){
+                x1 = (gridNumberX  + 1) * GameManager.gridWidthHeight - width;
             }else{
-                x1 = (gridNumberX * Helper.gridWidthHeight) - width ;
+                x1 = (gridNumberX * GameManager.gridWidthHeight) - width ;
             }
         }
     }
@@ -183,26 +183,26 @@ public abstract class GameObject {
         if(y1 > 0){
             int height = y2 - y1;
             int y1c = y1 + height / 2;
-            int gridNumberY = y1c / Helper.gridWidthHeight;
+            int gridNumberY = y1c / GameManager.gridWidthHeight;
 
-            if(y1 % Helper.gridWidthHeight == 0){
-                y1 = (gridNumberY - 1) * Helper.gridWidthHeight;
+            if(y1 % GameManager.gridWidthHeight == 0){
+                y1 = (gridNumberY - 1) * GameManager.gridWidthHeight;
             }else{
-                y1 = gridNumberY * Helper.gridWidthHeight;
+                y1 = gridNumberY * GameManager.gridWidthHeight;
             }
         }
     }
 
     public void moveDown(){
-        if(y1 < Helper.editorPanelWidth){
+        if(y1 < Settings.editorPanelWidth){
             int height = y2 - y1;
             int y1c = y1 + height / 2;
-            int gridNumberY = y1c / Helper.gridWidthHeight;
+            int gridNumberY = y1c / GameManager.gridWidthHeight;
 
-            if(y1 % Helper.gridWidthHeight + height == 0){
-                y1 = (gridNumberY  + 1) * Helper.gridWidthHeight - height;
+            if(y1 % GameManager.gridWidthHeight + height == 0){
+                y1 = (gridNumberY  + 1) * GameManager.gridWidthHeight - height;
             }else{
-                y1 = (gridNumberY * Helper.gridWidthHeight) - height ;
+                y1 = (gridNumberY * GameManager.gridWidthHeight) - height ;
             }
         }
     }

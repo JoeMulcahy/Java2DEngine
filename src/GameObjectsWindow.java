@@ -12,8 +12,8 @@ public class GameObjectsWindow {
 
     private JList jListOfObjects;
 
-    private int window_width = Helper.statsPanelWidth;
-    private int window_height = Helper.statsPanelHeight;
+    private int window_width = Settings.statsPanelWidth;
+    private int window_height = Settings.statsPanelHeight;
 
     public static GameObjectsWindow Instance;
 
@@ -22,7 +22,7 @@ public class GameObjectsWindow {
         Instance = this;
         initialiseFrame();
 
-        java.util.List<GameObject> objects = Helper.createdGameObjects;
+        java.util.List<GameObject> objects = GameManager.createdGameObjects;
         ArrayList<String> objectNames = new ArrayList<>();
 
         if(objects != null){

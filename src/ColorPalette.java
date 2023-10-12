@@ -4,8 +4,8 @@ import java.awt.event.ActionListener;
 
 public class ColorPalette extends JPanel {
 
-    private int width = Helper.colorPanelWidth;
-    private int height = Helper.colorPanelHeight;
+    private int width = Settings.colorPanelWidth;
+    private int height = Settings.colorPanelHeight;
     private JButton[] colorButton;
     private Color selectedColor;
     public static ColorPalette Instance;
@@ -70,7 +70,7 @@ public class ColorPalette extends JPanel {
 
     public void setSelectedColor(Color c){
         selectedColor = c;
-        Helper.currentColor = c;
+        GameManager.currentColor = c;
     }
 
     public Color getSelectedColor(){

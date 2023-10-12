@@ -85,15 +85,15 @@ public class NewProjectDialogBox {
 
         new MainWindow();
 
-        Helper.projectName = name;
-        Helper.editorPanelWidth = Integer.parseInt(width);
-        Helper.editorPanelHeight= Integer.parseInt(height);
-        Helper.editorBackgroundColor = c;
+        Settings.projectName = name;
+        Settings.editorPanelWidth = Integer.parseInt(width);
+        Settings.editorPanelHeight= Integer.parseInt(height);
+        Settings.editorBackgroundColor = c;
 
-        System.out.println(Helper.projectName + " " +
-                Helper.editorPanelWidth  + " " +
-                Helper.editorPanelHeight + " " +
-                Helper.editorBackgroundColor + "\n");
+        System.out.println(Settings.projectName + " " +
+                Settings.editorPanelWidth  + " " +
+                Settings.editorPanelHeight + " " +
+                Settings.editorBackgroundColor + "\n");
 
         frame.setVisible(false);
         frame.dispose();

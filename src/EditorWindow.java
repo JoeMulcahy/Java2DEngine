@@ -14,8 +14,8 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
     Thread thread;
     private int FPS = 60;
     private boolean isRunning;
-    private int height = Helper.editorPanelHeight;
-    private int width = Helper.editorPanelWidth;
+    private int height = Settings.editorPanelHeight;
+    private int width = Settings.editorPanelWidth;
     private int mouseX1;
     private int mouseY1;
     private int mouseX2;
@@ -30,14 +30,14 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
         Instance = this;
 
         this.setPreferredSize(new Dimension(width, height));
-        this.setBackground(Helper.editorBackgroundColor);
+        this.setBackground(Settings.editorBackgroundColor);
         this.setFocusable(true);
         this.setVisible(true);
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
 
         objects = new ArrayList<>();
-        Helper.currentShape = Helper.ShapeSelector.CIRCLE;
+        GameManager.currentShape = GameManager.ShapeSelector.CIRCLE;
 
         isMouseClick = false;
         isRunning = true;
@@ -72,7 +72,7 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
 
     public void drawObjects(Graphics2D g2){
 
-        if(Helper.toggleGraphicsOn){
+        if(GameManager.toggleGraphicsOn){
             for(int i = 0; i < UndoRedoStack.Instance.getStackCounter(); i++){
                 objects.get(i).draw(g2);
             }
@@ -81,11 +81,11 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
                 drawSelectorBox(g2);
             }
 
-            if(Helper.currentlySelectedGameObject != null && objects.size() > 0 && Helper.highlighterOn){
-                Helper.currentlySelectedGameObject.drawHighlighterBox(true, g2);
+            if(GameManager.currentlySelectedGameObject != null && objects.size() > 0 && GameManager.highlighterOn){
+                GameManager.currentlySelectedGameObject.drawHighlighterBox(true, g2);
             }
 
-            if(Helper.drawShapeAtCursor && Helper.showGrid){
+            if(GameManager.drawShapeAtCursor && GameManager.showGrid){
                 drawShapeAtCursor(g2);
             }
         }
@@ -97,10 +97,10 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
             int snapOffsetX = 0;
             int snapOffSetY = 0;
 
-            int gridBoxSizeX = Helper.editorPanelWidth / Helper.gridRowsAndColumns;
-            int gridBoxSizeY = Helper.editorPanelHeight / Helper.gridRowsAndColumns;
+            int gridBoxSizeX = Settings.editorPanelWidth / GameManager.gridNumberOfRowsAndCols[0];
+            int gridBoxSizeY = Settings.editorPanelHeight / GameManager.gridNumberOfRowsAndCols[1];
 
-            if(Helper.snapMode){
+            if(GameManager.snapMode){
                 int snapX1 = gridBoxSizeX * (mouseX1 / gridBoxSizeX);
                 int snapY1 = gridBoxSizeY * (mouseY1 / gridBoxSizeY);
                 int snapX2 = gridBoxSizeX * (mouseX2 / gridBoxSizeX) + gridBoxSizeX;
@@ -122,7 +122,7 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
             width = Math.abs(x2 - x1);
             height = Math.abs(y2 - y1);
 
-            switch(Helper.currentShape){
+            switch(GameManager.currentShape){
                 case RECT, POLY -> {
                     g2.drawRect((x2 > x1 ? x1 : x1 - width), (y2 > y1 ? y1 : y1 - height), width, height);
                 }
@@ -139,22 +139,22 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
         // Draw the currently selected shape at the current mouse position
         // Can be toggle on/off
 
-        int gridBoxSizeX = Helper.editorPanelWidth / Helper.gridRowsAndColumns;
-        int gridBoxSizeY = Helper.editorPanelHeight / Helper.gridRowsAndColumns;
+        int gridBoxSizeX = Settings.editorPanelWidth / GameManager.gridNumberOfRowsAndCols[0];
+        int gridBoxSizeY = Settings.editorPanelHeight / GameManager.gridNumberOfRowsAndCols[1];
         int snapX1 = gridBoxSizeX * (mouseX1 / gridBoxSizeX);
         int snapY1 = gridBoxSizeY * (mouseY1 / gridBoxSizeY);
-        g2.setColor(Helper.currentColor);
+        g2.setColor(GameManager.currentColor);
 
-        switch(Helper.currentShape){
+        switch(GameManager.currentShape){
             case RECT -> {
-                if (Helper.fillShape) {
+                if (GameManager.fillShape) {
                     g2.fillRect(snapX1, snapY1, gridBoxSizeX, gridBoxSizeY);
                 } else {
                     g2.drawRect(snapX1, snapY1, gridBoxSizeX, gridBoxSizeY);
                 }
             }
             case CIRCLE -> {
-                if (Helper.fillShape) {
+                if (GameManager.fillShape) {
                     g2.fillOval(snapX1, snapY1, gridBoxSizeX, gridBoxSizeY);
                 } else {
                     g2.drawOval(snapX1, snapY1, gridBoxSizeX, gridBoxSizeY);
@@ -174,24 +174,24 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
             case "circle" -> objects.add(new CircleObject(x1, y1, x2, y2, rotationAngle, color, lineThickness, fillShape, drawBorder));
             case "line" -> objects.add(new LineObject(x1, y1, x2, y2, rotationAngle, color, lineThickness, false));
         }
-        Helper.createdGameObjects = objects;
+        GameManager.createdGameObjects = objects;
         UndoRedoStack.Instance.addToStack(objects.get(objects.size() - 1));
-        Helper.instructionCounter++;
+        GameManager.instructionCounter++;
         GameObjectAttributesPanel.Instance.updateGameObjectJList();
         GameObjectAttributesPanel.jListOfGameObjectNames.setSelectedIndex(UndoRedoStack.Instance.getStackCounter() -1);
     }
 
     private void createGameObject(){
-        Helper.numberOfObjectsDrawn++;
+        GameManager.numberOfObjectsDrawn++;
 
         //Yes! this is repetitive code
         //See snapMode()
         //Need to just get this working first
         int x1, y1, x2, y2;
 
-        if(Helper.snapMode){
-            int gridBoxSizeX = Helper.editorPanelWidth / Helper.gridRowsAndColumns;
-            int gridBoxSizeY = Helper.editorPanelHeight / Helper.gridRowsAndColumns;
+        if(GameManager.snapMode){
+            int gridBoxSizeX = Settings.editorPanelWidth / GameManager.gridNumberOfRowsAndCols[0];
+            int gridBoxSizeY = Settings.editorPanelHeight / GameManager.gridNumberOfRowsAndCols[1];
             int snapX1 = gridBoxSizeX * (mouseX1 / gridBoxSizeX);
             int snapY1 = gridBoxSizeY * (mouseY1 / gridBoxSizeY);
             int snapX2 = gridBoxSizeX * (mouseX2 / gridBoxSizeX) + gridBoxSizeX;
@@ -208,26 +208,26 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
             y2 = mouseY2;
         }
 
-        if(Helper.instructionCounter != UndoRedoStack.Instance.getStackCounter()){
+        if(GameManager.instructionCounter != UndoRedoStack.Instance.getStackCounter()){
             updateGameObjectsArrayList();
         }
 
-        if(Helper.currentShape == Helper.ShapeSelector.RECT){
-            objects.add(new RectangleObject(x1, y1, x2, y2, 0,Helper.currentColor, Helper.lineThickness, Helper.fillShape, Helper.toggleObjectBorder));
+        if(GameManager.currentShape == GameManager.ShapeSelector.RECT){
+            objects.add(new RectangleObject(x1, y1, x2, y2, 0, GameManager.currentColor, GameManager.lineThickness, GameManager.fillShape, GameManager.toggleObjectBorder));
         }
-        if(Helper.currentShape == Helper.ShapeSelector.CIRCLE){
-            objects.add(new CircleObject(x1, y1, x2, y2, 0, Helper.currentColor, Helper.lineThickness, Helper.fillShape, Helper.toggleObjectBorder));
+        if(GameManager.currentShape == GameManager.ShapeSelector.CIRCLE){
+            objects.add(new CircleObject(x1, y1, x2, y2, 0, GameManager.currentColor, GameManager.lineThickness, GameManager.fillShape, GameManager.toggleObjectBorder));
         }
-        if(Helper.currentShape == Helper.ShapeSelector.LINE){
-            objects.add(new LineObject(x1, y1, x2, y2, 0, Helper.currentColor, Helper.lineThickness, false));
+        if(GameManager.currentShape == GameManager.ShapeSelector.LINE){
+            objects.add(new LineObject(x1, y1, x2, y2, 0, GameManager.currentColor, GameManager.lineThickness, false));
         }
-        if(Helper.currentShape == Helper.ShapeSelector.POLY){
-            objects.add(new PolygonObject(x1, y1, x2, y2, null, 0, Helper.currentColor, Helper.lineThickness, Helper.fillShape, Helper.toggleObjectBorder));
+        if(GameManager.currentShape == GameManager.ShapeSelector.POLY){
+            objects.add(new PolygonObject(x1, y1, x2, y2, null, 0, GameManager.currentColor, GameManager.lineThickness, GameManager.fillShape, GameManager.toggleObjectBorder));
         }
 
-        Helper.createdGameObjects = objects;
+        GameManager.createdGameObjects = objects;
         UndoRedoStack.Instance.addToStack(objects.get(objects.size() - 1));
-        Helper.instructionCounter++;
+        GameManager.instructionCounter++;
         GameObjectAttributesPanel.Instance.updateGameObjectJList();
         GameObjectAttributesPanel.jListOfGameObjectNames.setSelectedIndex(UndoRedoStack.Instance.getStackCounter() -1);
     }
@@ -257,14 +257,14 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
         for(int i = objects.size() - 1; i >= UndoRedoStack.Instance.getStackCounter(); i--){
             objects.remove(i);
         }
-        Helper.createdGameObjects = objects;
+        GameManager.createdGameObjects = objects;
         GameObjectAttributesPanel.Instance.updateGameObjectJList();
 
     }
 
     public void clearScreen() {
         objects.clear();
-        Helper.numberOfObjectsDrawn = 0;
+        GameManager.numberOfObjectsDrawn = 0;
 
         GameObjectAttributesPanel.Instance.updateGameObjectJList();
         GameObjectAttributesPanel.Instance.updateAttributeValues(null);
@@ -275,7 +275,7 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
         LineObject.id = 1;
         PolygonObject.id = 1;
 
-        Helper.instructionCounter = 0;
+        GameManager.instructionCounter = 0;
         UndoRedoStack.Instance.clearStack();
 
     }
@@ -310,8 +310,8 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
         mouseY1 = e.getY();
 
         // for StatsPanel class
-        Helper.mouseX1 = mouseX1;
-        Helper.mouseY1 = mouseY1;
+        GameManager.mouseX1 = mouseX1;
+        GameManager.mouseY1 = mouseY1;
     }
 
     @Override

@@ -9,8 +9,8 @@ public class MainWindow{
     public static MainWindow Instance;
     private int fileCounter = 0;
     protected JFrame frame;
-    private int window_width = Helper.mainWindowWidth;
-    private int window_height = Helper.mainWindowHeight;
+    private int window_width = Settings.mainWindowWidth;
+    private int window_height = Settings.mainWindowHeight;
     private JMenuBar menuBar;
     private JMenu fileMenu;
     private JMenuItem fileMenuItemNew;
@@ -184,28 +184,28 @@ public class MainWindow{
 
                                     if(!settingsHaveLoaded){
                                         switch(values[0]){
-                                            case "projectName" -> Helper.projectName = values[1];
-                                            case "mainWindowWidth" -> Helper.mainWindowWidth = Integer.parseInt(values[1]);
-                                            case "mainWindowHeight" -> Helper.mainWindowHeight = Integer.parseInt(values[1]);
-                                            case "editorPanelWidth" -> Helper.editorPanelWidth = Integer.parseInt(values[1]);
-                                            case "editorPanelHeight" -> Helper.editorPanelHeight = Integer.parseInt(values[1]);
-                                            case "editorBackgroundColor" -> Helper.editorBackgroundColor = tempColor;
-                                            case "statsPanelWidth" -> Helper.statsPanelWidth = Integer.parseInt(values[1]);
-                                            case "statsPanelHeight" -> Helper.statsPanelHeight = Integer.parseInt(values[1]);
-                                            case "editorControlPanelWidth" -> Helper.editorControlPanelWidth = Integer.parseInt(values[1]);
-                                            case "editorControlPanelHeight" -> Helper.editorControlPanelHeight = Integer.parseInt(values[1]);
-                                            case "gameObjectsPanelWidth" -> Helper.gameObjectsPanelWidth = Integer.parseInt(values[1]);
-                                            case "gameObjectsPanelHeight" -> Helper.gameObjectsPanelHeight = Integer.parseInt(values[1]);
-                                            case "colorPanelWidth" -> Helper.colorPanelWidth = Integer.parseInt(values[1]);
-                                            case "colorPanelHeight" -> Helper.colorPanelHeight = Integer.parseInt(values[1]);
-                                            case "currentColor" -> Helper.currentColor = tempColor;
-                                            case "currentShape" -> Helper.currentShape = Helper.ShapeSelector.RECT;
-                                            case "lineThickness" -> Helper.lineThickness = Float.parseFloat(values[1]);
-                                            case "fillShape" -> Helper.fillShape = Boolean.parseBoolean(values[1]);
-                                            case "showGrid" -> Helper.showGrid = Boolean.parseBoolean(values[1]);
-                                            case "gridRowsAndColumns" -> Helper.gridRowsAndColumns = Integer.parseInt(values[1]);
+                                            case "projectName" -> Settings.projectName = values[1];
+                                            case "mainWindowWidth" -> Settings.mainWindowWidth = Integer.parseInt(values[1]);
+                                            case "mainWindowHeight" -> Settings.mainWindowHeight = Integer.parseInt(values[1]);
+                                            case "editorPanelWidth" -> Settings.editorPanelWidth = Integer.parseInt(values[1]);
+                                            case "editorPanelHeight" -> Settings.editorPanelHeight = Integer.parseInt(values[1]);
+                                            case "editorBackgroundColor" -> Settings.editorBackgroundColor = tempColor;
+                                            case "statsPanelWidth" -> Settings.statsPanelWidth = Integer.parseInt(values[1]);
+                                            case "statsPanelHeight" -> Settings.statsPanelHeight = Integer.parseInt(values[1]);
+                                            case "editorControlPanelWidth" -> Settings.editorControlPanelWidth = Integer.parseInt(values[1]);
+                                            case "editorControlPanelHeight" -> Settings.editorControlPanelHeight = Integer.parseInt(values[1]);
+                                            case "gameObjectsPanelWidth" -> Settings.gameObjectsPanelWidth = Integer.parseInt(values[1]);
+                                            case "gameObjectsPanelHeight" -> Settings.gameObjectsPanelHeight = Integer.parseInt(values[1]);
+                                            case "colorPanelWidth" -> Settings.colorPanelWidth = Integer.parseInt(values[1]);
+                                            case "colorPanelHeight" -> Settings.colorPanelHeight = Integer.parseInt(values[1]);
+                                            case "currentColor" -> GameManager.currentColor = tempColor;
+                                            case "currentShape" -> GameManager.currentShape = GameManager.ShapeSelector.RECT;
+                                            case "lineThickness" -> GameManager.lineThickness = Float.parseFloat(values[1]);
+                                            case "fillShape" -> GameManager.fillShape = Boolean.parseBoolean(values[1]);
+                                            case "showGrid" -> GameManager.showGrid = Boolean.parseBoolean(values[1]);
+                                            case "gridRowsAndColumns" -> GameManager.gridNumberOfRowsAndCols[0] = Integer.parseInt(values[1]);
                                             case "snapMode" -> {
-                                                Helper.snapMode = Boolean.parseBoolean(values[1]);
+                                                GameManager.snapMode = Boolean.parseBoolean(values[1]);
                                                 settingsHaveLoaded = true;
                                             }
                                         }
@@ -247,7 +247,7 @@ public class MainWindow{
     }
 
     public boolean save(){
-        String filename = Helper.projectName + fileCounter + ".txt";
+        String filename = Settings.projectName + fileCounter + ".txt";
 
         try{
             File newFile = new File(filename);
@@ -272,13 +272,13 @@ public class MainWindow{
         try{
             FileWriter myWriter = new FileWriter(fileName);
 
-            fileContent.append(Helper.getSettings());
+            fileContent.append(Settings.getSettings());
             fileContent.append("\n\t\"gameObjects\" : [\n");
 
-            for(int i = 0; i < Helper.createdGameObjects.size(); i++){
-                GameObject o = Helper.createdGameObjects.get(i);
+            for(int i = 0; i < GameManager.createdGameObjects.size(); i++){
+                GameObject o = GameManager.createdGameObjects.get(i);
 
-                if(i == Helper.createdGameObjects.size() - 1){
+                if(i == GameManager.createdGameObjects.size() - 1){
                     fileContent.append(o.toString() + "]");
                 }else{
                     fileContent.append(o.toString() + ",\n");
@@ -343,20 +343,20 @@ public class MainWindow{
     }
 
     private void toggleGraphics(){
-        if(Helper.toggleGraphicsOn){
-            Helper.toggleGraphicsOn = false;
+        if(GameManager.toggleGraphicsOn){
+            GameManager.toggleGraphicsOn = false;
         }else{
-            Helper.toggleGraphicsOn = true;
+            GameManager.toggleGraphicsOn = true;
         }
     }
 
     private void toggleHighLighter(){
-        if(!Helper.highlighterOn){
-            Helper.highlighterOn = true;
+        if(!GameManager.highlighterOn){
+            GameManager.highlighterOn = true;
         }else{
-            Helper.highlighterOn = false;
+            GameManager.highlighterOn = false;
         }
-        System.out.println(Helper.highlighterOn);
+        System.out.println(GameManager.highlighterOn);
     }
 
     private void printTest(String message){
@@ -365,21 +365,22 @@ public class MainWindow{
 
     public void toggleGridAndSetGridSize(int size){
         if(size > 0){
-            Helper.snapMode = true;
-            Helper.showGrid = true;
+            GameManager.snapMode = true;
+            GameManager.showGrid = true;
         }else{
-            Helper.snapMode = false;
-            Helper.showGrid = false;
+            GameManager.snapMode = false;
+            GameManager.showGrid = false;
         }
-        Helper.gridRowsAndColumns = size;
+        GameManager.gridNumberOfRowsAndCols[0] = size;
+        GameManager.gridNumberOfRowsAndCols[1] = size;
 
     }
 
     public void toggleCursorShape(){
-        if(Helper.drawShapeAtCursor){
-            Helper.drawShapeAtCursor = false;
+        if(GameManager.drawShapeAtCursor){
+            GameManager.drawShapeAtCursor = false;
         }else{
-            Helper.drawShapeAtCursor = true;
+            GameManager.drawShapeAtCursor = true;
         }
     }
 

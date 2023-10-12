@@ -48,10 +48,10 @@ class ModButtons extends JPanel{
 
     public void doButtonStuff(String s){
         switch(s){
-            case "up" -> Helper.currentlySelectedGameObject.moveUp();
-            case "down" -> Helper.currentlySelectedGameObject.moveDown();
-            case "left" -> Helper.currentlySelectedGameObject.moveLeft();
-            case "right" -> Helper.currentlySelectedGameObject.moveRight();
+            case "up" -> GameManager.currentlySelectedGameObject.moveUp();
+            case "down" -> GameManager.currentlySelectedGameObject.moveDown();
+            case "left" -> GameManager.currentlySelectedGameObject.moveLeft();
+            case "right" -> GameManager.currentlySelectedGameObject.moveRight();
         }
 
         System.out.println(s);
@@ -60,8 +60,8 @@ class ModButtons extends JPanel{
 
 public class GameObjectAttributesPanel extends JPanel {
 
-    private int width = Helper.gameObjectsPanelWidth;
-    private int height = Helper.gameObjectsPanelHeight;
+    private int width = Settings.gameObjectsPanelWidth;
+    private int height = Settings.gameObjectsPanelHeight;
 
     private JPanel gameObjectsListPanel;
     private JPanel gameObjectAttributesPanel;
@@ -143,7 +143,7 @@ public class GameObjectAttributesPanel extends JPanel {
 
         initialiseObjectAttributesPanel();
 
-        gameObjects = Helper.createdGameObjects;
+        gameObjects = GameManager.createdGameObjects;
 
         jListModelObjectNames = new DefaultListModel<>();
         jListOfGameObjectNames = new JList<>(jListModelObjectNames);
@@ -330,9 +330,9 @@ public class GameObjectAttributesPanel extends JPanel {
         // from a mouse click that selects the index of the JList
         // this corresponds to the position of the shape object
         // in the objects arraylist (by reference)
-        if(Helper.createdGameObjects != null && jListOfGameObjectNames.getModel().getSize() > 0){
-            selectedGameObject = Helper.createdGameObjects.get(index);
-            Helper.currentlySelectedGameObject = selectedGameObject;
+        if(GameManager.createdGameObjects != null && jListOfGameObjectNames.getModel().getSize() > 0){
+            selectedGameObject = GameManager.createdGameObjects.get(index);
+            GameManager.currentlySelectedGameObject = selectedGameObject;
             updateAttributeValues(selectedGameObject);
         }
     }
@@ -370,12 +370,12 @@ public class GameObjectAttributesPanel extends JPanel {
 
     // clears and updates GameObjects in the JList panel
     public void updateGameObjectJList(){
-        if(Helper.createdGameObjects != null){
+        if(GameManager.createdGameObjects != null){
             jListModelObjectNames.clear();
 
-            if(Helper.createdGameObjects.size() > 0){
+            if(GameManager.createdGameObjects.size() > 0){
                 for(int i = 0; i < UndoRedoStack.Instance.getStackCounter(); i++){
-                    String element = Helper.createdGameObjects.get(i).getName();
+                    String element = GameManager.createdGameObjects.get(i).getName();
                     jListModelObjectNames.addElement(element);
                 }
             }

@@ -2,6 +2,9 @@ The is a list of features to add to the engine. It will also include ideas
 
 As of 7/10/23
 
+// Make a game Manager class separate from the Settings class (Settings to be renamed Settings)
+// deals with current object, grid functionality
+
 // Make the GUI more attractive - this may required the use GridBagLayout manager instead of FLow and Grid
 
 // Make the GameObjectsAttributes panel easier to use
@@ -44,4 +47,4 @@ As of 7/10/23
     ->gameobject border if fill
     ->gameobject line thickness
 ** move selectorBox out of GameObject and make it its own class
-
+** bug when changin depth of object, it affects the undo redo

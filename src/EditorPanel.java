@@ -3,8 +3,8 @@ import java.awt.*;
 import java.awt.event.ItemEvent;
 
 public class EditorPanel extends JPanel {
-    private int width = Helper.editorControlPanelWidth;
-    private int height = Helper.editorControlPanelHeight;
+    private int width = Settings.editorControlPanelWidth;
+    private int height = Settings.editorControlPanelHeight;
     private JButton btnRectangle;
     private JButton btnCircle;
     private JButton btnLine;
@@ -74,17 +74,17 @@ public class EditorPanel extends JPanel {
         int checked = e.getStateChange();
 
         if(checked == 1){
-            Helper.toggleObjectBorder = true;
-            Helper.fillShape = true;
+            GameManager.toggleObjectBorder = true;
+            GameManager.fillShape = true;
         }else{
-            Helper.toggleObjectBorder = false;
+            GameManager.toggleObjectBorder = false;
         }
 
-        System.out.println(Helper.toggleObjectBorder);
+        System.out.println(GameManager.toggleObjectBorder);
     }
 
     public void changeColor(){
-        Helper.currentColor = palette.getSelectedColor();
+        GameManager.currentColor = palette.getSelectedColor();
     }
 
     private void undoRedoEditorWindow(String action){
@@ -98,7 +98,7 @@ public class EditorPanel extends JPanel {
     private void selectLineThickness(String s){
 
         String thickness = s;
-        Helper.lineThickness = Integer.parseInt(s);
+        GameManager.lineThickness = Integer.parseInt(s);
     }
     private JComboBox populateComboBox(){
 
@@ -113,20 +113,20 @@ public class EditorPanel extends JPanel {
     }
 
     private void toggleFillShape(){
-        if(Helper.fillShape){
-            Helper.fillShape = false;
+        if(GameManager.fillShape){
+            GameManager.fillShape = false;
         }else {
-            Helper.fillShape = true;
+            GameManager.fillShape = true;
         }
     }
 
     private void changeShape(String shape){
         switch(shape){
-            case "rect" -> Helper.currentShape = Helper.ShapeSelector.RECT;
-            case "circle" -> Helper.currentShape = Helper.ShapeSelector.CIRCLE;
-            case "line" -> Helper.currentShape = Helper.ShapeSelector.LINE;
-            case "poly" -> Helper.currentShape = Helper.ShapeSelector.POLY;
-            default -> Helper.currentShape = Helper.ShapeSelector.LINE;
+            case "rect" -> GameManager.currentShape = GameManager.ShapeSelector.RECT;
+            case "circle" -> GameManager.currentShape = GameManager.ShapeSelector.CIRCLE;
+            case "line" -> GameManager.currentShape = GameManager.ShapeSelector.LINE;
+            case "poly" -> GameManager.currentShape = GameManager.ShapeSelector.POLY;
+            default -> GameManager.currentShape = GameManager.ShapeSelector.LINE;
         }
     }
 

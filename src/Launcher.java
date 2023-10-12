@@ -7,6 +7,7 @@ public class Launcher {
             @Override
             public void run() {
                MainWindow main = new MainWindow();
+               //TestWindow test = new TestWindow();
               //StatsWindow side = new StatsWindow();
                //GameObjectsWindow objects = new GameObjectsWindow();
 

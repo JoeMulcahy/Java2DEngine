@@ -48,7 +48,7 @@ public class RectangleObject extends GameObject {
                 double g = (bColor.getGreen() * ratio) % 255;;
                 double b = (bColor.getBlue() * ratio) % 255;;
 
-                bColor = new Color((int)r,(int)g,(int)b);
+                bColor = new Color(123,123,123);
 
                 g2.setStroke(new BasicStroke(lineThickness));
                 g2.setColor(bColor);

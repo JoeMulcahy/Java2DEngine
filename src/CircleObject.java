@@ -13,8 +13,6 @@ public class CircleObject extends GameObject {
         super(x1, y1, x2, y2, rotationAngle, color, lineThickness, fill, "circle_" + id, drawBorder);
         circle = new Ellipse2D.Double();
         id++;
-
-
     }
 
     @Override
