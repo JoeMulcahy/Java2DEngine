@@ -40,7 +40,6 @@ public class CircleObject extends GameObject {
 
             if(drawBorder){
                 Color bColor = this.color;
-
                 // > 1 for border color brighter than object
                 // < 1 for darker
                 double ratio = 0.8;

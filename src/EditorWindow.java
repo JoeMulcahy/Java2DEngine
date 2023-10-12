@@ -23,7 +23,6 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
     private boolean isMouseClick;
     public static EditorWindow Instance;
     private java.util.List<GameObject> objects;
-    private boolean isDrawn = false;
 
     public EditorWindow(){
 
@@ -215,13 +214,13 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
         if(GameManager.currentShape == GameManager.ShapeSelector.RECT){
             objects.add(new RectangleObject(x1, y1, x2, y2, 0, GameManager.currentColor, GameManager.lineThickness, GameManager.fillShape, GameManager.toggleObjectBorder));
         }
-        if(GameManager.currentShape == GameManager.ShapeSelector.CIRCLE){
+        else if(GameManager.currentShape == GameManager.ShapeSelector.CIRCLE){
             objects.add(new CircleObject(x1, y1, x2, y2, 0, GameManager.currentColor, GameManager.lineThickness, GameManager.fillShape, GameManager.toggleObjectBorder));
         }
-        if(GameManager.currentShape == GameManager.ShapeSelector.LINE){
+        else if(GameManager.currentShape == GameManager.ShapeSelector.LINE){
             objects.add(new LineObject(x1, y1, x2, y2, 0, GameManager.currentColor, GameManager.lineThickness, false));
         }
-        if(GameManager.currentShape == GameManager.ShapeSelector.POLY){
+        else if(GameManager.currentShape == GameManager.ShapeSelector.POLY){
             objects.add(new PolygonObject(x1, y1, x2, y2, null, 0, GameManager.currentColor, GameManager.lineThickness, GameManager.fillShape, GameManager.toggleObjectBorder));
         }
 
