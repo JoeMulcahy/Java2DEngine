@@ -2,8 +2,8 @@ import java.util.Stack;
 
 public class UndoRedoStack {
 
-    private static int stackCounter = 0;
-    private static Stack<GameObject> stack;
+    private int stackCounter = 0;
+    private Stack<GameObject> stack;
     public static UndoRedoStack Instance;
 
     public UndoRedoStack(){
@@ -14,11 +14,8 @@ public class UndoRedoStack {
     public void addToStack(GameObject o){
         if(stackCounter < GameManager.instructionCounter){
             updateStackStack();
-            stackCounter++;
-
-        }else{
-            stackCounter++;
         }
+        stackCounter++;
 
         stack.push(o);
         peakStack();
@@ -53,7 +50,7 @@ public class UndoRedoStack {
         return stackCounter;
     }
 
-    public static void undo(){
+    public void undo(){
         if(stackCounter > 0){
             stackCounter--;
         }

@@ -12,10 +12,8 @@ public class GameManager {
 
     protected static float lineThickness = 1;
     protected static boolean fillShape = false;
-
     protected static boolean showGrid = true;
-    protected static int[] gridNumberOfRowsAndCols = {8,8};
-    protected static int gridWidthHeight = Settings.editorPanelWidth / GameManager.gridNumberOfRowsAndCols[0];
+    protected static int[] gridNumberOfRowsAndCols = {16,16};
     protected static boolean snapMode = true;
     protected static boolean drawShapeAtCursor = true;
     protected static java.util.List<GameObject> createdGameObjects;

@@ -89,10 +89,9 @@ public class EditorPanel extends JPanel {
 
     private void undoRedoEditorWindow(String action){
         switch(action){
-            case "undo" -> UndoRedoStack.undo();
+            case "undo" -> UndoRedoStack.Instance.undo();
             default -> UndoRedoStack.Instance.redo();
         }
-
     }
 
     private void selectLineThickness(String s){

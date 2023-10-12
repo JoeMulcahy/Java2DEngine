@@ -1,7 +1,5 @@
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public abstract class GameObject {
     protected int x1;
@@ -14,8 +12,6 @@ public abstract class GameObject {
     protected boolean fill;
     protected boolean drawBorder;
     private String name;
-    private int r, g, b;
-    private int counter = 0;
     private AffineTransform transform;
     private Rectangle rectHighlighter;
     Shape transformedShape;
@@ -39,10 +35,7 @@ public abstract class GameObject {
 
         this.z_value = objectNumber;
 
-        r = 0;
-        g = 0;
-        b = 0;
-        colorChangeTimer();
+
     }
 
     public abstract void draw(Graphics2D g2);
@@ -62,161 +55,6 @@ public abstract class GameObject {
     public void setDrawBorder(boolean drawBorder) {
         this.drawBorder = drawBorder;
     }
-
-    private void colorChangeTimer(){
-
-        Timer timer = new Timer();
-
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-
-                r = counter % 255;
-                g = 0;
-                b = 0;
-
-                counter += 50;
-            };
-        };
-        timer.scheduleAtFixedRate(task,200,100);
-    }
-
-    public Graphics2D drawHighlighterBox(boolean isSelected, Graphics2D g2){
-
-        rectHighlighter = new Rectangle();
-
-        int width = Math.abs(x2 - x1);
-        int height = Math.abs(y2 - y1);
-
-        int offsetx1 = x1 - 5;
-        int offsety1 = y1 - 5;
-        int offsetwidth = width + 10;
-        int offsetHeight = height + 10;
-
-        transformedShape = rectHighlighter;
-
-        rectHighlighter.setRect((x2 > x1 ? offsetx1 : offsetx1 - offsetwidth), (y2 > y1 ? offsety1 : offsetHeight), offsetwidth, offsetHeight);
-
-        if(rotationAngle > -360 && rotationAngle < 360){
-            transform = new AffineTransform();
-            transform.rotate(Math.toRadians(rotationAngle), rectHighlighter.getX() + rectHighlighter.width/2, rectHighlighter.getY() + rectHighlighter.height/2);
-            transformedShape = transform.createTransformedShape(rectHighlighter);
-        }
-
-        g2.setColor(new Color(r, g, b, 200));
-        g2.setStroke(new BasicStroke(0.5F));
-
-        g2.draw(transformedShape);
-
-        return g2;
-    }
-
-    public void snapToNearestGrid(){
-        snapToNearestGridX();
-        snapToNearestGridY();
-    }
-
-    public void snapToNearestGridX(){
-        int width = x2 - x1;
-
-        int x1c = x1 + width / 2;
-
-        int gridNumberX = x1c / GameManager.gridWidthHeight;
-        int XPosInGrid = x1c % GameManager.gridWidthHeight;
-
-        if(XPosInGrid <= GameManager.gridWidthHeight / 2){
-            x1 = gridNumberX * GameManager.gridWidthHeight;
-        }else{
-            x1 = ((gridNumberX + 1) * GameManager.gridWidthHeight) - width;
-        }
-    }
-
-    public void snapToNearestGridY(){
-        int height = y2 - y1;
-
-        int y1c = y1 + height / 2;
-
-        int gridNumberY = y1c / GameManager.gridWidthHeight;
-        int YPosInGrid = y1c % GameManager.gridWidthHeight;
-
-        if(YPosInGrid <= GameManager.gridWidthHeight / 2){
-            y1 = gridNumberY * GameManager.gridWidthHeight;
-        }else{
-            y1 = ((gridNumberY + 1) * GameManager.gridWidthHeight) - height;
-        }
-    }
-
-    public void moveLeft(){
-        // if object center point x is positioned right of the nearest grid x
-        // then snap to nearest grid x to left of object
-        // else snap to the x grid point is the next nearest grid x
-
-        if(x1 > 0){
-            int width = x2 - x1;
-            int x1c = x1 + width / 2;
-            int gridNumberX = x1c / GameManager.gridWidthHeight;
-
-            if(x1 % GameManager.gridWidthHeight == 0){
-                x1 = x1 - GameManager.gridWidthHeight;
-            }else{
-
-                x1 = (gridNumberX - 1) * GameManager.gridWidthHeight;
-            }
-        }
-    }
-
-    public void moveRight(){
-        if(x1 < Settings.editorPanelWidth){
-            int width = x2 - x1;
-            int x1c = x1 + width / 2;
-            int gridNumberX = x1c / GameManager.gridWidthHeight;
-
-            if(x1 % GameManager.gridWidthHeight + width == 0){
-                x1 = (gridNumberX  + 1) * GameManager.gridWidthHeight - width;
-            }else{
-                x1 = (gridNumberX * GameManager.gridWidthHeight) - width ;
-            }
-        }
-    }
-
-    public void moveUp(){
-        if(y1 > 0){
-            int height = y2 - y1;
-            int y1c = y1 + height / 2;
-            int gridNumberY = y1c / GameManager.gridWidthHeight;
-
-            if(y1 % GameManager.gridWidthHeight == 0){
-                y1 = (gridNumberY - 1) * GameManager.gridWidthHeight;
-            }else{
-                y1 = gridNumberY * GameManager.gridWidthHeight;
-            }
-        }
-    }
-
-    public void moveDown(){
-        if(y1 < Settings.editorPanelWidth){
-            int height = y2 - y1;
-            int y1c = y1 + height / 2;
-            int gridNumberY = y1c / GameManager.gridWidthHeight;
-
-            if(y1 % GameManager.gridWidthHeight + height == 0){
-                y1 = (gridNumberY  + 1) * GameManager.gridWidthHeight - height;
-            }else{
-                y1 = (gridNumberY * GameManager.gridWidthHeight) - height ;
-            }
-        }
-    }
-
-    public void increaseSize(){
-
-    }
-
-
-    public void decreaseSize(){
-
-    }
-
-
 
     public String getName() {
         return name;

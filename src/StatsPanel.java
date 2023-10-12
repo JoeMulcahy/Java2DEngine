@@ -35,7 +35,7 @@ public class StatsPanel extends JPanel {
         g2.drawString("Mouse y: " + GameManager.getMouseY1(), 20, 110);
         g2.drawString("Number of Objects: " + GameManager.numberOfObjectsDrawn, 20, 130);
         g2.drawString("Current Shape: " + GameManager.currentShape, 20, 150);
-        g2.drawString("Grid: " + (GameManager.showGrid ? "on" : "off"), 20, 170);
+        //g2.drawString("Grid: " + (GameManager.showGrid ? "on" : "off"), 20, 170);
         g2.drawString("Grid Size: " + GameManager.gridNumberOfRowsAndCols, 20, 190);
         g2.setColor(GameManager.currentColor);
         g2.drawString("Color: ", 20, 210);

@@ -24,14 +24,14 @@ public class MainWindow{
     private JMenuItem viewMenuItemOption2;
     private JMenuItem viewMenuItemOption3;
     private EditorWindow editorWindow;
+    private Grid gridFromMainWindow;
 
     private boolean newSave;
-
-
 
     public MainWindow(){
         initialise();
         Instance = this;
+        gridFromMainWindow = new Grid();
     }
 
     public void closeWindow(){
@@ -359,20 +359,19 @@ public class MainWindow{
         System.out.println(GameManager.highlighterOn);
     }
 
-    private void printTest(String message){
-        System.out.println(message + " pressed");
-    }
-
     public void toggleGridAndSetGridSize(int size){
         if(size > 0){
             GameManager.snapMode = true;
-            GameManager.showGrid = true;
+            EditorWindow.getEditorGrid().setVisible(true);
         }else{
             GameManager.snapMode = false;
-            GameManager.showGrid = false;
+            EditorWindow.getEditorGrid().setVisible(false);
         }
-        GameManager.gridNumberOfRowsAndCols[0] = size;
-        GameManager.gridNumberOfRowsAndCols[1] = size;
+
+        EditorWindow.getEditorGrid().setNumberOfColumns(size);
+        EditorWindow.getEditorGrid().setNumberOfRows(size);
+
+        System.out.println("get cell width: " +EditorWindow.getEditorGrid().getCellWidth());
 
     }
 

@@ -24,8 +24,6 @@ public class TestWindow {
         frameStats.setLocationRelativeTo(null);
         frameStats.setResizable(true);
 
-        frameStats.add(new TestPanel());
-
         frameStats.pack();
     }
 }

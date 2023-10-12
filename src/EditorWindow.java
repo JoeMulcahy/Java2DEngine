@@ -23,6 +23,8 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
     private boolean isMouseClick;
     public static EditorWindow Instance;
     private java.util.List<GameObject> objects;
+    private static Grid editorGrid;
+    private ObjectHighLighter highlighter;
 
     public EditorWindow(){
 
@@ -38,10 +40,17 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
         objects = new ArrayList<>();
         GameManager.currentShape = GameManager.ShapeSelector.CIRCLE;
 
+        editorGrid = new Grid();
+        highlighter = new ObjectHighLighter();
+
         isMouseClick = false;
         isRunning = true;
         thread = new Thread(this, "Editor");
         thread.start();
+    }
+
+    public static Grid getEditorGrid(){
+        return editorGrid;
     }
 
     @Override
@@ -64,7 +73,7 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
 
         Graphics2D g2 = (Graphics2D)g;
         drawObjects(g2);
-        Grid.draw(g2);
+        editorGrid.drawGrid(g);
         Toolkit.getDefaultToolkit().sync();
 
     }
@@ -81,23 +90,25 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
             }
 
             if(GameManager.currentlySelectedGameObject != null && objects.size() > 0 && GameManager.highlighterOn){
-                GameManager.currentlySelectedGameObject.drawHighlighterBox(true, g2);
+
+                highlighter.drawHighlighterBox(g2, GameManager.currentlySelectedGameObject);
+
             }
 
-            if(GameManager.drawShapeAtCursor && GameManager.showGrid){
+            if(GameManager.drawShapeAtCursor && Grid.Instance.getIsVisible()){
                 drawShapeAtCursor(g2);
             }
         }
     }
 
+
+
     private Graphics2D drawSelectorBox(Graphics2D g2){
 
             int x1, y1, x2, y2, width = 0, height = 0;
-            int snapOffsetX = 0;
-            int snapOffSetY = 0;
 
-            int gridBoxSizeX = Settings.editorPanelWidth / GameManager.gridNumberOfRowsAndCols[0];
-            int gridBoxSizeY = Settings.editorPanelHeight / GameManager.gridNumberOfRowsAndCols[1];
+            int gridBoxSizeX = editorGrid.getCellWidth();
+            int gridBoxSizeY = editorGrid.getCellHeight();
 
             if(GameManager.snapMode){
                 int snapX1 = gridBoxSizeX * (mouseX1 / gridBoxSizeX);
@@ -138,8 +149,8 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
         // Draw the currently selected shape at the current mouse position
         // Can be toggle on/off
 
-        int gridBoxSizeX = Settings.editorPanelWidth / GameManager.gridNumberOfRowsAndCols[0];
-        int gridBoxSizeY = Settings.editorPanelHeight / GameManager.gridNumberOfRowsAndCols[1];
+        int gridBoxSizeX = editorGrid.getCellWidth();
+        int gridBoxSizeY = editorGrid.getCellHeight();
         int snapX1 = gridBoxSizeX * (mouseX1 / gridBoxSizeX);
         int snapY1 = gridBoxSizeY * (mouseY1 / gridBoxSizeY);
         g2.setColor(GameManager.currentColor);
@@ -182,15 +193,11 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
 
     private void createGameObject(){
         GameManager.numberOfObjectsDrawn++;
-
-        //Yes! this is repetitive code
-        //See snapMode()
-        //Need to just get this working first
         int x1, y1, x2, y2;
 
         if(GameManager.snapMode){
-            int gridBoxSizeX = Settings.editorPanelWidth / GameManager.gridNumberOfRowsAndCols[0];
-            int gridBoxSizeY = Settings.editorPanelHeight / GameManager.gridNumberOfRowsAndCols[1];
+            int gridBoxSizeX = editorGrid.getCellWidth();
+            int gridBoxSizeY = editorGrid.getCellHeight();
             int snapX1 = gridBoxSizeX * (mouseX1 / gridBoxSizeX);
             int snapY1 = gridBoxSizeY * (mouseY1 / gridBoxSizeY);
             int snapX2 = gridBoxSizeX * (mouseX2 / gridBoxSizeX) + gridBoxSizeX;
@@ -253,6 +260,8 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
     }
 
     public void updateGameObjectsArrayList(){
+
+
         for(int i = objects.size() - 1; i >= UndoRedoStack.Instance.getStackCounter(); i--){
             objects.remove(i);
         }

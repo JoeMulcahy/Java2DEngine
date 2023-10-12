@@ -5,7 +5,7 @@ public class TestPanel extends JPanel {
 
     private int width = Settings.editorPanelWidth;
     private int height = Settings.editorPanelHeight;
-    private Grid2 testGrid;
+    private Grid testGrid;
 
     public TestPanel(){
         this.setLayout(new FlowLayout());
@@ -14,7 +14,7 @@ public class TestPanel extends JPanel {
         this.setFocusable(true);
         this.setVisible(true);
 
-        testGrid = new Grid2(400, 400, 10, 5, 5, 50, true);
+        testGrid = new Grid(400, 400, 10, 5, 5, 50, true);
         //testGrid.drawGrid();
     }
 

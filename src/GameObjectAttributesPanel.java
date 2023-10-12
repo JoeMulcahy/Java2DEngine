@@ -40,18 +40,19 @@ class ModButtons extends JPanel{
         panelHolder[1][0].add(btnIncreaseLeft);
         panelHolder[1][2].add(btnDecreaseRight);
 
-        btnIncreaseVertical.addActionListener(s -> doButtonStuff("up"));
-        btnDecreaseVertical.addActionListener(s -> doButtonStuff("down"));
-        btnIncreaseLeft.addActionListener(s -> doButtonStuff("left"));
-        btnDecreaseRight.addActionListener(s ->doButtonStuff("right"));
+        btnIncreaseVertical.addActionListener(s -> adjustSize("up"));
+        btnDecreaseVertical.addActionListener(s -> adjustSize("down"));
+        btnIncreaseLeft.addActionListener(s -> adjustSize("left"));
+        btnDecreaseRight.addActionListener(s ->adjustSize("right"));
     }
 
-    public void doButtonStuff(String s){
+    public void adjustSize(String s){
         switch(s){
-            case "up" -> GameManager.currentlySelectedGameObject.moveUp();
-            case "down" -> GameManager.currentlySelectedGameObject.moveDown();
-            case "left" -> GameManager.currentlySelectedGameObject.moveLeft();
-            case "right" -> GameManager.currentlySelectedGameObject.moveRight();
+            case "up" -> Grid.Instance.adjustObjectSize(GameManager.currentlySelectedGameObject, "increase");
+            case "down" -> Grid.Instance.adjustObjectSize(GameManager.currentlySelectedGameObject, "decrease");
+            case "left" -> Grid.Instance.adjustObjectSize(GameManager.currentlySelectedGameObject, "left");
+            case "right" -> Grid.Instance.adjustObjectSize(GameManager.currentlySelectedGameObject, "right");
+            default -> throw new IllegalStateException("Unexpected value: " + s);
         }
 
         System.out.println(s);
@@ -97,10 +98,7 @@ public class GameObjectAttributesPanel extends JPanel {
     private JButton btnLineZ_DepthAccept;
     private JButton btnBorder;
     private JButton btnDeleteObject;
-
     private ModButtons btnMod;
-
-
     private JTextField txtName;
     private JTextField txtX1Pos;
     private JTextField txtY1Pos;
@@ -366,7 +364,6 @@ public class GameObjectAttributesPanel extends JPanel {
             txtZ_Depth.setText("");
         }
     }
-
 
     // clears and updates GameObjects in the JList panel
     public void updateGameObjectJList(){
