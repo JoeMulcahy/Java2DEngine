@@ -128,6 +128,7 @@ public class MainWindow{
         float lineThickness = 0;
         double rotationAngle = 0.0;
         Color c = Color.BLACK;
+        boolean borderThickness = false;
         boolean fill = false;
         // tempColor is the color extracted from a string in the save file
         // eg. "color" : "java.awt.Color[r=112,g=146,b=190]"
@@ -219,10 +220,12 @@ public class MainWindow{
                                             case "color" -> c = tempColor;
                                             case "rotationAngle" -> rotationAngle = Double.parseDouble(values[1]);
                                             case "lineThickness" -> lineThickness = Float.parseFloat(values[1]);
+                                            case "borderThickness" -> borderThickness = false;
                                             case "fill" -> {
                                                 fill = Boolean.parseBoolean(values[1]);
-                                                EditorWindow.Instance.loadGameObjects(type, x1, y1, x2, y2, rotationAngle, c, lineThickness, fill);
+                                                EditorWindow.Instance.loadGameObjects(type, x1, y1, x2, y2, rotationAngle, c, lineThickness, fill, borderThickness);
                                             }
+
 
                                             default -> System.out.println("error!!");
                                         }

@@ -7,6 +7,11 @@ As of 7/10/23
 // Make the GameObjectsAttributes panel easier to use
 - Use JSpinner and dropdown menus instead of JTextBoxes
 
+// Add the ability to remove selected objects
+// add a z value to objects -> depth of object. just need to reposition objects place in arraylist
+// add the ability to reposition objects as changing x1 y1 x2 y2 just changes object dimensions
+
+
 // Add Collision to the objects
 - if collision -> destroy, add to score or some other action
 
@@ -22,16 +27,21 @@ As of 7/10/23
 
 // Highlight GameObjects upon selection from EditorWindow
 
-// Save function
+//
 
-// Load Function
+// Undo/redo function - partially implemented. works on the editor window. Still does work for changes in the GaneObectAttributed Panel
 
-// Undo/redo function - partially implemented. work on the editor window. Still does work for changes in the GaneObectAttributed Panel
 
-// add a border to the gameobjects - just need to draw an unfilled shape over existing shape
 
 /////////////////// Tweaks to existing code ///////////////////////////////
 ** if fillMode draw the selector box as a fillRect with a low Alpha value
 ** fix line selection -- need to finish
 ** code repetition in EditorWindow. repetition of code in createShape and drawSelector when in snap mode
 ** rectangle/circle drawing bug when drawing left or up
+** Save function -> partially done
+** Need to add code to load function to account for changes to objects
+** add more attributes to attributes panel
+    ->gameobject border if fill
+    ->gameobject line thickness
+** move selectorBox out of GameObject and make it its own class
+

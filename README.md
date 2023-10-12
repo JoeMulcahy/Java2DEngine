@@ -42,3 +42,14 @@ Changed the way some object are accessed by other objects by changing some stati
 Graphics can be disabled from the menu, not sure if this serves a function yet, its there!
 Right angle triangle GameObjects is now working! I will add more functionality to this later i.e. different types triangles
 Might increase this to make polygons -> pentagon, hexagons etc
+
+11/10/23
+We now have the option to add borders to game objects. It work fine for rect and circle objects but poly is a little trickier.
+Poly borders are working but not exactly how I intend it to work, will revisit
+Borders can be toggle from the Tools Panel
+GameObjects now have depth, an object can be draw over or under an existing GameObject
+Added a delete GameObject function. this isn't working. I tried deleting the selected GameObject from the objects ArrayList but throws errors, must investigate further
+Started a feature that can resize GameObject from the Attributes Panel
+
+
+

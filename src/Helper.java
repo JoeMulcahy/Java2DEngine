@@ -38,15 +38,20 @@ public class Helper {
     protected static int numberOfObjectsDrawn = 0;
 
     protected static boolean showGrid = true;
-    protected static int gridRowsAndColumns = 10;
+    protected static int gridRowsAndColumns = 8;
     protected static int gridWidthHeight = Helper.editorPanelWidth / Helper.gridRowsAndColumns;
     protected static boolean snapMode = true;
     protected static boolean drawShapeAtCursor = true;
     protected static java.util.List<GameObject> createdGameObjects;
     protected static GameObject currentlySelectedGameObject;
     protected static int instructionCounter = 0;
-    protected static boolean highlighterOn = true;
+    protected static boolean highlighterOn = false;
     protected static boolean toggleGraphicsOn = true;
+    protected static boolean toggleObjectBorder = false;
+
+    //Resize GameObject setting. Resize from center or from origin(x1,y1)
+    protected static boolean toggleResizeFromCenter = true;
+    protected static int moveAmount = 5;
 
     public static int getSecondsRun(){
 

@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ItemEvent;
 
 public class EditorPanel extends JPanel {
     private int width = Helper.editorControlPanelWidth;
@@ -12,6 +13,7 @@ public class EditorPanel extends JPanel {
     private JButton btnFillShape;
     private JButton btnUndo;
     private JButton btnRedo;
+    private JCheckBox cbObjectBorder;
     private ColorPalette palette;
     private JComboBox cbLineThickness;
     public static EditorPanel Instance;
@@ -22,7 +24,7 @@ public class EditorPanel extends JPanel {
     }
 
     private void initialise(){
-        this.setLayout(new GridLayout(5,2));
+        this.setLayout(new GridLayout(6,2));
         this.setPreferredSize(new Dimension(width, height));
         this.setBackground(Color.gray);
         this.setFocusable(true);
@@ -36,7 +38,7 @@ public class EditorPanel extends JPanel {
         btnFillShape = new JButton("Fill");
         btnUndo = new JButton("Undo");
         btnRedo = new JButton("Redo");
-
+        cbObjectBorder = new JCheckBox("Toggle border");
 
         cbLineThickness = populateComboBox();
 
@@ -52,6 +54,7 @@ public class EditorPanel extends JPanel {
         this.add(btnFillShape);
         this.add(btnUndo);
         this.add(btnRedo);
+        this.add(cbObjectBorder);
 
         btnRectangle.addActionListener(s -> changeShape("rect"));
         btnCircle.addActionListener(s -> changeShape("circle"));
@@ -59,11 +62,25 @@ public class EditorPanel extends JPanel {
         btnPoly.addActionListener(s -> changeShape("poly"));
         btnClear.addActionListener(s -> clearEditorWindow());
         cbLineThickness.addItemListener(s -> selectLineThickness(cbLineThickness.getSelectedItem().toString()));
+        cbObjectBorder.addItemListener(s -> toggleObjectBorder(s));
 
         btnFillShape.addActionListener(s -> toggleFillShape());
         btnUndo.addActionListener(s -> undoRedoEditorWindow("undo"));
         btnRedo.addActionListener(s -> undoRedoEditorWindow("redo"));
+    }
 
+    private void toggleObjectBorder(ItemEvent e){
+
+        int checked = e.getStateChange();
+
+        if(checked == 1){
+            Helper.toggleObjectBorder = true;
+            Helper.fillShape = true;
+        }else{
+            Helper.toggleObjectBorder = false;
+        }
+
+        System.out.println(Helper.toggleObjectBorder);
     }
 
     public void changeColor(){

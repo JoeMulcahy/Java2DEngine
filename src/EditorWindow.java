@@ -7,6 +7,10 @@ import java.util.ArrayList;
 
 public class EditorWindow extends JPanel implements Runnable, MouseListener, MouseMotionListener {
 
+    //
+    // Must add currently selected object here instead of referencing it from Helper
+    //////////////////////////
+
     Thread thread;
     private int FPS = 60;
     private boolean isRunning;
@@ -78,7 +82,7 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
             }
 
             if(Helper.currentlySelectedGameObject != null && objects.size() > 0 && Helper.highlighterOn){
-                Helper.currentlySelectedGameObject.drawHighlighted(true, g2);
+                Helper.currentlySelectedGameObject.drawHighlighterBox(true, g2);
             }
 
             if(Helper.drawShapeAtCursor && Helper.showGrid){
@@ -163,12 +167,12 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
     }
 
     public void loadGameObjects(String objType, int x1, int y1, int x2, int y2,
-                                       double rotationAngle, Color color, float lineThickness, boolean fillShape){
+                                       double rotationAngle, Color color, float lineThickness, boolean fillShape, boolean drawBorder){
 
         switch(objType){
-            case "rect" -> objects.add(new RectangleObject(x1, y1, x2, y2, rotationAngle, color, lineThickness, fillShape));
-            case "circle" -> objects.add(new CircleObject(x1, y1, x2, y2, rotationAngle, color, lineThickness, fillShape));
-            case "line" -> objects.add(new LineObject(x1, y1, x2, y2, rotationAngle, color, lineThickness));
+            case "rect" -> objects.add(new RectangleObject(x1, y1, x2, y2, rotationAngle, color, lineThickness, fillShape, drawBorder));
+            case "circle" -> objects.add(new CircleObject(x1, y1, x2, y2, rotationAngle, color, lineThickness, fillShape, drawBorder));
+            case "line" -> objects.add(new LineObject(x1, y1, x2, y2, rotationAngle, color, lineThickness, false));
         }
         Helper.createdGameObjects = objects;
         UndoRedoStack.Instance.addToStack(objects.get(objects.size() - 1));
@@ -209,16 +213,16 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
         }
 
         if(Helper.currentShape == Helper.ShapeSelector.RECT){
-            objects.add(new RectangleObject(x1, y1, x2, y2, 0,Helper.currentColor, Helper.lineThickness, Helper.fillShape));
+            objects.add(new RectangleObject(x1, y1, x2, y2, 0,Helper.currentColor, Helper.lineThickness, Helper.fillShape, Helper.toggleObjectBorder));
         }
         if(Helper.currentShape == Helper.ShapeSelector.CIRCLE){
-            objects.add(new CircleObject(x1, y1, x2, y2, 0, Helper.currentColor, Helper.lineThickness, Helper.fillShape));
+            objects.add(new CircleObject(x1, y1, x2, y2, 0, Helper.currentColor, Helper.lineThickness, Helper.fillShape, Helper.toggleObjectBorder));
         }
         if(Helper.currentShape == Helper.ShapeSelector.LINE){
-            objects.add(new LineObject(x1, y1, x2, y2, 0, Helper.currentColor, Helper.lineThickness));
+            objects.add(new LineObject(x1, y1, x2, y2, 0, Helper.currentColor, Helper.lineThickness, false));
         }
         if(Helper.currentShape == Helper.ShapeSelector.POLY){
-            objects.add(new PolygonObject(x1, y1, x2, y2, null, 0, Helper.currentColor, Helper.lineThickness, Helper.fillShape));
+            objects.add(new PolygonObject(x1, y1, x2, y2, null, 0, Helper.currentColor, Helper.lineThickness, Helper.fillShape, Helper.toggleObjectBorder));
         }
 
         Helper.createdGameObjects = objects;
@@ -226,6 +230,27 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
         Helper.instructionCounter++;
         GameObjectAttributesPanel.Instance.updateGameObjectJList();
         GameObjectAttributesPanel.jListOfGameObjectNames.setSelectedIndex(UndoRedoStack.Instance.getStackCounter() -1);
+    }
+
+    public void reorderObjects(GameObject o, int currentIndex, int newValue){
+        // This used to set the z-value or depth of the object in the Editor window
+        System.out.println(o.toString());
+        System.out.println("index: " + currentIndex);
+        System.out.println("new: " + newValue);
+
+        if(newValue >= 0 && newValue < objects.size()){
+            objects.remove(o);
+            objects.add(newValue, o);
+        }
+        else{
+            System.out.println("invalid operation");
+        }
+    }
+
+    public void deleteObject(int index){
+        //GameObject o = null;
+        objects.set(index, null);
+       // objects.remove(index);
     }
 
     public void updateGameObjectsArrayList(){

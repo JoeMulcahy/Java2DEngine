@@ -7,8 +7,9 @@ public class RectangleObject extends GameObject {
     private Rectangle rect;
     private AffineTransform transform;
     Shape transformedShape;
-    public RectangleObject(int x1, int y1, int x2, int y2, double rotationAngle, Color color, float lineThickness, boolean fill) {
-        super(x1, y1, x2, y2, rotationAngle, color, lineThickness, fill, "rect_" + id);
+    private boolean drawBorder;
+    public RectangleObject(int x1, int y1, int x2, int y2, double rotationAngle, Color color, float lineThickness, boolean fill, boolean drawBorder) {
+        super(x1, y1, x2, y2, rotationAngle, color, lineThickness, fill, "rect_" + id, drawBorder);
         rect = new Rectangle();
         id++;
     }
@@ -36,6 +37,29 @@ public class RectangleObject extends GameObject {
             g2.draw(transformedShape);
         }else{
             g2.fill(transformedShape);
+            if(drawBorder){
+                Color bColor = this.color;
+
+                // > 1 for border color brighter than object
+                // < 1 for darker
+                double ratio = 0.8;
+
+                double r = (bColor.getRed() * ratio) % 255;
+                double g = (bColor.getGreen() * ratio) % 255;;
+                double b = (bColor.getBlue() * ratio) % 255;;
+
+                bColor = new Color((int)r,(int)g,(int)b);
+
+                g2.setStroke(new BasicStroke(lineThickness));
+                g2.setColor(bColor);
+
+                int tx1 = (int)(x1 + lineThickness / 2);
+                int ty1 = (int)(y1 + lineThickness / 2);;
+
+                rect.setFrame((x2 > x1 ? tx1 : tx1 - width), (y2 > y1 ? ty1 : ty1 - height), (width - lineThickness), height - lineThickness);
+                transformedShape = transform.createTransformedShape(rect);
+                g2.draw(transformedShape);
+            }
         }
     }
 

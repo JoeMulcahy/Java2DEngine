@@ -11,8 +11,8 @@ public class LineObject extends GameObject {
     private AffineTransform transform;
     Shape transformedShape;
 
-    public LineObject(int x1, int y1, int x2, int y2, double rotationAngle, Color color, float lineThickness) {
-        super(x1, y1, x2, y2, rotationAngle, color, lineThickness, false, "line_" + id);
+    public LineObject(int x1, int y1, int x2, int y2, double rotationAngle, Color color, float lineThickness, boolean drawBorder) {
+        super(x1, y1, x2, y2, rotationAngle, color, lineThickness, false, "line_" + id, drawBorder);
         id++;
         line = new Line2D.Double();
 
