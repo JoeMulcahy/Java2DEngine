@@ -51,13 +51,5 @@ GameObjects now have depth, an object can be draw over or under an existing Game
 Added a delete GameObject function. this isn't working. I tried deleting the selected GameObject from the objects ArrayList but throws errors, must investigate further
 Started a feature that can resize GameObject from the Attributes Panel
 
-12/10/23
-Reworked the grid system so it's not just a static object anymore. Multiple instances can now be created. This could a good thing down the line as I intend to have multiple editors windows ie one for sprite design, animations, background graphics. 
-The Grid class can also take any GameObject item and manipulate its dimensions. ie objects can be resized, stretched, repositioned according to the grid size.
-Reworked the GameObject highlighter. This was a static object but now can be instantialted. Attributes such as color, blink speed can be adjusted. This will eventually make its way into some kind of applications settings
-Divided the Hepler class into two new classes. 1. Settings 2. GameManager. The Helper class was getting bloated and have a mixture of attributes that didn't fit together
- 
-
-
 
 
