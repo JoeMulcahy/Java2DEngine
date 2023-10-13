@@ -90,9 +90,7 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
             }
 
             if(GameManager.currentlySelectedGameObject != null && objects.size() > 0 && GameManager.highlighterOn){
-
                 highlighter.drawHighlighterBox(g2, GameManager.currentlySelectedGameObject);
-
             }
 
             if(GameManager.drawShapeAtCursor && Grid.Instance.getIsVisible()){
@@ -300,6 +298,7 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
     public void mouseReleased(MouseEvent e) {
         mouseX2 = e.getX();
         mouseY2 = e.getY();
+
         createGameObject();
         isMouseClick = false;
         mouseX1= e.getX();
@@ -316,10 +315,6 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
     public void mouseMoved(MouseEvent e) {
         mouseX1 = e.getX();
         mouseY1 = e.getY();
-
-        // for StatsPanel class
-        GameManager.mouseX1 = mouseX1;
-        GameManager.mouseY1 = mouseY1;
     }
 
     @Override
@@ -333,7 +328,7 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
     }
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println(e.getX() + " " + e.getY());
+
     }
 
 }
