@@ -1,3 +1,5 @@
+package dev.app;
+
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 

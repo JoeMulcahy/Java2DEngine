@@ -1,3 +1,5 @@
+package dev.app;
+
 import java.util.Stack;
 
 public class UndoRedoStack {
@@ -56,7 +58,7 @@ public class UndoRedoStack {
         }
         //System.out.println("stack index: " + stackCounter);
 
-        GameObjectAttributesPanel.Instance.updateGameObjectJList();
+        InspectorPanel.Instance.updateGameObjectJList();
     }
 
     public void redo(){
@@ -65,7 +67,7 @@ public class UndoRedoStack {
         }
         //System.out.println("stack index: " + stackCounter);
 
-        GameObjectAttributesPanel.Instance.updateGameObjectJList();
+        InspectorPanel.Instance.updateGameObjectJList();
     }
 
     public void clearStack(){

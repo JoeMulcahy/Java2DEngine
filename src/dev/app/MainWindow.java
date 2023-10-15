@@ -1,3 +1,5 @@
+package dev.app;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -73,9 +75,9 @@ public class MainWindow{
         frame.setJMenuBar(menuBar);
         menuBar.setVisible(true);
 
-        frame.add(new EditorPanel());
+        frame.add(new ToolPanel());
         frame.add(editorWindow);
-        frame.add(new GameObjectAttributesPanel());
+        frame.add(new InspectorPanel());
 
         frame.pack();
     }
@@ -275,10 +277,10 @@ public class MainWindow{
             fileContent.append(Settings.getSettings());
             fileContent.append("\n\t\"gameObjects\" : [\n");
 
-            for(int i = 0; i < GameManager.createdGameObjects.size(); i++){
-                GameObject o = GameManager.createdGameObjects.get(i);
+            for(int i = 0; i < EditorWindow.Instance.getGameObjects().size(); i++){
+                GameObject o = EditorWindow.Instance.getGameObjects().get(i);
 
-                if(i == GameManager.createdGameObjects.size() - 1){
+                if(i == EditorWindow.Instance.getGameObjects().size() - 1){
                     fileContent.append(o.toString() + "]");
                 }else{
                     fileContent.append(o.toString() + ",\n");
@@ -299,7 +301,7 @@ public class MainWindow{
     }
 
     private void initialiseOptionsMenu(){
-        JMenu menuGrid = new JMenu("Grid");
+        JMenu menuGrid = new JMenu("dev.joe.Grid");
         JMenuItem menuToggleShapeAtCursor = new JMenuItem("Shape Cursor");
         JMenuItem toggleGrid = new JMenuItem("On/Off");
         JMenuItem gridSize4x4 = new JMenuItem("4 x 4");

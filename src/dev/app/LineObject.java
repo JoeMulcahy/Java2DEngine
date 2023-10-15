@@ -1,3 +1,5 @@
+package dev.app;
+
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
@@ -24,6 +26,8 @@ public class LineObject extends GameObject {
         g2.setStroke(new BasicStroke(lineThickness));
 
         line.setLine(x1, y1, x2, y2);
+
+
         transformedShape = line;
         if(rotationAngle > -360 && rotationAngle < 360){
             transform = new AffineTransform();

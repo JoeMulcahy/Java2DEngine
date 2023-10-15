@@ -10,7 +10,7 @@ As of 06/10/2023
 I have created basic shapes that can be drawn on a JPanel component. I've also implemented a grid so that shapes can snapped into position.
 
 06/10/2023
-Create a GameObjectAttributesPanel. A GameObject can be selected from a JList and its attributes display on a side panel.
+Create a dev.app.InspectorPanel. A dev.app.GameObject can be selected from a JList and its attributes display on a side panel.
 These attributes can be changed in the side panel, these changes are reflected in the Editor window.
 Its not visually appealing. Editing of the object attributes are done through JTextBoxes for the moment. Eventually these will be changed to dropdown menu [true, false], spinners for changing ogame objects attributes
 This module still need a lot of work in terms of usability
@@ -47,9 +47,9 @@ Might increase this to make polygons -> pentagon, hexagons etc
 We now have the option to add borders to game objects. It work fine for rect and circle objects but poly is a little trickier.
 Poly borders are working but not exactly how I intend it to work, will revisit
 Borders can be toggle from the Tools Panel
-GameObjects now have depth, an object can be draw over or under an existing GameObject
-Added a delete GameObject function. this isn't working. I tried deleting the selected GameObject from the objects ArrayList but throws errors, must investigate further
-Started a feature that can resize GameObject from the Attributes Panel
+GameObjects now have depth, an object can be draw over or under an existing dev.app.GameObject
+Added a delete dev.app.GameObject function. this isn't working. I tried deleting the selected dev.app.GameObject from the objects ArrayList but throws errors, must investigate further
+Started a feature that can resize dev.app.GameObject from the Attributes Panel
 
 
 

@@ -1,3 +1,5 @@
+package dev.app;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -53,6 +55,10 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
         return editorGrid;
     }
 
+    public java.util.List<GameObject> getGameObjects(){
+        return this.objects;
+    }
+
     @Override
     public void run() {
     // This will be used to animate objects eventually
@@ -72,8 +78,22 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D)g;
+
+        if(GameManager.drawShapeAtCursor && Grid.Instance.getIsVisible()){
+            drawShapeAtCursor(g2);
+        }
+
         drawObjects(g2);
         editorGrid.drawGrid(g);
+
+        if(isMouseClick){
+            drawSelectorBox(g2);
+        }
+
+        if(GameManager.currentlySelectedGameObject != null && objects.size() > 0 && GameManager.highlighterOn){
+            highlighter.drawHighlighterBox(g2, GameManager.currentlySelectedGameObject);
+        }
+
         Toolkit.getDefaultToolkit().sync();
 
     }
@@ -84,24 +104,8 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
             for(int i = 0; i < UndoRedoStack.Instance.getStackCounter(); i++){
                 objects.get(i).draw(g2);
             }
-
-            if(isMouseClick){
-                drawSelectorBox(g2);
-            }
-
-            if(GameManager.currentlySelectedGameObject != null && objects.size() > 0 && GameManager.highlighterOn){
-
-                highlighter.drawHighlighterBox(g2, GameManager.currentlySelectedGameObject);
-
-            }
-
-            if(GameManager.drawShapeAtCursor && Grid.Instance.getIsVisible()){
-                drawShapeAtCursor(g2);
-            }
         }
     }
-
-
 
     private Graphics2D drawSelectorBox(Graphics2D g2){
 
@@ -153,22 +157,32 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
         int gridBoxSizeY = editorGrid.getCellHeight();
         int snapX1 = gridBoxSizeX * (mouseX1 / gridBoxSizeX);
         int snapY1 = gridBoxSizeY * (mouseY1 / gridBoxSizeY);
+
+        int[] polyX = {snapX1, snapX1 + gridBoxSizeX, snapX1};
+        int[] polyY = {snapY1, snapY1 + gridBoxSizeY, snapY1 + gridBoxSizeY};
+
         g2.setColor(GameManager.currentColor);
+
+       if(GameManager.fillShape){
+           g2.setStroke(new BasicStroke(GameManager.currentShape == GameManager.ShapeSelector.POLY ? 2 : 4));
+       }else{
+           g2.setStroke(new BasicStroke(1));
+       }
+
+        int pointSize = Settings.editorControlPanelHeight / 100;
 
         switch(GameManager.currentShape){
             case RECT -> {
-                if (GameManager.fillShape) {
-                    g2.fillRect(snapX1, snapY1, gridBoxSizeX, gridBoxSizeY);
-                } else {
-                    g2.drawRect(snapX1, snapY1, gridBoxSizeX, gridBoxSizeY);
-                }
+                g2.drawRect(snapX1, snapY1, gridBoxSizeX, gridBoxSizeY);
             }
             case CIRCLE -> {
-                if (GameManager.fillShape) {
-                    g2.fillOval(snapX1, snapY1, gridBoxSizeX, gridBoxSizeY);
-                } else {
-                    g2.drawOval(snapX1, snapY1, gridBoxSizeX, gridBoxSizeY);
-                }
+                g2.drawOval(snapX1, snapY1, gridBoxSizeX, gridBoxSizeY);
+            }
+            case POLY -> {
+                g2.drawPolygon(polyX, polyY, 3);
+            }
+            case LINE -> {
+                g2.drawLine(snapX1, snapY1, snapX1, snapY1 + gridBoxSizeY);
             }
         }
 
@@ -187,8 +201,8 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
         GameManager.createdGameObjects = objects;
         UndoRedoStack.Instance.addToStack(objects.get(objects.size() - 1));
         GameManager.instructionCounter++;
-        GameObjectAttributesPanel.Instance.updateGameObjectJList();
-        GameObjectAttributesPanel.jListOfGameObjectNames.setSelectedIndex(UndoRedoStack.Instance.getStackCounter() -1);
+        InspectorPanel.Instance.updateGameObjectJList();
+        InspectorPanel.jListOfGameObjectNames.setSelectedIndex(UndoRedoStack.Instance.getStackCounter() -1);
     }
 
     private void createGameObject(){
@@ -231,11 +245,14 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
             objects.add(new PolygonObject(x1, y1, x2, y2, null, 0, GameManager.currentColor, GameManager.lineThickness, GameManager.fillShape, GameManager.toggleObjectBorder));
         }
 
+        GameManager.currentlySelectedGameObject = objects.get(objects.size() - 1);      //Make newly created GameObject the currently selected object
+        InspectorPanel.Instance.updateObjectsAttributesPanel(objects.size() - 1); //Updates Inspector attributes with new object
+
         GameManager.createdGameObjects = objects;
         UndoRedoStack.Instance.addToStack(objects.get(objects.size() - 1));
         GameManager.instructionCounter++;
-        GameObjectAttributesPanel.Instance.updateGameObjectJList();
-        GameObjectAttributesPanel.jListOfGameObjectNames.setSelectedIndex(UndoRedoStack.Instance.getStackCounter() -1);
+        InspectorPanel.Instance.updateGameObjectJList();
+        InspectorPanel.jListOfGameObjectNames.setSelectedIndex(UndoRedoStack.Instance.getStackCounter() -1);
     }
 
     public void reorderObjects(GameObject o, int currentIndex, int newValue){
@@ -254,19 +271,18 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
     }
 
     public void deleteObject(int index){
-        //GameObject o = null;
+        //dev.joe.GameObject o = null;
         objects.set(index, null);
        // objects.remove(index);
     }
 
     public void updateGameObjectsArrayList(){
 
-
         for(int i = objects.size() - 1; i >= UndoRedoStack.Instance.getStackCounter(); i--){
             objects.remove(i);
         }
         GameManager.createdGameObjects = objects;
-        GameObjectAttributesPanel.Instance.updateGameObjectJList();
+        InspectorPanel.Instance.updateGameObjectJList();
 
     }
 
@@ -274,8 +290,8 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
         objects.clear();
         GameManager.numberOfObjectsDrawn = 0;
 
-        GameObjectAttributesPanel.Instance.updateGameObjectJList();
-        GameObjectAttributesPanel.Instance.updateAttributeValues(null);
+        InspectorPanel.Instance.updateGameObjectJList();
+        InspectorPanel.Instance.updateAttributeValues(null);
 
         // initialised ids back to 1
         CircleObject.id = 1;
@@ -317,7 +333,7 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
         mouseX1 = e.getX();
         mouseY1 = e.getY();
 
-        // for StatsPanel class
+        // for dev.joe.StatsPanel class
         GameManager.mouseX1 = mouseX1;
         GameManager.mouseY1 = mouseY1;
     }
@@ -336,4 +352,53 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
         System.out.println(e.getX() + " " + e.getY());
     }
 
+    public int getFPS() {
+        return FPS;
+    }
+
+    public void setFPS(int FPS) {
+        this.FPS = FPS;
+    }
+
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    public void setRunning(boolean running) {
+        isRunning = running;
+    }
+
+    @Override
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    @Override
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public static void setEditorGrid(Grid editorGrid) {
+        EditorWindow.editorGrid = editorGrid;
+    }
+
+    public ObjectHighLighter getHighlighter() {
+        return highlighter;
+    }
+
+    public void setHighlighter(ObjectHighLighter highlighter) {
+        this.highlighter = highlighter;
+    }
+
+    public EditorWindow getEditorWindow(){
+        return this;
+    }
 }

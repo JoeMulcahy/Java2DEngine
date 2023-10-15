@@ -1,3 +1,5 @@
+package dev.app;
+
 import java.awt.*;
 
 public class GameManager {
@@ -21,8 +23,12 @@ public class GameManager {
     protected static boolean highlighterOn = false;
     protected static boolean toggleGraphicsOn = true;
     protected static boolean toggleObjectBorder = false;
+    protected static boolean selectOn = false;
 
-    //Resize GameObject setting. Resize from center or from origin(x1,y1)
+    protected enum Tool{ RECT, CIRCLE, LINE, POLY, SELECT};
+    protected static Tool currentSelectedTool = Tool.SELECT;
+
+    //Resize dev.joe.GameObject setting. Resize from center or from origin(x1,y1)
     protected static boolean toggleResizeFromCenter = true;
     protected static int moveAmount = 5;
     protected static int mouseX1;

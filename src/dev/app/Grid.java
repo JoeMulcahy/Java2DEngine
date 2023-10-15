@@ -1,3 +1,5 @@
+package dev.app;
+
 import java.awt.*;
 
 public class Grid {
@@ -88,12 +90,12 @@ public class Grid {
 
     public void setNumberOfColumns(int numberOfColumns) {
         this.numberOfColumns = numberOfColumns;
-        setCellWidth();
+        this.setCellWidth();
     }
 
     public void setNumberOfRows(int numberOfRows) {
         this.numberOfRows = numberOfRows;
-        setCellHeight();
+        this.setCellHeight();
     }
 
     public void snapObjectToNearestGrid(GameObject o){
@@ -134,63 +136,92 @@ public class Grid {
     }
 
     public void adjustObjectEdge(GameObject o, String direction){
+
+//        if(!checkIfSnappedToGridX(o) || !checkIfSnappedToGridY(o)){
+//            snapObjectToNearestGrid(o);
+//        }
+
         switch(direction){
             case "left" -> {
-                o.x1 -= EditorWindow.getEditorGrid().getCellWidth();
+                o.x1 -= cellWidth;
             }
             case "right" -> {
-                o.x1 += EditorWindow.getEditorGrid().getCellWidth();
+                if(o.x1 >= (o.x2 - o.x1) / 2){
+                    o.x1 += cellWidth;
+                }
             }
             case "up" -> {
-                o.y1 -= EditorWindow.getEditorGrid().getCellHeight();;
+                o.y1 -= cellHeight;
             }
             case "down" -> {
-                o.y1 += EditorWindow.getEditorGrid().getCellHeight();;
+                o.y1 += cellHeight;
             }
             default -> throw new IllegalStateException("Unexpected value: " + direction);
         }
     }
 
     public void adjustObjectSize(GameObject o, String direction){
-
         switch(direction){
             case "increase" -> {
-                o.x1 -= EditorWindow.getEditorGrid().getCellWidth();
-                o.x2 += EditorWindow.getEditorGrid().getCellWidth();
-                o.y1 -= EditorWindow.getEditorGrid().getCellHeight();
-                o.y2 += EditorWindow.getEditorGrid().getCellHeight();
+                o.x1 -= cellWidth;
+                o.x2 += cellWidth;
+                o.y1 -= cellHeight;
+                o.y2 += cellHeight;
             }
             case "decrease" -> {
-                o.x1 += EditorWindow.getEditorGrid().getCellWidth();
-                o.x2 -= EditorWindow.getEditorGrid().getCellWidth();
-                o.y1 += EditorWindow.getEditorGrid().getCellHeight();
-                o.y2 -= EditorWindow.getEditorGrid().getCellHeight();
+                if(o.getWidth() > cellWidth * 2 && o.getHeight() > cellHeight * 2){
+                    o.x1 += cellWidth;
+                    o.x2 -= cellWidth;
+                    o.y1 += cellHeight;
+                    o.y2 -= cellHeight;
+                }
             }
-
             default -> throw new IllegalStateException("Unexpected value: " + direction);
         }
     }
 
     public void moveObject(GameObject o, String direction){
+
+//        if(!checkIfSnappedToGridX(o) || !checkIfSnappedToGridY(o)){
+//            snapObjectToNearestGrid(o);
+//        }
+
         switch(direction){
             case "left" -> {
-                o.x1 -= EditorWindow.getEditorGrid().getCellWidth();
-                o.x2 -= EditorWindow.getEditorGrid().getCellWidth();
+                o.x1 -= cellWidth;
+                o.x2 -= cellWidth;
             }
             case "right" -> {
-                o.x1 += EditorWindow.getEditorGrid().getCellWidth();
-                o.x2 += EditorWindow.getEditorGrid().getCellWidth();
+                o.x1 += cellWidth;
+                o.x2 += cellWidth;
             }
             case "up" -> {
-                o.y1 -= EditorWindow.getEditorGrid().getCellHeight();
-                o.y2 -= EditorWindow.getEditorGrid().getCellHeight();
+                o.y1 += cellHeight;
+                o.y2 += cellHeight;
             }
             case "down" -> {
-                o.y1 += EditorWindow.getEditorGrid().getCellHeight();
-                o.y2 += EditorWindow.getEditorGrid().getCellHeight();
+
+                o.y1 -= cellHeight;
+                o.y2 -= cellHeight;
             }
             default -> throw new IllegalStateException("Unexpected value: " + direction);
         }
+    }
+
+    private boolean checkIfSnappedToGridX(GameObject o){
+        return (o.x1 % cellWidth == 0) ? true : false;
+    }
+
+    private boolean checkIfSnappedToGridY(GameObject o){
+        return (o.y1 % cellHeight == 0) ? true : false;
+    }
+
+    private boolean checkIfObjectsIsSmallerThanGridWidth(GameObject o){
+        return (o.x2 - o.x1 < cellWidth) ? true : false;
+    }
+
+    private boolean checkIfObjectsIsSmallerThanGridHeight(GameObject o){
+        return (o.y2 - o.y1 < cellHeight) ? true : false;
     }
 
     public int getGridLineWidth() {

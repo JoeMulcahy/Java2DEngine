@@ -1,3 +1,5 @@
+package dev.app;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -20,9 +22,7 @@ public class ColorPalette extends JPanel {
         colorButton = new JButton[20];
 
         Instance = this;
-
         draw();
-
     }
 
     public void draw(){
@@ -59,12 +59,11 @@ public class ColorPalette extends JPanel {
             JButton cb = new JButton();
             cb.setBackground(c);
             cb.addActionListener(s -> setSelectedColor(cb.getBackground()));
-            //colorButton[i] = cb;
             this.add(cb);
         }
     }
 
-    public ColorPalette getColorPalletPanel(){
+    public ColorPalette getColorPallet(){
         return this;
     }
 

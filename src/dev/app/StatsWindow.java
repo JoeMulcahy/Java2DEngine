@@ -1,13 +1,17 @@
+package dev.app;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class TestWindow {
+// Eventually this will be a separate window which will display various stats and program states using dev.joe.StatsPanel
+//
 
+public class StatsWindow {
     private JFrame frameStats;
-    private int window_width = Settings.editorPanelWidth;
-    private int window_height = Settings.editorPanelHeight;
+    private int window_width = Settings.statsPanelWidth;
+    private int window_height = Settings.statsPanelHeight;
 
-    public TestWindow(){
+    public StatsWindow(){
         initialise();
     }
 
@@ -23,6 +27,10 @@ public class TestWindow {
         frameStats.setVisible(true);
         frameStats.setLocationRelativeTo(null);
         frameStats.setResizable(true);
+
+        frameStats.add(new StatsPanel());
+
+
 
         frameStats.pack();
     }

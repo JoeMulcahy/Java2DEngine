@@ -1,3 +1,5 @@
+package dev.app;
+
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
@@ -20,6 +22,23 @@ public abstract class GameObject {
 
 
     public GameObject(int x1, int y1, int x2, int y2, double rotationAngle, Color color, float lineThickness, boolean fill, String name, boolean drawBorder) {
+
+        int h = Math.abs(y2 - y1);
+        int w = Math.abs(x2 - x1);
+
+        if(x1 < x2 && y1 > y2){
+            y1 = y1 - h;
+            y2 = y2 + h;
+        }else if(x1 > x2 && y1 < y2){
+            x1 = x1 - w;
+            x2 = x2 + w;
+        }else if(x1 > x2 && y1 > y2){
+            x1 = x1 - w;
+            y1 = y1 - h;
+            x2 = x2 + w;
+            y2 = y2 + h;
+        }
+
         this.x1 = x1;
         this.y1 = y1;
         this.x2 = x2;
@@ -34,8 +53,6 @@ public abstract class GameObject {
         objectNumber++;
 
         this.z_value = objectNumber;
-
-
     }
 
     public abstract void draw(Graphics2D g2);
@@ -128,9 +145,17 @@ public abstract class GameObject {
         this.color = color;
     }
 
+    public int getWidth(){
+        return Math.abs(x2 - x1);
+    }
+
+    public int getHeight(){
+        return Math.abs(y2 - y1);
+    }
+
     @Override
     public String toString() {
-        return "GameObject{" +
+        return "dev.joe.GameObject{" +
                 "x1=" + x1 +
                 ", y1=" + y1 +
                 ", x2=" + x2 +

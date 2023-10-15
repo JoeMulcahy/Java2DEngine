@@ -1,3 +1,5 @@
+package dev.app;
+
 import java.awt.*;
 
 public class Settings {
@@ -5,8 +7,12 @@ public class Settings {
     protected static String projectName = "New game 1";
     protected static int mainWindowWidth = 1500;
     protected static int mainWindowHeight= 800;
+
     protected static int editorPanelWidth = 512;
     protected static int editorPanelHeight = 512;
+
+    protected static int inspectorWidth = 512;
+    protected static int inspectorHeight= 512;
     protected static Color editorBackgroundColor = Color.black;
     protected static int statsPanelWidth = 256;
     protected static int statsPanelHeight = 512;

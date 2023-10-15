@@ -1,8 +1,10 @@
+package dev.app;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 
-public class EditorPanel extends JPanel {
+public class ToolPanel extends JPanel {
     private int width = Settings.editorControlPanelWidth;
     private int height = Settings.editorControlPanelHeight;
     private JButton btnRectangle;
@@ -14,11 +16,12 @@ public class EditorPanel extends JPanel {
     private JButton btnUndo;
     private JButton btnRedo;
     private JCheckBox cbObjectBorder;
+    private JButton btnSelect;
     private ColorPalette palette;
     private JComboBox cbLineThickness;
-    public static EditorPanel Instance;
+    public static ToolPanel Instance;
 
-    public EditorPanel(){
+    public ToolPanel(){
         Instance = this;
         initialise();
     }
@@ -39,6 +42,7 @@ public class EditorPanel extends JPanel {
         btnUndo = new JButton("Undo");
         btnRedo = new JButton("Redo");
         cbObjectBorder = new JCheckBox("Toggle border");
+        btnSelect = new JButton("Select");
 
         cbLineThickness = populateComboBox();
 
@@ -55,6 +59,7 @@ public class EditorPanel extends JPanel {
         this.add(btnUndo);
         this.add(btnRedo);
         this.add(cbObjectBorder);
+        this.add(btnSelect);
 
         btnRectangle.addActionListener(s -> changeShape("rect"));
         btnCircle.addActionListener(s -> changeShape("circle"));
@@ -67,6 +72,8 @@ public class EditorPanel extends JPanel {
         btnFillShape.addActionListener(s -> toggleFillShape());
         btnUndo.addActionListener(s -> undoRedoEditorWindow("undo"));
         btnRedo.addActionListener(s -> undoRedoEditorWindow("redo"));
+
+        btnSelect.addActionListener(s -> selectObject());
     }
 
     private void toggleObjectBorder(ItemEvent e){
@@ -85,6 +92,10 @@ public class EditorPanel extends JPanel {
 
     public void changeColor(){
         GameManager.currentColor = palette.getSelectedColor();
+    }
+
+    private void selectObject(){
+        GameManager.selectOn = true;
     }
 
     private void undoRedoEditorWindow(String action){
@@ -121,7 +132,10 @@ public class EditorPanel extends JPanel {
 
     private void changeShape(String shape){
         switch(shape){
-            case "rect" -> GameManager.currentShape = GameManager.ShapeSelector.RECT;
+            case "rect" -> {
+                GameManager.currentShape = GameManager.ShapeSelector.RECT;
+                GameManager.currentSelectedTool = GameManager.Tool.RECT;
+            }
             case "circle" -> GameManager.currentShape = GameManager.ShapeSelector.CIRCLE;
             case "line" -> GameManager.currentShape = GameManager.ShapeSelector.LINE;
             case "poly" -> GameManager.currentShape = GameManager.ShapeSelector.POLY;
@@ -129,7 +143,7 @@ public class EditorPanel extends JPanel {
         }
     }
 
-    public EditorPanel getEditorPanel(){
+    public ToolPanel getEditorPanel(){
         return this;
     }
 }

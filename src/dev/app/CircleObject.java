@@ -1,36 +1,39 @@
+package dev.app;
+
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
 
-public class RectangleObject extends GameObject {
+public class CircleObject extends GameObject {
 
     public static int id = 1;
-    private Rectangle rect;
+    private Ellipse2D.Double circle;
     private AffineTransform transform;
     Shape transformedShape;
 
-    public RectangleObject(int x1, int y1, int x2, int y2, double rotationAngle, Color color, float lineThickness, boolean fill, boolean drawBorder) {
-        super(x1, y1, x2, y2, rotationAngle, color, lineThickness, fill, "rect_" + id, drawBorder);
-        rect = new Rectangle();
+    public CircleObject(int x1, int y1, int x2, int y2, double rotationAngle, Color color, float lineThickness, boolean fill, boolean drawBorder) {
+        super(x1, y1, x2, y2, rotationAngle, color, lineThickness, fill, "circle_" + id, drawBorder);
+        circle = new Ellipse2D.Double();
         id++;
+
     }
 
     @Override
     public void draw(Graphics2D g2) {
-
-        g2.setStroke(new BasicStroke(lineThickness));
+        g2.setStroke(new BasicStroke(this.lineThickness));
         g2.setColor(color);
 
         int width = Math.abs(x2 - x1);
         int height = Math.abs(y2 - y1);
 
-        rect.setRect((x2 > x1 ? x1 : x1 - width), (y2 > y1 ? y1 : y1 - height), width, height);
+        circle.setFrame((x2 > x1 ? x1 : x1 - width), (y2 > y1 ? y1 : y1 - height), width, height);
 
-        transformedShape = rect;
+        transformedShape = circle;
 
-        if(rotationAngle > -360 && rotationAngle < 360){
+        if(rotationAngle > -359 && rotationAngle < 360){
             transform = new AffineTransform();
-            transform.rotate(Math.toRadians(rotationAngle), rect.getX() + rect.width/2, rect.getY() + rect.height/2);
-            transformedShape = transform.createTransformedShape(rect);
+            transform.rotate(Math.toRadians(rotationAngle), circle.getX() + circle.width/2, circle.getY() + circle.height/2);
+            transformedShape = transform.createTransformedShape(circle);
         }
 
         if(!fill){
@@ -40,7 +43,6 @@ public class RectangleObject extends GameObject {
 
             if(drawBorder){
                 Color bColor = this.color;
-
                 // > 1 for border color brighter than object
                 // < 1 for darker
                 double ratio = 0.8;
@@ -49,7 +51,7 @@ public class RectangleObject extends GameObject {
                 double g = (bColor.getGreen() * ratio) % 255;;
                 double b = (bColor.getBlue() * ratio) % 255;;
 
-                bColor = new Color(123,123,123);
+                bColor = new Color((int)r,(int)g,(int)b);
 
                 g2.setStroke(new BasicStroke(lineThickness));
                 g2.setColor(bColor);
@@ -57,33 +59,34 @@ public class RectangleObject extends GameObject {
                 int tx1 = (int)(x1 + lineThickness / 2);
                 int ty1 = (int)(y1 + lineThickness / 2);;
 
-                rect.setRect((x2 > x1 ? tx1 : tx1 - width), (y2 > y1 ? ty1 : ty1 - height), (width - lineThickness), height - lineThickness);
-                transformedShape = transform.createTransformedShape(rect);
+                circle.setFrame((x2 > x1 ? tx1 : tx1 - width), (y2 > y1 ? ty1 : ty1 - height), (width - lineThickness), height - lineThickness);
+                transformedShape = transform.createTransformedShape(circle);
                 g2.draw(transformedShape);
             }
+
         }
     }
 
-    public static int getId() {
-        return id;
+    public Ellipse2D.Double getCircle() {
+        return circle;
     }
 
-    public static void setId(int id) {
-        RectangleObject.id = id;
+    public void setCircle(Ellipse2D.Double circle) {
+        this.circle = circle;
     }
 
-    public Rectangle getRect() {
-        return rect;
+    public boolean isDrawBorder() {
+        return drawBorder;
     }
 
-    public void setRect(Rectangle rect) {
-        this.rect = rect;
+    public void setDrawBorder(boolean drawBorder) {
+        this.drawBorder = drawBorder;
     }
 
     @Override
     public String toString() {
         String description = "\t{\n" +
-                "\t\t\"type\" : \"" + "rect" + "\"" +
+                "\t\t\"type\" : \"" + "circle" + "\"" +
                 "\n\t\t\"name\" : \"" + this.getName() + "\"" +
                 "\n\t\t\"x1\" : \"" + x1 + "\"" +
                 "\n\t\t\"y1\" : \"" + y1 + "\"" +
