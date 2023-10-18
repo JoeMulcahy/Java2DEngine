@@ -2,6 +2,7 @@ package dev.app;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -9,7 +10,7 @@ public class ObjectHighLighter{
     private int r, g, b;
     private int counter = 0;
     private AffineTransform transform;
-    private Rectangle rectHighlighter;
+    //private Rectangle rectHighlighter;
     Shape transformedShape;
     private boolean isVisible;
     private int period;
@@ -52,7 +53,8 @@ public class ObjectHighLighter{
 
     public Graphics2D drawHighlighterBox(Graphics2D g2, GameObject o){
 
-        rectHighlighter = new Rectangle();
+        Shape highLighterShape;
+        boolean isLine = o instanceof LineObject;
 
         int width = Math.abs(o.x2 - o.x1);
         int height = Math.abs(o.y2 - o.y1);
@@ -62,18 +64,30 @@ public class ObjectHighLighter{
         int offsetwidth = width + 10;
         int offsetHeight = height + 10;
 
-        transformedShape = rectHighlighter;
+        if(!isLine){
+            highLighterShape = new Rectangle();
+            ((Rectangle) highLighterShape).setRect((o.x2 > o.x1 ? offsetx1 : offsetx1 - offsetwidth), (o.y2 > o.y1 ? offsety1 : offsetHeight), offsetwidth, offsetHeight);
+        }else{
+            highLighterShape = new Line2D.Double(o.x1, o.y1, o.x2, o.y2);
+        }
 
-        rectHighlighter.setRect((o.x2 > o.x1 ? offsetx1 : offsetx1 - offsetwidth), (o.y2 > o.y1 ? offsety1 : offsetHeight), offsetwidth, offsetHeight);
+        transformedShape = highLighterShape;
 
         if(o.rotationAngle > -360 && o.rotationAngle < 360){
             transform = new AffineTransform();
-            transform.rotate(Math.toRadians(o.rotationAngle), rectHighlighter.getX() + rectHighlighter.width/2, rectHighlighter.getY() + rectHighlighter.height/2);
-            transformedShape = transform.createTransformedShape(rectHighlighter);
+
+            if(isLine){
+                transform.rotate(Math.toRadians(o.rotationAngle), o.getX1() + width/2, o.getY1() + height/2);
+            }else{
+                transform.rotate(Math.toRadians(o.rotationAngle), highLighterShape.getBounds().getX() + highLighterShape.getBounds().getWidth() /2 ,
+                        highLighterShape.getBounds().getY() + highLighterShape.getBounds().getHeight()/2);
+            }
+
+            transformedShape = transform.createTransformedShape(highLighterShape);
         }
 
         g2.setColor(new Color(r, g, b, 200));
-        g2.setStroke(new BasicStroke(0.5F));
+        g2.setStroke(new BasicStroke(!isLine ? 0.5F : o.getLineThickness()));
 
         g2.draw(transformedShape);
 

@@ -5,8 +5,8 @@ import java.awt.*;
 import java.awt.event.ItemEvent;
 
 public class ToolPanel extends JPanel {
-    private int width = Settings.editorControlPanelWidth;
-    private int height = Settings.editorControlPanelHeight;
+    private int width = Settings.toolPanelWidth;
+    private int height = Settings.toolPanelHeight;
     private JButton btnRectangle;
     private JButton btnCircle;
     private JButton btnLine;
@@ -17,8 +17,10 @@ public class ToolPanel extends JPanel {
     private JButton btnRedo;
     private JCheckBox cbObjectBorder;
     private JButton btnSelect;
+    private JButton btnText;
     private ColorPalette palette;
     private JComboBox cbLineThickness;
+    private static JTextArea txtArea;
     public static ToolPanel Instance;
 
     public ToolPanel(){
@@ -26,8 +28,12 @@ public class ToolPanel extends JPanel {
         initialise();
     }
 
+    public ToolPanel getToolPanel(){
+        return this;
+    }
+
     private void initialise(){
-        this.setLayout(new GridLayout(6,2));
+        this.setLayout(new GridLayout(8,2));
         this.setPreferredSize(new Dimension(width, height));
         this.setBackground(Color.gray);
         this.setFocusable(true);
@@ -43,6 +49,8 @@ public class ToolPanel extends JPanel {
         btnRedo = new JButton("Redo");
         cbObjectBorder = new JCheckBox("Toggle border");
         btnSelect = new JButton("Select");
+        btnText = new JButton("Text");
+        txtArea = new JTextArea();
 
         cbLineThickness = populateComboBox();
 
@@ -60,11 +68,14 @@ public class ToolPanel extends JPanel {
         this.add(btnRedo);
         this.add(cbObjectBorder);
         this.add(btnSelect);
+        this.add(btnText);
+        this.add(txtArea);
 
-        btnRectangle.addActionListener(s -> changeShape("rect"));
-        btnCircle.addActionListener(s -> changeShape("circle"));
-        btnLine.addActionListener(s -> changeShape("line"));
-        btnPoly.addActionListener(s -> changeShape("poly"));
+
+        btnRectangle.addActionListener(s -> changeTool("rect"));
+        btnCircle.addActionListener(s -> changeTool("circle"));
+        btnLine.addActionListener(s -> changeTool("line"));
+        btnPoly.addActionListener(s -> changeTool("poly"));
         btnClear.addActionListener(s -> clearEditorWindow());
         cbLineThickness.addItemListener(s -> selectLineThickness(cbLineThickness.getSelectedItem().toString()));
         cbObjectBorder.addItemListener(s -> toggleObjectBorder(s));
@@ -73,7 +84,8 @@ public class ToolPanel extends JPanel {
         btnUndo.addActionListener(s -> undoRedoEditorWindow("undo"));
         btnRedo.addActionListener(s -> undoRedoEditorWindow("redo"));
 
-        btnSelect.addActionListener(s -> selectObject());
+        btnSelect.addActionListener(s -> changeTool("select"));
+        btnText.addActionListener(s -> changeTool("text"));
     }
 
     private void toggleObjectBorder(ItemEvent e){
@@ -92,10 +104,6 @@ public class ToolPanel extends JPanel {
 
     public void changeColor(){
         GameManager.currentColor = palette.getSelectedColor();
-    }
-
-    private void selectObject(){
-        GameManager.selectOn = true;
     }
 
     private void undoRedoEditorWindow(String action){
@@ -130,20 +138,26 @@ public class ToolPanel extends JPanel {
         }
     }
 
-    private void changeShape(String shape){
-        switch(shape){
-            case "rect" -> {
-                GameManager.currentShape = GameManager.ShapeSelector.RECT;
-                GameManager.currentSelectedTool = GameManager.Tool.RECT;
-            }
-            case "circle" -> GameManager.currentShape = GameManager.ShapeSelector.CIRCLE;
-            case "line" -> GameManager.currentShape = GameManager.ShapeSelector.LINE;
-            case "poly" -> GameManager.currentShape = GameManager.ShapeSelector.POLY;
-            default -> GameManager.currentShape = GameManager.ShapeSelector.LINE;
+    private void changeTool(String tool){
+        switch(tool){
+            case "circle" -> GameManager.currentSelectedTool = GameManager.Tool.CIRCLE;
+            case "line" -> GameManager.currentSelectedTool = GameManager.Tool.LINE;
+            case "poly" -> GameManager.currentSelectedTool = GameManager.Tool.POLY;
+            case "select" -> GameManager.currentSelectedTool = GameManager.Tool.SELECT;
+            case "text" -> GameManager.currentSelectedTool = GameManager.Tool.TEXT;
+            default -> GameManager.currentSelectedTool = GameManager.Tool.RECT;
         }
     }
 
     public ToolPanel getEditorPanel(){
         return this;
+    }
+
+    public String getText(){
+        if(txtArea.getText().equals("")){
+            return "Empty Text Field";
+        }else{
+            return txtArea.getText();
+        }
     }
 }

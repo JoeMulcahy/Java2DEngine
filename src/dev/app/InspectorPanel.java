@@ -19,7 +19,7 @@ public class InspectorPanel extends JPanel {
 
     ///////////////////////////////////////////////////////////////
     //  These are the two main JPanels
-    //  1. Displays a list of created dev.joe.GameObject
+    //  1. Displays a list of created GameObjects
     //  2. Displays the attributes for the currently selected object
     private JPanel gameObjectsListPanel;
     private JPanel gameObjectAttributesPanel;
@@ -31,6 +31,27 @@ public class InspectorPanel extends JPanel {
     private JScrollPane scrollPaneForJList;
     public static InspectorPanel Instance;
     private ColorPalette cpPalette;
+
+    JLabel lblName = new JLabel("Name: ");
+    JLabel lblX1Pos = new JLabel("x1 pos: ");
+    JLabel lblY1Pos = new JLabel("y1 pos: ");
+    JLabel lblX2Pos = new JLabel("x2 pos: ");
+    JLabel lblY2Pos = new JLabel("y2 pos: ");
+    JLabel lblColor = new JLabel("color: ");
+    JLabel lblFill = new JLabel("fill: ");
+    JLabel lblRotation = new JLabel("rotation: ");
+    JLabel lblLineThickness = new JLabel("line thickness: ");
+    JLabel lblZ_Depth = new JLabel("Depth value: ");
+    JLabel lblBorder = new JLabel("border");
+    JLabel lblPositionHorizontal = new JLabel("Position(hzt)");
+    JLabel lblPositionVertical = new JLabel("Position(vrt)");
+    JLabel lblEdgePositionVertical = new JLabel("Edge(hzt)");
+    JLabel lblEdgePositionHorizontal = new JLabel("Edge(vrt)");
+    JLabel lblSize = new JLabel("Size");
+    JLabel lblTextObjectTextArea = new JLabel("text");
+    JLabel lblTextObjectFontSize = new JLabel("font size");
+    JLabel lblTextObjectFontType = new JLabel("font type");
+    JLabel lblTextObjectFontStyle = new JLabel("font style");
 
     private SpinnerModel smX1;
     private SpinnerModel smY1;
@@ -58,11 +79,16 @@ public class InspectorPanel extends JPanel {
 
     private JButton btnNameAccept;
     private JButton btnColorAccept;
+    private JButton btnTextAreaAccept;
     private JButton btnDeleteObject;
-    private JTextField txtName;
+    private JTextField txtGameObjectName;
 
-    private JComboBox<Boolean> cmbFill;
-    private JComboBox<Boolean> cmbBorder;
+    private JTextArea textAreaTextObject;
+    private JComboBox<Integer> cmbTextObjectSize;
+    private JComboBox<String> cmbTextObjectFontName;
+    private JComboBox<String> cmbTextObjectFontStyle;
+    private JComboBox<Boolean> cmbHasFill;
+    private JComboBox<Boolean> cmbHasBorder;
     private JComboBox<Float> cmbLineThickness;
 
     java.util.List<GameObject> gameObjects;
@@ -82,22 +108,48 @@ public class InspectorPanel extends JPanel {
         Instance = this;
 
         initialiseGameObjectsListPanel();
-        initialiseObjectAttributesPanel();
+        initialiseObjectPropertiesPanel();
 
         btnNameAccept.addActionListener(s -> {
-            selectedGameObject.setName(txtName.getText());
+            selectedGameObject.setName(txtGameObjectName.getText());
             updateGameObjectJList();
         });
 
         btnColorAccept.addActionListener(s -> changeObjectColor(cpPalette.getSelectedColor()));
 
-        cmbBorder.addItemListener(s -> selectedGameObject.setDrawBorder(cmbBorder.getItemAt(cmbBorder.getSelectedIndex())));
-        cmbFill.addItemListener(s -> selectedGameObject.setFill(cmbFill.getItemAt(cmbFill.getSelectedIndex())));
-        cmbLineThickness.addItemListener(s -> selectedGameObject.setLineThickness(cmbLineThickness.getItemAt(cmbLineThickness.getSelectedIndex())));
+        btnTextAreaAccept.addActionListener(s -> {
+                if(selectedGameObject instanceof TextObject && !textAreaTextObject.getText().isEmpty()){
+                    ((TextObject) selectedGameObject).setText(textAreaTextObject.getText());
+                }
+        });
+
+        cmbHasBorder.addActionListener(s -> selectedGameObject.setDrawBorder(cmbHasBorder.getItemAt(cmbHasBorder.getSelectedIndex())));
+
+        cmbHasFill.addActionListener(s -> selectedGameObject.setFill(cmbHasFill.getItemAt(cmbHasFill.getSelectedIndex())));
+
+        cmbLineThickness.addActionListener(s -> selectedGameObject.setLineThickness(cmbLineThickness.getItemAt(cmbLineThickness.getSelectedIndex())));
+
+        cmbTextObjectSize.addActionListener(s -> {
+            TextObject t = (TextObject)selectedGameObject;
+            t.setSize(cmbTextObjectSize.getItemAt(cmbTextObjectSize.getSelectedIndex()));
+        });
+
+        cmbTextObjectFontStyle.addActionListener(s -> {
+            TextObject t = (TextObject)selectedGameObject;
+            t.setFontStyle((cmbTextObjectFontStyle.getSelectedIndex()));
+        });
+
+        cmbTextObjectFontName.addActionListener(s -> {
+            TextObject t = (TextObject)selectedGameObject;
+            t.setFontName(cmbTextObjectFontName.getItemAt(cmbTextObjectFontName.getSelectedIndex()));
+        });
 
         spinnerX1.addChangeListener(s -> selectedGameObject.setX1((Integer)spinnerX1.getModel().getValue()));
+
         spinnerY1.addChangeListener(s -> selectedGameObject.setY1((Integer)spinnerY1.getModel().getValue()));
+
         spinnerX2.addChangeListener(s -> selectedGameObject.setX2((Integer)spinnerX2.getModel().getValue()));
+
         spinnerY2.addChangeListener(s -> selectedGameObject.setY2((Integer)spinnerY2.getModel().getValue()));
 
         spinnerDepth.addChangeListener(s -> {
@@ -108,24 +160,27 @@ public class InspectorPanel extends JPanel {
 
         spinnerPositionLR.addChangeListener(s -> {
             updateObjectFromSpinnerAndGrid(s.getSource(), oldPosLeftRight, (Integer)spinnerPositionLR.getModel().getValue());
-            updateAttributeValues(GameManager.currentlySelectedGameObject);
+            updatePropertiesValues(GameManager.currentlySelectedGameObject);
         });
 
         spinnerPositionUD.addChangeListener(s -> {
             updateObjectFromSpinnerAndGrid(s.getSource(), oldPosUpDown, (Integer)spinnerPositionUD.getModel().getValue());
-            updateAttributeValues(GameManager.currentlySelectedGameObject);
+            updatePropertiesValues(GameManager.currentlySelectedGameObject);
         });
+
         spinnerEdgePositionLR.addChangeListener(s -> {
             updateObjectFromSpinnerAndGrid(s.getSource(), oldEdgePosLeftRight, (Integer)spinnerEdgePositionLR.getModel().getValue());
-            updateAttributeValues(GameManager.currentlySelectedGameObject);
+            updatePropertiesValues(GameManager.currentlySelectedGameObject);
         });
+
         spinnerEdgePositionUD.addChangeListener(s -> {
             updateObjectFromSpinnerAndGrid(s.getSource(), oldEdgePosUpDown, (Integer)spinnerEdgePositionUD.getModel().getValue());
-            updateAttributeValues(GameManager.currentlySelectedGameObject);
+            updatePropertiesValues(GameManager.currentlySelectedGameObject);
         });
+
         spinnerSize.addChangeListener(s -> {
             updateObjectFromSpinnerAndGrid(s.getSource(), oldSize, (Integer)spinnerSize.getModel().getValue());
-            updateAttributeValues(GameManager.currentlySelectedGameObject);
+            updatePropertiesValues(GameManager.currentlySelectedGameObject);
         });
 
         this.add(gameObjectsListPanel);
@@ -154,17 +209,17 @@ public class InspectorPanel extends JPanel {
                 super.mouseReleased(e);
                 GameManager.currentlySelectedGameObject = EditorWindow.Instance.getGameObjects().get(jListOfGameObjectNames.getSelectedIndex());
                 currentSelectedObjectIndex = EditorWindow.Instance.getGameObjects().indexOf(GameManager.currentlySelectedGameObject);
-                updateObjectsAttributesPanel(currentSelectedObjectIndex);
+                updateObjectsPropertiesPanel(currentSelectedObjectIndex);
             }
         });
 
         updateGameObjectJList();
     }
 
-    private void initialiseObjectAttributesPanel(){
+    private void initialiseObjectPropertiesPanel(){
 
         gameObjectAttributesPanel = new JPanel();
-        gameObjectAttributesPanel.setLayout(new GridLayout(20, 3));
+        gameObjectAttributesPanel.setLayout(new GridLayout(25, 3));
         gameObjectAttributesPanel.setPreferredSize(new Dimension(width / 2, height));
         gameObjectAttributesPanel.setBackground(Color.gray);
         gameObjectAttributesPanel.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -195,39 +250,32 @@ public class InspectorPanel extends JPanel {
         spinnerEdgePositionUD = new JSpinner(smEdgePositionUD);
         spinnerSize = new JSpinner(smSize);
 
-        cmbFill = new JComboBox<>(new Boolean[]{false, true});
-        cmbBorder = new JComboBox<>(new Boolean[]{false, true});
+        cmbHasFill = new JComboBox<>(new Boolean[]{false, true});
+        cmbHasBorder = new JComboBox<>(new Boolean[]{false, true});
         cmbLineThickness = new JComboBox<>(new Float[]{1f, 2f, 4f, 8f, 16f, 32f, 64f, 128f});
 
-        JLabel lblName = new JLabel("Name: ");
-        JLabel lblX1Pos = new JLabel("x1 pos: ");
-        JLabel lblY1Pos = new JLabel("y1 pos: ");
-        JLabel lblX2Pos = new JLabel("x2 pos: ");
-        JLabel lblY2Pos = new JLabel("y2 pos: ");
-        JLabel lblColor = new JLabel("color: ");
-        JLabel lblFill = new JLabel("fill: ");
-        JLabel lblRotation = new JLabel("rotation: ");
-        JLabel lblLineThickness = new JLabel("line thickness: ");
-        JLabel lblZ_Depth = new JLabel("Depth value: ");
-        JLabel lblBorder = new JLabel("border");
-        JLabel lblPositionHorizontal = new JLabel("Position(hzt)");
-        JLabel lblPositionVertical = new JLabel("Position(vrt)");
-        JLabel lblEdgePositionVertical = new JLabel("Edge(hzt)");
-        JLabel lblEdgePositionHorizontal = new JLabel("Edge(vrt)");
-        JLabel lblSize = new JLabel("Size");
+        textAreaTextObject = new JTextArea();
+        cmbTextObjectFontName = new JComboBox<>(new String[]{"Helvetica", "Monospaced", "Serif"});
+        cmbTextObjectFontStyle = new JComboBox<>(new String[]{"Plain", "Bold", "Italic", "Bold & Italic"});
 
-        txtName = new JTextField();
+        Integer[] fontSizes = new Integer[50];
+        for(int i = 2; i < fontSizes.length; i++){
+            fontSizes[i] = i * 2;        }
+
+        cmbTextObjectSize = new JComboBox<>(fontSizes);
+        txtGameObjectName = new JTextField();
         cpPalette = new ColorPalette();
 
         btnNameAccept = new JButton("\u2714");
         btnColorAccept = new JButton("\u2714");
+        btnTextAreaAccept = new JButton("\u2714");
 
         btnDeleteObject = new JButton("DELETE");
         btnDeleteObject.setBackground(Color.red);
         btnDeleteObject.setForeground(Color.white);
 
         gameObjectAttributesPanel.add(lblName);
-        gameObjectAttributesPanel.add(txtName);
+        gameObjectAttributesPanel.add(txtGameObjectName);
         gameObjectAttributesPanel.add(btnNameAccept);
 
         gameObjectAttributesPanel.add(lblX1Pos);
@@ -251,7 +299,7 @@ public class InspectorPanel extends JPanel {
         gameObjectAttributesPanel.add(btnColorAccept);
 
         gameObjectAttributesPanel.add(lblFill);
-        gameObjectAttributesPanel.add(cmbFill);
+        gameObjectAttributesPanel.add(cmbHasFill);
         gameObjectAttributesPanel.add(new JLabel());
 
         gameObjectAttributesPanel.add(lblRotation);
@@ -267,7 +315,7 @@ public class InspectorPanel extends JPanel {
         gameObjectAttributesPanel.add(new JLabel());
 
         gameObjectAttributesPanel.add(lblBorder);
-        gameObjectAttributesPanel.add(cmbBorder);
+        gameObjectAttributesPanel.add(cmbHasBorder);
         gameObjectAttributesPanel.add(new JLabel());
 
         gameObjectAttributesPanel.add(lblPositionHorizontal);
@@ -290,6 +338,22 @@ public class InspectorPanel extends JPanel {
         gameObjectAttributesPanel.add(spinnerSize);
         gameObjectAttributesPanel.add(new JLabel());
 
+        gameObjectAttributesPanel.add(lblTextObjectTextArea);
+        gameObjectAttributesPanel.add(textAreaTextObject);
+        gameObjectAttributesPanel.add(btnTextAreaAccept);
+
+        gameObjectAttributesPanel.add(lblTextObjectFontSize);
+        gameObjectAttributesPanel.add(cmbTextObjectSize);
+        gameObjectAttributesPanel.add(new JLabel());
+
+        gameObjectAttributesPanel.add(lblTextObjectFontType);
+        gameObjectAttributesPanel.add(cmbTextObjectFontName);
+        gameObjectAttributesPanel.add(new JLabel());
+
+        gameObjectAttributesPanel.add(lblTextObjectFontStyle);
+        gameObjectAttributesPanel.add(cmbTextObjectFontStyle);
+        gameObjectAttributesPanel.add(new JLabel());
+
      /////////////////////////////////////////////////////
 
         gameObjectAttributesPanel.add(new JLabel());
@@ -300,7 +364,7 @@ public class InspectorPanel extends JPanel {
 
         // sending a null value will make all the objects
         // in the container unselectable;
-        updateAttributeValues(null);
+        updatePropertiesValues(null);
     }
 
     private void updateObjectFromSpinnerAndGrid(Object o, int oldValue, int newValue){
@@ -346,15 +410,49 @@ public class InspectorPanel extends JPanel {
         }
     }
 
-    public void updateObjectsAttributesPanel(int index){
+    public void updateObjectsPropertiesPanel(int index){
         if(EditorWindow.Instance.getGameObjects() != null && jListOfGameObjectNames.getModel().getSize() > 0){
             selectedGameObject = GameManager.currentlySelectedGameObject;
-            updateAttributeValues(selectedGameObject);
+            updatePropertiesValues(selectedGameObject);
         }
     }
 
-    public void updateAttributeValues(GameObject o){
+    public void updatePropertiesValues(GameObject o){
         if(o != null){
+            boolean isTextObject = o instanceof TextObject;
+
+            //lblTextObjectTextArea.setVisible(isTextObject);
+            textAreaTextObject.setVisible(isTextObject);
+            btnTextAreaAccept.setVisible(isTextObject);
+           // lblTextObjectFontSize.setVisible(isTextObject);
+            cmbTextObjectSize.setVisible(isTextObject);
+            //lblTextObjectFontType.setVisible(isTextObject);
+            cmbTextObjectFontName.setVisible(isTextObject);
+            //lblTextObjectFontStyle.setVisible(isTextObject);
+            cmbTextObjectFontStyle.setVisible(isTextObject);
+
+            //lblX2Pos.setVisible(!isTextObject);
+            spinnerX2.setVisible(!isTextObject);
+            //lblY2Pos.setVisible(!isTextObject);
+            spinnerY2.setVisible(!isTextObject);
+            //lblBorder.setVisible(!isTextObject);
+            cmbHasBorder.setVisible(!isTextObject);
+            //lblLineThickness.setVisible(!isTextObject);
+            cmbLineThickness.setVisible(!isTextObject);
+            //lblEdgePositionVertical.setVisible(!isTextObject);
+            spinnerEdgePositionUD.setVisible(!isTextObject);
+           // lblEdgePositionHorizontal.setVisible(!isTextObject);
+            spinnerEdgePositionLR.setVisible(!isTextObject);
+            //lblSize.setVisible(!isTextObject);
+            spinnerSize.setVisible(!isTextObject);
+
+            if(isTextObject){
+                textAreaTextObject.setText(((TextObject) o).getText());
+                cmbTextObjectSize.setSelectedItem((Integer)((TextObject) o).getSize());
+                cmbTextObjectFontName.setSelectedItem((String)((TextObject) o).getFontName());
+                cmbTextObjectFontStyle.setSelectedItem((Integer)((TextObject) o).getFontStyle());
+            }
+
             smX1.setValue(o.getX1());
             smX2.setValue(o.getX2());
             smY1.setValue(o.getY1());
@@ -363,11 +461,11 @@ public class InspectorPanel extends JPanel {
             smDepth.setValue(o.getDepth_Z());
 
             gameObjectAttributesPanel.setVisible(true);
-            txtName.setText(o.getName());
+            txtGameObjectName.setText(o.getName());
             cpPalette.setSelectedColor(o.getColor());
 
-            cmbFill.setSelectedItem((Boolean)o.isFill());
-            cmbBorder.setSelectedItem((Boolean)o.isDrawBorder());
+            cmbHasFill.setSelectedItem((Boolean)o.isFill());
+            cmbHasBorder.setSelectedItem((Boolean)o.isDrawBorder());
             cmbLineThickness.setSelectedItem((Float)o.getLineThickness());
 
             oldPosLeftRight = (Integer)smPositionLR.getValue();

@@ -10,7 +10,7 @@ As of 06/10/2023
 I have created basic shapes that can be drawn on a JPanel component. I've also implemented a grid so that shapes can snapped into position.
 
 06/10/2023
-Create a dev.app.InspectorPanel. A dev.app.GameObject can be selected from a JList and its attributes display on a side panel.
+Create a InspectorPanel. A dev.app.GameObject can be selected from a JList and its attributes display on a side panel.
 These attributes can be changed in the side panel, these changes are reflected in the Editor window.
 Its not visually appealing. Editing of the object attributes are done through JTextBoxes for the moment. Eventually these will be changed to dropdown menu [true, false], spinners for changing ogame objects attributes
 This module still need a lot of work in terms of usability
@@ -50,6 +50,24 @@ Borders can be toggle from the Tools Panel
 GameObjects now have depth, an object can be draw over or under an existing dev.app.GameObject
 Added a delete dev.app.GameObject function. this isn't working. I tried deleting the selected dev.app.GameObject from the objects ArrayList but throws errors, must investigate further
 Started a feature that can resize dev.app.GameObject from the Attributes Panel
+
+15/10/23
+I made a few tweaks and additions since the last update. The Attributes panel now Called the InspectorPanel has been overhauled.
+The JTextFields have been replaced by comboboxes and spinners
+The Inspector now allows you to resize, reposition and reshape GameObjects.
+Add a text tool so text can now be drawn. Text can also be edited in the Inspector
+Started a basic collision detection system which was working for rectanglar collisions. I scrapped it but gave me an idea 
+on how to implement it better. More soon...
+Got basic object animation working (Go nuts mode!) still needs a lot of work but its a good start
+Also made a few tweaks and ironed out a few issues which the hightlighter 
+I was going to redesign the Inspector using a GUI design tool. I bought it JFORM Desigher but still waiting for my licience to come through
+
+17/10/2023
+Worked on Collision detection. I created a Collision class. A Collision can be linked to a gameobject.
+It works for rectangular collisions. tried circular collision but I'm having trouble get that working.
+Scaling the collision hitbox has also been trouble some due to the way the Affline class and method work, lots of math involve which I haven't done since highschool
+Created basic Game Charater classes. 
+The JForm Designer plugin finally got sorted. I start a redesign of the gui soon
 
 
 

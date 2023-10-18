@@ -14,6 +14,7 @@ public class Grid {
     private int cellWidth;
     private int cellHeight;
     private Color gridLineColor;
+    private Color gridColorHighlight;
     private int transparency;
     public static Grid Instance;
 
@@ -30,6 +31,7 @@ public class Grid {
         this.numberOfRowsAndColumns = new int[]{numberOfColumns, numberOfRows};
 
         this.gridLineColor = new Color(183, 186, 190, transparency);
+        this.gridColorHighlight = new Color(183, 186, 190, 200);
 
         Instance = this;
     }

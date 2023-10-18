@@ -20,7 +20,7 @@ public class PolygonObject extends GameObject {
     private int[][] points;
 
 
-    public PolygonObject(int x1, int y1, int x2, int y2, int[][] points, double rotationAngle, Color color, float lineThickness, boolean fill, boolean drawBorder) {
+    public PolygonObject(int x1, int y1, int x2, int y2, int[][] points, double rotationAngle, Color color, float lineThickness, boolean fill, boolean drawBorder, boolean hasCollisionDetection) {
         super(x1, y1, x2, y2, rotationAngle, color, lineThickness, fill, "poly", drawBorder);
         polygon = new Polygon();
         polyBorder = new Polygon();

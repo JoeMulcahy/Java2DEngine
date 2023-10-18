@@ -22,9 +22,11 @@ public class MainWindow{
     private JMenuItem optionsMenuItemGrid;
     private JMenuItem optionsMenuItemSettings;
     private JMenu viewMenu;
-    private JMenuItem viewMenuItemOption1;
-    private JMenuItem viewMenuItemOption2;
-    private JMenuItem viewMenuItemOption3;
+    private JMenuItem viewMenuItemToggleGraphics;
+    private JMenuItem viewMenuItemToggleHighlighter;
+    private JMenuItem viewMenuItemToggleCo_orAtCursor;
+    private JMenuItem viewMenuItemToggleObjectNames;
+    private JMenuItem viewMenuItemShowCollision;
     private EditorWindow editorWindow;
     private Grid gridFromMainWindow;
 
@@ -78,6 +80,7 @@ public class MainWindow{
         frame.add(new ToolPanel());
         frame.add(editorWindow);
         frame.add(new InspectorPanel());
+        frame.add(new SidePanel());
 
         frame.pack();
     }
@@ -132,6 +135,7 @@ public class MainWindow{
         Color c = Color.BLACK;
         boolean borderThickness = false;
         boolean fill = false;
+        boolean hasCollisionDetection = false;
         // tempColor is the color extracted from a string in the save file
         // eg. "color" : "java.awt.Color[r=112,g=146,b=190]"
         Color tempColor = Color.black;
@@ -194,14 +198,14 @@ public class MainWindow{
                                             case "editorBackgroundColor" -> Settings.editorBackgroundColor = tempColor;
                                             case "statsPanelWidth" -> Settings.statsPanelWidth = Integer.parseInt(values[1]);
                                             case "statsPanelHeight" -> Settings.statsPanelHeight = Integer.parseInt(values[1]);
-                                            case "editorControlPanelWidth" -> Settings.editorControlPanelWidth = Integer.parseInt(values[1]);
-                                            case "editorControlPanelHeight" -> Settings.editorControlPanelHeight = Integer.parseInt(values[1]);
+                                            case "editorControlPanelWidth" -> Settings.toolPanelWidth = Integer.parseInt(values[1]);
+                                            case "editorControlPanelHeight" -> Settings.toolPanelHeight = Integer.parseInt(values[1]);
                                             case "gameObjectsPanelWidth" -> Settings.gameObjectsPanelWidth = Integer.parseInt(values[1]);
                                             case "gameObjectsPanelHeight" -> Settings.gameObjectsPanelHeight = Integer.parseInt(values[1]);
                                             case "colorPanelWidth" -> Settings.colorPanelWidth = Integer.parseInt(values[1]);
                                             case "colorPanelHeight" -> Settings.colorPanelHeight = Integer.parseInt(values[1]);
                                             case "currentColor" -> GameManager.currentColor = tempColor;
-                                            case "currentShape" -> GameManager.currentShape = GameManager.ShapeSelector.RECT;
+                                            case "currentShape" -> GameManager.currentSelectedTool = GameManager.Tool.RECT;
                                             case "lineThickness" -> GameManager.lineThickness = Float.parseFloat(values[1]);
                                             case "fillShape" -> GameManager.fillShape = Boolean.parseBoolean(values[1]);
                                             case "showGrid" -> GameManager.showGrid = Boolean.parseBoolean(values[1]);
@@ -223,6 +227,7 @@ public class MainWindow{
                                             case "rotationAngle" -> rotationAngle = Double.parseDouble(values[1]);
                                             case "lineThickness" -> lineThickness = Float.parseFloat(values[1]);
                                             case "borderThickness" -> borderThickness = false;
+                                            case "hasCollisionDetection" -> hasCollisionDetection = Boolean.parseBoolean(values[1]);
                                             case "fill" -> {
                                                 fill = Boolean.parseBoolean(values[1]);
                                                 EditorWindow.Instance.loadGameObjects(type, x1, y1, x2, y2, rotationAngle, c, lineThickness, fill, borderThickness);
@@ -301,7 +306,7 @@ public class MainWindow{
     }
 
     private void initialiseOptionsMenu(){
-        JMenu menuGrid = new JMenu("dev.joe.Grid");
+        JMenu menuGrid = new JMenu("Grid");
         JMenuItem menuToggleShapeAtCursor = new JMenuItem("Shape Cursor");
         JMenuItem toggleGrid = new JMenuItem("On/Off");
         JMenuItem gridSize4x4 = new JMenuItem("4 x 4");
@@ -316,39 +321,83 @@ public class MainWindow{
         menuGrid.add(gridSize32x32);
         menuGrid.add(gridSize64x64);
         menuGrid.add(menuToggleShapeAtCursor);
+        JMenuItem goNuts = new JMenuItem("Go nuts!!");
+
         toggleGrid.addActionListener(s -> toggleGridAndSetGridSize(-1));
         gridSize4x4.addActionListener(s -> toggleGridAndSetGridSize(4));
         gridSize8x8.addActionListener(s -> toggleGridAndSetGridSize(8));
         gridSize16x16.addActionListener(s -> toggleGridAndSetGridSize(16));
         gridSize32x32.addActionListener(s -> toggleGridAndSetGridSize(32));
         gridSize64x64.addActionListener(s -> toggleGridAndSetGridSize(64));
+
+        goNuts.addActionListener(s -> toggleGoNuts());
+
         menuToggleShapeAtCursor.addActionListener(s -> toggleCursorShape());
 
         optionsMenu.add(menuGrid);
+        optionsMenu.add(goNuts);
 
+    }
+
+    private void toggleGoNuts(){
+        if(!GameManager.gotNuts){
+            GameManager.gotNuts = true;
+        }
+        else{
+            GameManager.gotNuts = false;
+        }
     }
 
     private void initialiseViewMenu(){
         viewMenu = new JMenu("View");
 
-        viewMenuItemOption1 = new JMenuItem("draw graphics");
-        viewMenuItemOption2 = new JMenuItem("Toggle highlighter");
-        viewMenuItemOption3 = new JMenuItem("option 3");
+        viewMenuItemToggleGraphics = new JMenuItem("draw graphics");
+        viewMenuItemToggleHighlighter = new JMenuItem("Toggle highlighter");
+        viewMenuItemToggleCo_orAtCursor = new JMenuItem("Co-or at Cursor");
+        viewMenuItemToggleObjectNames = new JMenuItem("Object Names");
+        viewMenuItemShowCollision = new JMenuItem("Toggle collision boxes");
 
-        viewMenuItemOption1.addActionListener(s -> toggleGraphics());
-        viewMenuItemOption2.addActionListener(s -> toggleHighLighter());
+        viewMenuItemToggleGraphics.addActionListener(s -> toggleGraphics());
+        viewMenuItemToggleHighlighter.addActionListener(s -> toggleHighLighter());
+        viewMenuItemToggleCo_orAtCursor.addActionListener(s -> toggleViewCoordinates());
+        viewMenuItemToggleObjectNames.addActionListener(s -> toggleObjectNames());
+        viewMenuItemShowCollision.addActionListener(s -> toggleCollisionBoxes());
 
-        viewMenu.add(viewMenuItemOption1);
-        viewMenu.add(viewMenuItemOption2);
-        viewMenu.add(viewMenuItemOption3);
+        viewMenu.add(viewMenuItemToggleGraphics);
+        viewMenu.add(viewMenuItemToggleHighlighter);
+        viewMenu.add(viewMenuItemToggleCo_orAtCursor);
+        viewMenu.add(viewMenuItemToggleObjectNames);
+        viewMenu.add(viewMenuItemShowCollision);
+    }
 
+    private void toggleCollisionBoxes(){
+        if(Settings.toggleCollisionBoxes){
+            Settings.toggleCollisionBoxes = false;
+        }else{
+            Settings.toggleCollisionBoxes = true;
+        }
+    }
+
+    private void toggleObjectNames(){
+        if(Settings.toggleObjectNamesOnEditor){
+            Settings.toggleObjectNamesOnEditor = false;
+        }else{
+            Settings.toggleObjectNamesOnEditor = true;
+        }
+    }
+    private void toggleViewCoordinates(){
+        if(Settings.toggleCoordinatesAtCursor){
+            Settings.toggleCoordinatesAtCursor = false;
+        }else{
+            Settings.toggleCoordinatesAtCursor = true;
+        }
     }
 
     private void toggleGraphics(){
-        if(GameManager.toggleGraphicsOn){
-            GameManager.toggleGraphicsOn = false;
+        if(Settings.toggleGraphicsOn){
+            Settings.toggleGraphicsOn = false;
         }else{
-            GameManager.toggleGraphicsOn = true;
+            Settings.toggleGraphicsOn = true;
         }
     }
 

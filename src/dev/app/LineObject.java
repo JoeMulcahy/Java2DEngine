@@ -27,7 +27,6 @@ public class LineObject extends GameObject {
 
         line.setLine(x1, y1, x2, y2);
 
-
         transformedShape = line;
         if(rotationAngle > -360 && rotationAngle < 360){
             transform = new AffineTransform();

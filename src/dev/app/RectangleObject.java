@@ -16,6 +16,11 @@ public class RectangleObject extends GameObject {
         id++;
     }
 
+    public RectangleObject() {
+        super(10, 100, 90, 200, 0, Color.RED, 4, true, "rect_" + id, true);
+        rect = new Rectangle();
+    }
+
     @Override
     public void draw(Graphics2D g2) {
 
@@ -65,6 +70,7 @@ public class RectangleObject extends GameObject {
             }
         }
     }
+
 
     public static int getId() {
         return id;

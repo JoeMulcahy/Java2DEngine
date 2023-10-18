@@ -20,23 +20,27 @@ public abstract class GameObject {
     private static int objectNumber = 0;
     private int z_value;
 
+    protected int dx;
+    protected int dy;
 
     public GameObject(int x1, int y1, int x2, int y2, double rotationAngle, Color color, float lineThickness, boolean fill, String name, boolean drawBorder) {
 
-        int h = Math.abs(y2 - y1);
-        int w = Math.abs(x2 - x1);
+        if(!(this instanceof LineObject)){
+            int h = Math.abs(y2 - y1);
+            int w = Math.abs(x2 - x1);
 
-        if(x1 < x2 && y1 > y2){
-            y1 = y1 - h;
-            y2 = y2 + h;
-        }else if(x1 > x2 && y1 < y2){
-            x1 = x1 - w;
-            x2 = x2 + w;
-        }else if(x1 > x2 && y1 > y2){
-            x1 = x1 - w;
-            y1 = y1 - h;
-            x2 = x2 + w;
-            y2 = y2 + h;
+            if(x1 < x2 && y1 > y2){
+                y1 = y1 - h;
+                y2 = y2 + h;
+            }else if(x1 > x2 && y1 < y2){
+                x1 = x1 - w;
+                x2 = x2 + w;
+            }else if(x1 > x2 && y1 > y2){
+                x1 = x1 - w;
+                y1 = y1 - h;
+                x2 = x2 + w;
+                y2 = y2 + h;
+            }
         }
 
         this.x1 = x1;
@@ -51,6 +55,9 @@ public abstract class GameObject {
         this.drawBorder = drawBorder;
 
         objectNumber++;
+
+        this.dx = (int)(Math.random() * 6 - 3) + 1;
+        this.dy = (int)(Math.random() * 6 - 3) + 1;
 
         this.z_value = objectNumber;
     }
@@ -105,6 +112,7 @@ public abstract class GameObject {
         this.rotationAngle = rotationAngle;
     }
 
+
     public int getX1() {
         return x1;
     }
@@ -135,6 +143,22 @@ public abstract class GameObject {
 
     public void setY2(int y2) {
         this.y2 = y2;
+    }
+
+    public int getDx() {
+        return dx;
+    }
+
+    public void setDx(int dx) {
+        this.dx = dx;
+    }
+
+    public int getDy() {
+        return dy;
+    }
+
+    public void setDy(int dy) {
+        this.dy = dy;
     }
 
     public Color getColor() {

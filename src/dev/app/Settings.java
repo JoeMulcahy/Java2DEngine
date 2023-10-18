@@ -10,18 +10,26 @@ public class Settings {
 
     protected static int editorPanelWidth = 512;
     protected static int editorPanelHeight = 512;
+    protected static int sidePanelWidth = 512;
+    protected static int sidePanelHeight = 512;
+    protected static int previewWidth = 128;
+    protected static int previewHeight = 128;
 
     protected static int inspectorWidth = 512;
     protected static int inspectorHeight= 512;
     protected static Color editorBackgroundColor = Color.black;
-    protected static int statsPanelWidth = 256;
+    protected static int statsPanelWidth = 128;
     protected static int statsPanelHeight = 512;
-    protected static int editorControlPanelWidth = 256;
-    protected static int editorControlPanelHeight = 512;
-    protected static int gameObjectsPanelWidth = 512;
+    protected static int toolPanelWidth = 128;
+    protected static int toolPanelHeight = 512;
+    protected static int gameObjectsPanelWidth = 384;
     protected static int gameObjectsPanelHeight = 512;
     protected static int colorPanelWidth = 124;
     protected static int colorPanelHeight = 48;
+    protected static boolean toggleGraphicsOn = true;
+    protected static boolean toggleCoordinatesAtCursor = false;
+    protected static boolean toggleObjectNamesOnEditor = false;
+    protected static boolean toggleCollisionBoxes = false;
 
     public static String getSettings() {
         String description = "{\n" +
@@ -33,8 +41,8 @@ public class Settings {
                 "\n\t\t\"editorBackgroundColor\" : \"" + editorBackgroundColor + "\"" +
                 "\n\t\t\"statsPanelWidth\" : \"" + statsPanelWidth + "\"" +
                 "\n\t\t\"statsPanelHeight\" : \"" + statsPanelHeight + "\"" +
-                "\n\t\t\"editorControlPanelWidth\" : \"" + editorControlPanelWidth + "\"" +
-                "\n\t\t\"editorControlPanelHeight\" : \"" + editorControlPanelHeight + "\"" +
+                "\n\t\t\"editorControlPanelWidth\" : \"" + toolPanelWidth + "\"" +
+                "\n\t\t\"editorControlPanelHeight\" : \"" + toolPanelHeight + "\"" +
                 "\n\t\t\"gameObjectsPanelWidth\" : \"" + gameObjectsPanelWidth + "\"" +
                 "\n\t\t\"gameObjectsPanelHeight\" : \"" + gameObjectsPanelHeight + "\"" +
                 "\n\t\t\"colorPanelWidth\" : \"" + colorPanelWidth + "\"" +

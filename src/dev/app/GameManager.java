@@ -8,9 +8,9 @@ public class GameManager {
     protected static int numberOfObjectsDrawn = 0;
     protected static int instructionCounter = 0;
     protected static Color currentColor = Color.white;
-    protected enum ShapeSelector{ RECT, CIRCLE, LINE, POLY};
+    //protected enum ShapeSelector{ RECT, CIRCLE, LINE, POLY};
 
-    protected static GameManager.ShapeSelector currentShape;
+   // protected static GameManager.ShapeSelector currentShape;
 
     protected static float lineThickness = 1;
     protected static boolean fillShape = false;
@@ -21,12 +21,12 @@ public class GameManager {
     protected static java.util.List<GameObject> createdGameObjects;
     protected static GameObject currentlySelectedGameObject;
     protected static boolean highlighterOn = false;
-    protected static boolean toggleGraphicsOn = true;
     protected static boolean toggleObjectBorder = false;
+
     protected static boolean selectOn = false;
 
-    protected enum Tool{ RECT, CIRCLE, LINE, POLY, SELECT};
-    protected static Tool currentSelectedTool = Tool.SELECT;
+    protected enum Tool{ RECT, CIRCLE, LINE, POLY, SELECT, TEXT};
+    protected static Tool currentSelectedTool = Tool.RECT;
 
     //Resize dev.joe.GameObject setting. Resize from center or from origin(x1,y1)
     protected static boolean toggleResizeFromCenter = true;
@@ -35,6 +35,7 @@ public class GameManager {
     protected static int mouseY1;
     protected static int mouseX2;
     protected static int mouseY2;
+    protected static boolean gotNuts = false;
 
     public static int getMouseX1() {
         return mouseX1;

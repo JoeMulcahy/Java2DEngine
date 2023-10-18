@@ -1,0 +1,22 @@
+JFDML JFormDesigner: "8.1.1.0.298" Java: "17.0.7" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) {
+			"columns": 1
+			"rows": 2
+			"hgap": 5
+			"vgap": 5
+		} ) {
+			name: "this"
+			"preferredSize": new java.awt.Dimension( 512, 512 )
+			add( new FormComponent( "dev.app.AdditionalProperties" ) {
+				name: "additionalProperties1"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 400, 300 )
+		} )
+	}
+}
