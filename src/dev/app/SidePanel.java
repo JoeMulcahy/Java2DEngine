@@ -21,7 +21,7 @@ public class SidePanel extends JPanel {
         additionalProperties1 = new AdditionalProperties();
 
         //======== this ========
-        setPreferredSize(new Dimension(Settings.sidePanelWidth, Settings.sidePanelHeight));
+        setPreferredSize(new Dimension(512, 512));
         setLayout(new GridLayout(2, 1, 5, 5));
         add(additionalProperties1);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on

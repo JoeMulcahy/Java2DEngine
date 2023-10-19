@@ -102,10 +102,6 @@ public class ToolPanel extends JPanel {
         System.out.println(GameManager.toggleObjectBorder);
     }
 
-    public void changeColor(){
-        GameManager.currentColor = palette.getSelectedColor();
-    }
-
     private void undoRedoEditorWindow(String action){
         switch(action){
             case "undo" -> UndoRedoStack.Instance.undo();
@@ -114,11 +110,11 @@ public class ToolPanel extends JPanel {
     }
 
     private void selectLineThickness(String s){
-
-        String thickness = s;
         GameManager.lineThickness = Integer.parseInt(s);
     }
     private JComboBox populateComboBox(){
+
+        for(int i = 1; i < 50; i++){}
 
         String[] values = {"1", "4", "8", "16"};
         JComboBox<String> cb = new JComboBox<>(values);

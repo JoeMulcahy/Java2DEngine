@@ -77,7 +77,7 @@ public class MainWindow{
         frame.setJMenuBar(menuBar);
         menuBar.setVisible(true);
 
-        frame.add(new ToolPanel());
+        frame.add(new NewToolBar());
         frame.add(editorWindow);
         frame.add(new InspectorPanel());
         frame.add(new SidePanel());

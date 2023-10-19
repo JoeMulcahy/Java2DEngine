@@ -377,7 +377,7 @@ public class EditorWindow extends JPanel implements Runnable, MouseListener, Mou
 
         }else if(GameManager.currentSelectedTool == GameManager.Tool.TEXT){
 
-            String text = ToolPanel.Instance.getText();
+            String text = NewToolBar.Instance.getText();
             objects.add(new TextObject(x1, y1, x2, y2, 0, GameManager.currentColor, GameManager.lineThickness,
                     GameManager.fillShape, GameManager.toggleObjectBorder, false, text));
 
